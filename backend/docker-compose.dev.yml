@@ -1,0 +1,41 @@
+version: "3.4"
+
+networks:
+  db_net:
+    external: true
+  default:
+
+services:
+  elder-god:
+    container_name: unihack-elder-god
+    environment:
+      - RUN_LEVEL=dev
+    entrypoint:
+      - uvicorn
+      - server:app
+      - --host=0.0.0.0
+      - --reload
+    build:
+      context: .
+      dockerfile: ./elder-god/Dockerfile
+      target: dev
+    ports:
+      - "80:8000"
+    volumes:
+      - ./elder-god/elder-god:/opt/app
+    networks:
+      - default
+  postgres:
+    container_name: unihack-postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: unihack
+    networks:
+      - db_net
+      - default
+    volumes:
+      - ./.docker_data/postgres:/var/lib/postgresql/data
