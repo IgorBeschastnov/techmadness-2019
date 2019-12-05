@@ -1,24 +1,8 @@
-import * as React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { BrowserRouter as Router} from 'react-router-dom'
-import store from './store'
-import App from './components/app';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import { App } from './app';
 
-import './styles.scss'
+import './styles.scss';
 
-const target = document.querySelector('#root')
-
-render(
-  <Provider store={store}>
-    <Router>
-      <div>
-       <App />
-      </div>
-    </Router>
-  </Provider>,
-  target
-)
-
-// yarn
-// yarn start
+ReactDOM.render(<App />, document.getElementById('root'));
