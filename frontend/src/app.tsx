@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 
+import './app.scss';
+
 import { Line } from "./shared/line";
 
 export const App: React.FC = () => {
@@ -11,8 +13,12 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <Line justifyContent="center">
-      <h1>Hello, Techmadness 2019!</h1>
+    <Line vertical>
+      <div className="header">Header</div>
+      <Line>
+        <div className="balance">Balance</div>
+        <div className="operations">Operations</div>
+      </Line>
     </Line>
   );
 };
