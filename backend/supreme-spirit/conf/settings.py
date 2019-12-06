@@ -30,7 +30,9 @@ class DatabaseConfig(BaseSettings):
     PORT: str = DATABASE_PORT
 
 
+db_config = DatabaseConfig()
+
 DB_URI = (
-    f'postgresql+psycopg2://{DatabaseConfig.USER}:{DatabaseConfig.PASSWORD}@'
-    f'{DatabaseConfig.HOST}:{DatabaseConfig.PORT}/{DatabaseConfig.NAME}'
+    f'postgresql+psycopg2://{db_config.USER}:{db_config.PASSWORD}@'
+    f'{db_config.HOST}:{db_config.PORT}/{db_config.NAME}'
 )
