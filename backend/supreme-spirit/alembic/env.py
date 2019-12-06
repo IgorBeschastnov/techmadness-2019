@@ -7,7 +7,7 @@ from conf import DB_URI
 from database import Base
 
 config = context.config
-config.set_main_option('sqlalchemy.url', DB_URI)
+config.set_main_option("sqlalchemy.url", DB_URI)
 
 fileConfig(config.config_file_name)  # setting up loggers
 
@@ -30,7 +30,7 @@ def run_migrations_offline():
         url=DB_URI,
         target_metadata=target_metadata,
         literal_binds=True,
-        dialect_opts={'paramstyle': 'named'},
+        dialect_opts={"paramstyle": "named"},
     )
 
     with context.begin_transaction():

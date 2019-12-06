@@ -1,7 +1,8 @@
 import datetime
 from enum import IntEnum
 
-from sqlalchemy import Boolean, Column, Integer, String, orm, Enum, BigInteger, Float, DateTime
+from sqlalchemy import Boolean, Column, Integer, String, orm, Enum, BigInteger, Float, DateTime, \
+    ForeignKey
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
@@ -14,6 +15,12 @@ class AccountType(IntEnum):
     CREDIT = 1
     DEPOSIT = 2
     PAYMENT = 3
+
+
+class OfferType(IntEnum):
+    CREDIT = 1
+    DEPOSIT = 2
+    AUTOTRANSACTION = 3
 
 
 class User(Base):
@@ -52,3 +59,32 @@ class Transaction(Base):
     to_account = relationship(Account, backref='transactions')
 
     amount = Column(BigInteger)
+
+
+class OfferTemplate(Base):
+    __tablename__ = 'offer_templates'
+    id = Column('offer_template_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    type = Column(Enum(OfferType))
+    text = Column(String(250))
+    data = Column(JSONB)
+
+
+class OfferFilter(Base):
+    __tablename__ = 'offer_filters'
+    id = Column('offer_filter_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    filter = Column(JSONB)
+
+
+class BoundOfferTemplate(Base):
+    __tablename__ = 'bound_offer_templates'
+    id = Column('bound_offer_templates_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    offer_filter_id = Column(ForeignKey(OfferFilter.id))
+    offer_filter = relationship(OfferFilter, backref='bounds')
+    offer_template_id = Column(ForeignKey(OfferTemplate.id))
+    offer_template = relationship(OfferTemplate, backref='bounds')
