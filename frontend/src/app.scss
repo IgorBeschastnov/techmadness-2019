@@ -1,36 +1,23 @@
-
 .header {
-    height: 5rem;
-    background-color: grey;
+  height: 5rem;
+  background-color: grey;
 }
 
-.balance {
-    width: 30%;
-    height: 100vh;
-    background-color: red;
-}
-
-.operations {
-    height: 100vh;
-    flex-grow: 2;
-    background-color: black;
-}
-
-.filter-panel{
-
-    width: 20rem;
-    height: 100vh;
-    .panel-inputs{
-        height: 2rem;
-    }
-    .form-group{
-        width: 7rem;
-        padding-left: 0.5rem;
-    }
-    .form-control{
-        height: 2rem;
-    }
-    .auth-checkbox {
-        margin-top: 0.5rem;
-    }
+.filter-panel {
+  background-color: aqua;
+  width: 20%;
+  height: 100vh;
+  .panel-inputs {
+    height: 2rem;
+  }
+  .form-group {
+    width: 7rem;
+    padding-left: 0.5rem;
+  }
+  .form-control {
+    height: 2rem;
+  }
+  .auth-checkbox {
+    margin-top: 0.5rem;
+  }
 }

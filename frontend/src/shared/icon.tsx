@@ -6,6 +6,8 @@ import { faCheckSquare } from "@fortawesome/free-regular-svg-icons/faCheckSquare
 
 //solid
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 
 //brand
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -21,6 +23,8 @@ library.add(
   faCheckSquare,
   //solid
   faAngleRight,
+  faSignOutAlt,
+  faUser,
   //brand
   faGoogle,
   faVk,
@@ -28,20 +32,34 @@ library.add(
 );
 
 export type ImportedIcon =
-  | 'check-square'
-  | 'square'
-  | 'angle-right'
-  | 'google'
-  | 'vk'
-  | 'twitter';
+  | "check-square"
+  | "square"
+  | "angle-right"
+  | "google"
+  | "vk"
+  | "twitter"
+  | "sign-out-alt"
+  | "user";
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;
   spin?: boolean;
-  prefix?: 'fas' | 'far' | 'fab';
+  prefix?: "fas" | "far" | "fab";
   name: ImportedIcon;
 }
 
-export const Icon: React.FC<Props> = ({ prefix = 'fas', name, spin, className, ...other }) => {
-  return <FontAwesomeIcon icon={[prefix, name]} spin={spin} {...other}></FontAwesomeIcon>;
+export const Icon: React.FC<Props> = ({
+  prefix = "fas",
+  name,
+  spin,
+  className,
+  ...other
+}) => {
+  return (
+    <FontAwesomeIcon
+      icon={[prefix, name]}
+      spin={spin}
+      {...other}
+    ></FontAwesomeIcon>
+  );
 };

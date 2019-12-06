@@ -4,20 +4,15 @@ import axios from "axios";
 import "./app.scss";
 
 import { Line } from "./shared/line";
+import { Header } from './header/header';
 import { InputField } from "./shared/inputField";
 import { Checkbox } from "./shared/checkbox";
 
 export const App: React.FC = () => {
-  // useEffect(() => {
-  //   axios
-  //     .get(`${"https://swapi.co/api/people"}`)
-  //     .then(response => console.log(response.data));
-  // }, []);
-
   return (
     <Line vertical>
-      <div className="header">Header</div>
-      <Line justifyContent='start'>
+      <Header />
+      <Line justifyContent="start">
         <div className="filter-panel">
           <Line vertical>
             <div>Фильтры</div>
@@ -35,8 +30,8 @@ export const App: React.FC = () => {
             <Checkbox text="общественных организаций"></Checkbox>
             <Checkbox text="по предоставлению продуктов питания и напитков"></Checkbox>
             <div style={{ marginTop: "2rem" }}>Тип:</div>
-              <Checkbox text="ОАО"></Checkbox>
-              <Checkbox text="ООО"></Checkbox>
+            <Checkbox text="ОАО"></Checkbox>
+            <Checkbox text="ООО"></Checkbox>
             <div style={{ paddingTop: "2rem" }}>Возраст юр.лица:</div>
             <Line className="panel-inputs" alignItems="center">
               <div>От</div>
