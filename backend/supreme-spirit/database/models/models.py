@@ -40,6 +40,7 @@ class Account(Base):
     # System fields
     id = Column('account_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
     user_id = Column(Integer, ForeignKey(User.id), nullable=True)
     user = relationship(User, backref='accounts')
     type = Column(Enum(AccountType), default=AccountType.PAYMENT)
