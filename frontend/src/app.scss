@@ -1,0 +1,16 @@
+.header {
+    height: 5rem;
+    background-color: grey;
+}
+
+.balance {
+    width: 30%;
+    height: 100vh;
+    background-color: red;
+}
+
+.operations {
+    height: 100vh;
+    flex-grow: 2;
+    background-color: black;
+}
