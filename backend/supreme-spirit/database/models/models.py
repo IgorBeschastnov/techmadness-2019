@@ -54,16 +54,16 @@ class Transaction(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     from_user_id = Column(Integer, ForeignKey(User.id), nullable=True)
-    from_user = relationship(User, backref='transactions')
+    from_user = relationship(User, foreign_keys=[from_user_id], backref='from_transactions')
 
     to_user_id = Column(Integer, ForeignKey(User.id), nullable=True)
-    to_user = relationship(User, backref='transactions')
+    to_user = relationship(User, foreign_keys=[to_user_id], backref='to_transactions')
 
     from_account_id = Column(Integer, ForeignKey(Account.id), nullable=True)
-    from_account = relationship(Account, backref='transactions')
+    from_account = relationship(Account, foreign_keys=[from_account_id], backref='from_transactions')
 
     to_account_id = Column(Integer, ForeignKey(Account.id), nullable=True)
-    to_account = relationship(Account, backref='transactions')
+    to_account = relationship(Account, foreign_keys=[to_account_id], backref='to_transactions')
 
     amount = Column(BigInteger)
 
