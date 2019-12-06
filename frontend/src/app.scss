@@ -2,22 +2,22 @@
   height: 5rem;
   background-color: grey;
 }
-
-.filter-panel {
-  background-color: aqua;
-  width: 20%;
-  height: 100vh;
-  .panel-inputs {
-    height: 2rem;
-  }
-  .form-group {
-    width: 7rem;
-    padding-left: 0.5rem;
-  }
-  .form-control {
-    height: 2rem;
-  }
-  .auth-checkbox {
-    margin-top: 0.5rem;
-  }
+.filter-panel{
+    margin-left: 1rem;
+    width: 20%;
+    height: 100vh;
+    border-right: 1px solid  grey;
+    .panel-inputs{
+        height: 2rem;
+    }
+    .form-group{
+        width: 7rem;
+        padding-left: 0.5rem;
+    }
+    .form-control{
+        height: 2rem;
+    }
+    .auth-checkbox {
+        margin-top: 0.5rem;
+    }
 }

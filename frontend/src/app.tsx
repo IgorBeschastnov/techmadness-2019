@@ -15,7 +15,7 @@ export const App: React.FC = () => {
       <Line justifyContent="start">
         <div className="filter-panel">
           <Line vertical>
-            <div>Фильтры</div>
+            <div style={{ paddingTop: "1rem" }}>Фильтры</div>
             <div style={{ paddingTop: "2rem" }}>Количество сотрудников:</div>
             <Line className="panel-inputs" alignItems="center">
               <div>От</div>
