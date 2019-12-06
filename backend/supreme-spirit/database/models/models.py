@@ -1,7 +1,7 @@
 import datetime
 from enum import IntEnum
 
-from sqlalchemy import Boolean, Column, Integer, String, orm, Enum, BigInteger, Float, DateTime
+from sqlalchemy import ForeignKey, Boolean, Column, Integer, String, orm, Enum, BigInteger, Float, DateTime
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
@@ -33,7 +33,7 @@ class Account(Base):
     # System fields
     id = Column('account_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-
+    user_id = Column(Integer, ForeignKey(User.id), nullable=True)
     user = relationship(User, backref='accounts')
     type = Column(Enum(AccountType), default=AccountType.PAYMENT)
     currency = Column(String(20), default='rub')
@@ -46,9 +46,16 @@ class Transaction(Base):
     id = Column('transaction_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+    from_user_id = Column(Integer, ForeignKey(User.id), nullable=True)
     from_user = relationship(User, backref='transactions')
+
+    to_user_id = Column(Integer, ForeignKey(User.id), nullable=True)
     to_user = relationship(User, backref='transactions')
+
+    from_account_id = Column(Integer, ForeignKey(Account.id), nullable=True)
     from_account = relationship(Account, backref='transactions')
+
+    to_account_id = Column(Integer, ForeignKey(Account.id), nullable=True)
     to_account = relationship(Account, backref='transactions')
 
     amount = Column(BigInteger)
