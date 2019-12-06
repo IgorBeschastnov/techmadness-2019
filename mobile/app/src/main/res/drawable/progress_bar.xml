@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toDegrees="360">
+
+    <shape
+        android:innerRadiusRatio="@integer/progress_bar_inner_radius_ratio"
+        android:shape="ring"
+        android:thicknessRatio="@integer/progress_bar_thickness_ratio"
+        android:useLevel="false">
+
+        <size
+            android:width="@dimen/progress_bar_width"
+            android:height="@dimen/progress_bar_height"/>
+
+        <gradient
+            android:angle="0"
+            android:endColor="@color/intermediate_spinner_color"
+            android:startColor="@android:color/transparent"
+            android:type="sweep"
+            android:useLevel="false"/>
+
+    </shape>
+
+</rotate>

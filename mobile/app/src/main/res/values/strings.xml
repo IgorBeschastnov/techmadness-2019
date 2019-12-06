@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">KstovoHackaton</string>
+    <string name="app_name">Hack.Madness</string>
+
+    <string name="home_activity_title">Home</string>
+    <string name="second_activity_title">Second Activity</string>
+    <string name="main_activity_title">News Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Api Error messages-->
+    <string name="api_unexpected_error">Unexpected Error</string>
+
+    <string name="new_york_times_api_token">ac35e56c3d9d4f329cd9118be265f8fd</string>
+
+    <!--Test Strings-->
+    <string name="nav_header_username">John Doe</string>
+    <string name="nav_header_email">john_doe@gmail.com</string>
 </resources>
