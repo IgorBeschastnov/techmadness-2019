@@ -7,7 +7,7 @@ import { Icon } from "./icon";
 export interface ButtonProps extends React.HTMLAttributes<any> {
   label?: string;
   icon?: "vk" | "google" | "twitter";
-  buttonType: "light" | "primary";
+  buttonType: "light" | "primary"|"danger";
   className?: string;
 }
 

@@ -4,15 +4,16 @@ import axios from "axios";
 import "./app.scss";
 
 import { Line } from "./shared/line";
-import { Header } from './header/header';
+import { Header } from "./header/header";
 import { InputField } from "./shared/inputField";
 import { Checkbox } from "./shared/checkbox";
+import { Button } from "./shared/button";
 
 export const App: React.FC = () => {
   return (
     <Line vertical>
       <Header />
-      <Line justifyContent="start">
+      <Line className='main-screen' justifyContent="start">
         <div className="filter-panel">
           <Line vertical>
             <div style={{ paddingTop: "1rem" }}>Фильтры</div>
@@ -42,7 +43,19 @@ export const App: React.FC = () => {
             <div style={{ paddingTop: "2rem" }}>
               <Checkbox text="есть валютные счета"></Checkbox>
             </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "1rem"
+              }}
+            >
+              <Button buttonType="danger" label={"Подобрать компании"}></Button>
+            </div>
           </Line>
+        </div>
+        <div className='list-panel'>
+          <Line  justifyContent='center' className='number'>2</Line>
         </div>
       </Line>
     </Line>
