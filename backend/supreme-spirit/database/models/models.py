@@ -1,6 +1,7 @@
+import datetime
 from enum import IntEnum
 
-from sqlalchemy import Boolean, Column, Integer, String, orm, Enum, BigInteger, Float
+from sqlalchemy import Boolean, Column, Integer, String, orm, Enum, BigInteger, Float, DateTime
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
@@ -30,10 +31,24 @@ class User(Base):
 class Account(Base):
     __tablename__ = 'accounts'
     # System fields
-    id = Column('user_id', Integer, primary_key=True, index=True)
+    id = Column('account_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     user = relationship(User, backref='accounts')
     type = Column(Enum(AccountType), default=AccountType.PAYMENT)
     currency = Column(String(20), default='rub')
     balance = Column(BigInteger, default=0)
     interest = Column(Float, default=0)
+
+
+class Transaction(Base):
+    __tablename__ = 'transactions'
+    id = Column('transaction_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    from_user = relationship(User, backref='transactions')
+    to_user = relationship(User, backref='transactions')
+    from_account = relationship(Account, backref='transactions')
+    to_account = relationship(Account, backref='transactions')
+
+    amount = Column(BigInteger)
