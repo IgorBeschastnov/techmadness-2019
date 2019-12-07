@@ -1,0 +1,40 @@
+.header {
+  padding: 0 2em 0 2em;
+  height: 5rem;
+  background-color: #2e2e38;
+
+  .logo {
+    height: 70%;
+  }
+
+  .items {
+    height: 100%;
+
+    .header-item {
+      font-size: 0.8em;
+      color: white;
+      height: 100%;
+      padding: 0 0.5em 0em 0.5em;
+      text-transform: uppercase;
+      margin-left: 2em;
+      cursor: pointer;
+    }
+
+    .active {
+      border-bottom: 4px solid #d22c33;
+    }
+
+    .not-active {
+      border-bottom: 4px solid #2e2e38;
+    }
+  }
+
+  .icons {
+    color: #777c82;
+    width: 3em;
+  }
+
+  .label {
+    letter-spacing: 0.08rem;
+  }
+}

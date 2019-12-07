@@ -10,6 +10,7 @@ interface Props {
     wrap?: boolean;
     justifyContent?: 'start' | 'end' | 'center' | 'between' | 'around';
     alignItems?: 'start' | 'end' | 'center' | 'baseline' | 'stretch';
+    onClick?: () => void;
 }
 
 export const Line: React.FC<Props> = ({
@@ -20,6 +21,7 @@ export const Line: React.FC<Props> = ({
     alignItems,
     wrap,
     children,
+    onClick,
     ...other
   }) => {
     const classes = classNames(
@@ -33,7 +35,7 @@ export const Line: React.FC<Props> = ({
       className
     );
     return (
-      <Tag className={classes} {...other}>
+      <Tag className={classes} onClick={onClick} {...other}>
         {children}
       </Tag>
     );

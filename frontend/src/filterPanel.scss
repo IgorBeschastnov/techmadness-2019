@@ -1,0 +1,35 @@
+.filter-panel {
+    margin-left: 1rem;
+    width: 25%;
+    border-right: 2px solid #a3a4a7;
+    .title {
+      font-weight: bold;
+      margin: 2em 2em 0 0em;
+      .call-to-action {
+        color: #d22c33 !important;
+        cursor: pointer;
+        .link {
+          margin-right: 0.5em;
+        }
+      }
+    }
+    .block-filter {
+      margin-top: 2em;
+    }
+    .indent-left {
+      padding-left: 1rem;
+    }
+    .panel-inputs {
+      height: 2rem;
+    }
+    .form-group {
+      width: 7rem;
+      padding-left: 0.5rem;
+    }
+    .form-control {
+      height: 2rem;
+    }
+    .auth-checkbox {
+      margin-top: 0.5rem;
+    }
+  }
