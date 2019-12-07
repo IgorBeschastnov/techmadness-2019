@@ -27,7 +27,8 @@ class AccountBaseNoUser(BaseModel):
 
 
 class AccountORM(AccountBaseNoUser):
-    
+    id: int
+
     class Config:
         orm_mode = True
 
@@ -68,7 +69,8 @@ class TransactionBase(BaseModel):
 
 
 class TransactionCreate(TransactionBase):
-    pass
+    from_user: Optional[int]
+    to_user: Optional[int]
 
 
 class TransactionModel(TransactionBase):
@@ -104,6 +106,7 @@ class OfferTemplateModel(OfferTemplateBase):
 class OfferBase(BaseModel):
     user_id: int
     offer_template_id: int
+    accepted: bool
 
 
 class OfferCreate(OfferBase):

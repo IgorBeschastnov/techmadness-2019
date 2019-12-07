@@ -7,7 +7,7 @@ from fastapi import Depends
 from services.utils import get_db
 from sqlalchemy.orm import Session
 
-from database import TransactionBase, TransactionModel
+from database import TransactionBase, TransactionModel, TransactionCreate
 
 from .. import app
 
@@ -23,6 +23,6 @@ def get_transaction_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @app.post('/transactions')
-def create_transaction(transaction: TransactionBase, db: Session = Depends(get_db)):
+def create_transaction(transaction: TransactionCreate, db: Session = Depends(get_db)):
     db_transaction = create_transaction_(db=db, transaction=transaction)
     return db_transaction

@@ -2,7 +2,7 @@ from typing import List
 
 from crud import create_offer as create_offer_
 from crud import get_offer_by_id as get_offer_by_id_
-from crud import get_offers, get_offers_by_user_id
+from crud import get_offers, get_offers_by_user_id, update_offer
 from fastapi import Depends
 from services.utils import get_db
 from sqlalchemy.orm import Session
@@ -28,3 +28,7 @@ def get_offer_by_id(id: int, db: Session = Depends(get_db)):
 def create_offer(offer: OfferBase, db: Session = Depends(get_db)):
     db_offer = create_offer_(db=db, offer=offer)
     return db_offer
+
+@app.post('/offers/accept/{id}')
+def create_offer(id: int, db: Session = Depends(get_db)):
+    return update_offer(id, db)
