@@ -59,11 +59,20 @@
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_offer_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/accounts_rl"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp" />
+
     <ImageView
         android:id="@+id/bonus_title_iv"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:layout_below="@+id/accounts_rl"
+        android:layout_below="@+id/main_offer_recycler_view"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"

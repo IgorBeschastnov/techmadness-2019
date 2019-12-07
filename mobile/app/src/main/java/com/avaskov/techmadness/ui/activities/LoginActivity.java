@@ -3,18 +3,17 @@ package com.avaskov.techmadness.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import androidx.annotation.Nullable;
 
 import com.avaskov.techmadness.R;
 import com.avaskov.techmadness.domain.executor.ThreadExecutor;
 import com.avaskov.techmadness.domain.repository.UserProfileRepository;
 import com.avaskov.techmadness.presentation.controllers.LoginController;
 import com.avaskov.techmadness.threading.MainThreadImpl;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +38,7 @@ public class LoginActivity extends Activity {
         controller = new LoginController(ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(),
                 this,
-                new UserProfileRepository());
+                UserProfileRepository.getEntity());
 
         progressBar.setVisibility(View.GONE);
     }

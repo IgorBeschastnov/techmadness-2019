@@ -2,24 +2,70 @@ package com.avaskov.techmadness.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.avaskov.techmadness.R;
+import com.avaskov.techmadness.domain.executor.ThreadExecutor;
+import com.avaskov.techmadness.domain.models.Offer;
+import com.avaskov.techmadness.domain.repository.UserProfileRepository;
+import com.avaskov.techmadness.presentation.controllers.MainController;
+import com.avaskov.techmadness.threading.MainThreadImpl;
+import com.avaskov.techmadness.ui.adapters.MainOfferAdapter;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends Activity {
+
+    @BindView(R.id.main_offer_recycler_view)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.birthday_offer_rl)
+    RelativeLayout birthdayLayout;
+
+    @BindView(R.id.birthday_offer_tv)
+    TextView birthdayDescription;
+
+    private List<Offer> events;
+    private MainOfferAdapter offersAdapter;
+    private MainController controller;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        controller = new MainController(this,
+                ThreadExecutor.getInstance(),
+                MainThreadImpl.getInstance(),
+                UserProfileRepository.getEntity());
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        recyclerView.setLayoutManager(layoutManager);
+        offersAdapter = new MainOfferAdapter();
+        recyclerView.setAdapter(offersAdapter);
+
+        controller.obtainOffers();
+
+        birthdayLayout.setGravity(View.GONE);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void showDate(Offer dateOffer) {
+        birthdayLayout.setVisibility(View.VISIBLE);
+        birthdayDescription.setText(dateOffer.getText());
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    public void showCreditDepositOffers(List<Offer> offers) {
+        offersAdapter.setItems(offers);
     }
 }
