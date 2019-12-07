@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 
 import "./checkbox.scss";
 
@@ -7,21 +7,20 @@ import { Icon } from "./icon";
 
 export interface CheckboxProps {
   text?: string;
+  value: boolean;
+  onChange: (value: boolean) => void;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({ text }) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const onChange = useCallback(() => setIsChecked(!isChecked), [isChecked]);
+export const Checkbox: React.FC<CheckboxProps> = ({ text,value,onChange }) => {
 
   return (
     <Line alignItems="center" className="auth-checkbox">
       <Icon
-        name={isChecked ? "check-square" : "square"}
+        name={value ? "check-square" : "square"}
         prefix="far"
-        onClick={onChange}
+        onClick={()=>onChange(!value)}
       ></Icon>
-      <div className="text">{text}</div>
+      <div className="text"onClick={()=>onChange(!value)}>{text}</div>
     </Line>
   );
 };
