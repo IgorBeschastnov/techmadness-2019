@@ -6,6 +6,7 @@ from database import Transaction, TransactionBase
 def get_transactions(db):
     return db.query(Transaction).all()
 
+
 def get_transaction_by_id(id_, db):
     return db.query(Transaction).filter(Transaction.id == id_).first()
 

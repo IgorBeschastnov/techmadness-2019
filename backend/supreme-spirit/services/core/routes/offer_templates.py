@@ -16,9 +16,11 @@ from .. import app
 def offer_templates_list(type_: str = Query(None, alias='type'), db: Session = Depends(get_db)):
     return get_offer_templates(db, type_)
 
+
 @app.get('/offertemplates/{id}', response_model=OfferTemplateModel)
 def get_offer_template_by_id(id: int, db: Session = Depends(get_db)):
     return get_offer_template_by_id_(id, db)
+
 
 @app.post('/offertemplates')
 def create_offer_template(offer_template: OfferTemplateBase, db: Session = Depends(get_db)):

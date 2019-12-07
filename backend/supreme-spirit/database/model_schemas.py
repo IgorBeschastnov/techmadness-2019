@@ -3,12 +3,15 @@ from typing import Dict
 
 from pydantic import BaseModel
 
-from database.models.models import AccountType, OfferType
+from database.models.models import AccountType, OfferType, UserType, UserActivity
 
 
 class UserBase(BaseModel):
     login: str
     address: str
+    type: UserType
+    activity: UserActivity
+    num_of_employees: int
 
 
 class UserCreate(UserBase):
@@ -17,6 +20,8 @@ class UserCreate(UserBase):
 
 class UserModel(UserBase):
     id: int
+    created_at: datetime.datetime
+    age: int
 
     class Config:
         orm_mode = True

@@ -16,6 +16,7 @@ from .. import app
 def offers_list(db: Session = Depends(get_db)):
     return get_offers(db)
 
+
 @app.get('/offers/{id}', response_model=OfferModel)
 def get_offer_by_id(id: int, db: Session = Depends(get_db)):
     return get_offer_by_id_(id, db)
