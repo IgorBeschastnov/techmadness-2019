@@ -20,6 +20,37 @@ const test = [
     id: 2,
     title: "Intermedic",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  },
+  {
+    id: 3,
+    title: "Intermedic",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  },
+  {
+    id: 4,
+    title: "Intermedic",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  },  {
+    id: 5,
+    title: "Intermedic",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  },
+  {
+    id: 6,
+    title: "Intermedic",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  },  {
+    id: 7,
+    title: "Intermedic",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  },  {
+    id: 8,
+    title: "Intermedic",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+  },  {
+    id: 9,
+    title: "Intermedic",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
   }
 ];
 
@@ -42,7 +73,7 @@ export const ListPanel: React.FC<Props> = ({ onChange }) => {
       <Line justifyContent="center">
         <Button
           buttonType="danger"
-          label={"Выбрать оффер"}
+          label={"Выбрать предложения"}
           onClick={() => {
             onChange(2);
             setStep(2);

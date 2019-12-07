@@ -19,3 +19,31 @@
     padding-left: 1em;
   }
 }
+
+::-webkit-scrollbar-button {
+  width: 5px;
+  height: 0px
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ecedee
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-color: #d22c33;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #d22c33;
+}
+
+::-webkit-resizer {
+  width: 8px;
+  height: 0px
+}
+::-webkit-scrollbar {
+  width: 4px;
+}
+

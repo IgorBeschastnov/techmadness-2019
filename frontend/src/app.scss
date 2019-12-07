@@ -5,15 +5,33 @@
 
 .main-screen {
     background: #f3f4f6;
+    height: 90vh;
+    .custom-button{
+        margin-top: 2rem
+    }
     .number{
         font-size: 15rem;
         color:  #a3a4a7;
     }
+    .label-font{
+        font-weight: bold;
+        margin-top: 1rem
+    }
   .filter-panel {
     margin-left: 1rem;
     width: 25%;
-    height: 100vh;
     border-right: 2px solid #a3a4a7;
+    
+    .label-filter{
+        font-weight: bold;
+        margin-top: 2rem
+    }
+    .block-filter{
+        margin-top: 2em;
+    }
+    .indent-left{
+        padding-left: 1rem;
+    }
     .panel-inputs {
       height: 2rem;
     }
@@ -29,10 +47,14 @@
     }
   }
   .list-panel{
+      overflow: auto;
       width: 50%;
       border-right: 2px solid #a3a4a7;
-  }
+  }  
   .offer-panel{
       width: 25%;
+      .content{
+          padding: 1rem;
+      }
   }
 }
