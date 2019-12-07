@@ -5,20 +5,19 @@ import "./app.scss";
 
 import { Line } from "./shared/line";
 import { Header } from "./header/header";
-import { InputField } from "./shared/inputField";
 import { Checkbox } from "./shared/checkbox";
 import { Button } from "./shared/button";
 import { ListPanel } from "./listPanel";
-import { Icon } from "./shared/icon";
+import { FilterPanel } from "./filterPanel";
 
 const offers = [
   {
     id: 1,
     type: 0,
-    data: "Классический депозит с повышенной процентной ставкой и особыми условиями досрочного отзыва.",
-    text:
-      "Бизнес Рациональ",
-    interest: 5.15,
+    data:
+      "Классический депозит с повышенной процентной ставкой и особыми условиями досрочного отзыва.",
+    text: "Бизнес Рациональ",
+    interest: 5.15
   },
   {
     id: 2,
@@ -50,78 +49,60 @@ const offers = [
   }
 ];
 
+export interface Company {
+  id: number;
+  name: string;
+  balance: number;
+  currency: string;
+}
+
 export const App: React.FC = () => {
-  type OptionType = { label: string; value: string };
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
+
+  const [companyList, setCompanyList] = useState<Company[]>([]);
+
+  useEffect(() => {
+    axios
+      .get(`${"http://spacehub.su/offerfilters"}`)
+      .then(response => console.log(response.data));
+  }, []);
+
+  const getCompanyList = useCallback(() => {
+    axios
+      .get(`${"http://spacehub.su/accounts"}`)
+      .then(response => setCompanyList(response.data));
+  }, []);
 
   const renderListPanelWait = () => {
     return (
-      <Line justifyContent="center" className="number">
-        2
+      <Line
+        vertical
+        justifyContent="center"
+        className="number"
+        alignItems="center"
+      >
+        <span className="value">2</span>
+        <p className="desc">Определить список компаний</p>
       </Line>
     );
   };
 
   const renderListPanel = () => {
-    return <ListPanel onChange={value => setStep(value)}></ListPanel>;
+    return (
+      <ListPanel
+        content={companyList}
+        onChange={value => setStep(value)}
+      ></ListPanel>
+    );
   };
-  
-
-
-
-  const [numberEmployeesFrom, setNumberEmployeesFrom] = useState<string>("");
-  const [numberEmployeesTo, setNumberEmployeesTo] = useState<string>("");
-  const [companyAgeFrom, setCompanyAgeFrom] = useState<string>("");
-  const [companyAgeTo, setCompanyAgeTo] = useState<string>("");
-  const [typeActivity1, setTypeActivity1] = useState<boolean>(false);
-  const [typeActivity2, setTypeActivity2] = useState<boolean>(false);
-  const [typeActivity3, setTypeActivity3] = useState<boolean>(false);
-  const [typeActivity4, setTypeActivity4] = useState<boolean>(false);
-  const [typeActivity5, setTypeActivity5] = useState<boolean>(false);
-  const [typeCompany1, setTypeCompany1] = useState<boolean>(false);
-  const [typeCompany2, setTypeCompany2] = useState<boolean>(false);
-  const [withCurrencyAccount, setWithCurrencyAccount] = useState<boolean>(
-    false
-  );
-
-  const setFilters = useCallback(() => {
-    axios.post("/setFilters", {
-      id: "",
-      filter: {
-        numberEmployeesFrom: numberEmployeesFrom,
-        numberEmployeesTo: numberEmployeesFrom,
-        typeActivity: {
-          typeActivity1,
-          typeActivity2,
-          typeActivity3,
-          typeActivity4,
-          typeActivity5
-        },
-        typeCompany: { typeCompany1, typeCompany2 },
-        companyAgeFrom: companyAgeFrom,
-        companyAgeTo: companyAgeTo,
-        withCurrencyAccount: withCurrencyAccount
-      }
-    });
-  }, []);
-
-  const getUsers = useCallback(() => {
-    axios.get("./users", {});
-  }, []);
-
-  const getOffers = useCallback(() => {
-    axios.get("./offers", {});
-  }, []);
-
-  const addOffers = useCallback(() => {}, []);
 
   const renderOffers = () => {
     return offers.map(x => {
       return (
         <div>
           <Checkbox
-            value={typeActivity1}
-            onChange={v => setTypeActivity1(v)}
+            value={false}
+            onChange={() => {}}
             key={x.id}
             text={x.text}
           ></Checkbox>
@@ -134,122 +115,36 @@ export const App: React.FC = () => {
     <Line vertical>
       <Header />
       <Line className="main-screen" justifyContent="start">
-        <div className="filter-panel">
-          <Line vertical>
-            <Line
-              justifyContent="between"
-              alignItems="center"
-              className="title"
-            >
-              <div className="label-filter">Фильтры</div>
-              <a className="call-to-action" onClick={() => {}}>
-                <span className="link" onClick={() => setStep(1)}>
-                  Подобрать компании
-                </span>
-                <Icon name="angle-right"></Icon>
-              </a>
-            </Line>
-            <Line className="block-filter">Количество сотрудников:</Line>
-            <Line className="panel-inputs" alignItems="center">
-              <div>От</div>
-              <InputField
-                type="number"
-                value={numberEmployeesFrom}
-                onChange={v => setNumberEmployeesFrom(v)}
-              ></InputField>
-              <div className="indent-left">до</div>
-              <InputField
-                type="number"
-                value={numberEmployeesTo}
-                onChange={v => setNumberEmployeesTo(v)}
-              ></InputField>
-            </Line>
-            <div className="block-filter">Деятельность:</div>
-            <Checkbox
-              value={typeActivity1}
-              onChange={v => setTypeActivity1(v)}
-              text="по операциям с недвижимым имуществом"
-            ></Checkbox>
-            <Checkbox
-              value={typeActivity2}
-              onChange={v => setTypeActivity2(v)}
-              text="в области информационных технологий"
-            ></Checkbox>
-            <Checkbox
-              value={typeActivity3}
-              onChange={v => setTypeActivity3(v)}
-              text="по трудоустройству и подбору персонала"
-            ></Checkbox>
-            <Checkbox
-              value={typeActivity4}
-              onChange={v => setTypeActivity4(v)}
-              text="общественных организаций"
-            ></Checkbox>
-            <Checkbox
-              value={typeActivity5}
-              onChange={v => setTypeActivity5(v)}
-              text="по предоставлению продуктов питания и напитков"
-            ></Checkbox>
-            <div className="block-filter">Тип:</div>
-            <Checkbox
-              value={typeCompany1}
-              onChange={v => setTypeCompany1(v)}
-              text="ОАО"
-            ></Checkbox>
-            <Checkbox
-              value={typeCompany2}
-              onChange={v => setTypeCompany2(v)}
-              text="ООО"
-            ></Checkbox>
-            <div className="block-filter">Возраст юр.лица:</div>
-            <Line className="panel-inputs" alignItems="center">
-              <div>От</div>
-              <InputField
-                type="number"
-                value={companyAgeFrom}
-                onChange={v => setCompanyAgeFrom(v)}
-              ></InputField>
-              <div className="indent-left">до</div>
-              <InputField
-                type="number"
-                value={companyAgeTo}
-                onChange={v => setCompanyAgeTo(v)}
-              ></InputField>
-            </Line>
-            <div className="block-filter">
-              <Checkbox
-                value={withCurrencyAccount}
-                onChange={v => setWithCurrencyAccount(v)}
-                text="есть валютные счета"
-              ></Checkbox>
-            </div>
-            <Line
-              className="label-filter"
-              justifyContent="center"
-              alignItems="end"
-            ></Line>
-          </Line>
-        </div>
+        <FilterPanel
+          getCompanyList={getCompanyList}
+          onChange={() => setStep(1)}
+        ></FilterPanel>
         <div className="list-panel">
           {step > 0 ? renderListPanel() : renderListPanelWait()}
         </div>
         <div className="offer-panel">
           {step < 2 && (
-            <Line justifyContent="center" className="number">
-              3
+            <Line
+              vertical
+              justifyContent="center"
+              className="number"
+              alignItems="center"
+            >
+              <span className="value">3</span>
+              <p className="desc">Определить список предложений</p>
             </Line>
           )}
           {step === 2 && (
             <div className="content">
-              <div className="label-font">Выбрать предложения</div>
-              <Line justifyContent='center' vertical>
-              <div>{renderOffers()}</div>
+              <div className="label-font">Предложения</div>
+              <Line justifyContent="center" vertical>
+                <div>{renderOffers()}</div>
                 <Button
                   onClick={() => {}}
                   buttonType="danger"
                   label={"Отправить предложения"}
                 ></Button>
-            </Line>
+              </Line>
             </div>
           )}
         </div>

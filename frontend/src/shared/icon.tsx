@@ -3,11 +3,16 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 //regular
 import { faSquare } from "@fortawesome/free-regular-svg-icons/faSquare";
 import { faCheckSquare } from "@fortawesome/free-regular-svg-icons/faCheckSquare";
+import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle";
+import { faCircle } from "@fortawesome/free-regular-svg-icons/faCircle";
 
 //solid
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faEuroSign } from "@fortawesome/free-solid-svg-icons/faEuroSign";
+import { faDollarSign } from "@fortawesome/free-solid-svg-icons/faDollarSign";
+import { faRubleSign } from "@fortawesome/free-solid-svg-icons/faRubleSign";
 
 //brand
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -21,10 +26,15 @@ library.add(
   //regular
   faSquare,
   faCheckSquare,
+  faCheckCircle,
+  faCircle,
   //solid
   faAngleRight,
   faSignOutAlt,
   faUser,
+  faEuroSign,
+  faDollarSign,
+  faRubleSign,
   //brand
   faGoogle,
   faVk,
@@ -39,7 +49,12 @@ export type ImportedIcon =
   | "vk"
   | "twitter"
   | "sign-out-alt"
-  | "user";
+  | "user"
+  | "check-circle"
+  | "circle"
+  | 'euro-sign'
+  | 'dollar-sign'
+  | 'ruble-sign';
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;

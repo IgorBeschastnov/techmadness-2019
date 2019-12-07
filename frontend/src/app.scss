@@ -4,72 +4,38 @@
 }
 
 .main-screen {
-    background: #f3f4f6;
-    min-height: 100vh;
-    .custom-button {
-        margin-top: 2rem
+  background: #f3f4f6;
+  min-height: 100vh;
+  .custom-button {
+    margin-top: 2rem;
+  }
+  .number {
+    color: #a3a4a7;
+    .value {
+      font-size: 15rem;
     }
-    .number {
-        font-size: 15rem;
-        color:  #a3a4a7;
-    }
-    .label-font {
-        font-weight: bold;
-        margin-top: 1rem
-    }
-  .filter-panel {
-    margin-left: 1rem;
-    width: 25%;
-    border-right: 2px solid #a3a4a7;
-    .title {
-        font-weight: bold;
-        margin: 2em 2em 0 0em;
-        .call-to-action {
-          color: #d22c33 !important;
-          cursor: pointer;
-          .link {
-            margin-right: 0.5em;
-          }
-        }
-      }
-    .block-filter{
-        margin-top: 3em;
-    }
-    .indent-left{
-        padding-left: 1rem;
-    }
-    .panel-inputs {
-      height: 2rem;
-    }
-    .form-group {
-      width: 7rem;
-      padding-left: 0.5rem;
-    }
-    .form-control {
-      height: 2rem;
-    }
-    .auth-checkbox {
-      margin-top: 0.5rem;
+    .desc {
+      padding: 0;
+      font-size: 2em;
+      text-align: center;
     }
   }
-  .list-panel{
-      overflow: auto;
-      width: 50%;
-      border-right: 2px solid #a3a4a7;
-  }  
-  .offer-panel{
-      width: 25%;
-      .content{
-          padding: 1rem;
-      }
-      .css-2b097c-container{
-        width: 100%;
-        .css-yk16xz-control{
-          border-color:  #d22c33;
-        }
-        .css-1pahdxg-control:hover{
-          border-color:  #d22c33 !important;
-        }
-      }
+  .label-font {
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+
+  .list-panel {
+    overflow: auto;
+    width: 50%;
+    border-right: 2px solid #a3a4a7;
+  }
+
+  .offer-panel {
+    width: 25%;
+    .content {
+      padding: 1rem;
+    }
   }
 }
+
