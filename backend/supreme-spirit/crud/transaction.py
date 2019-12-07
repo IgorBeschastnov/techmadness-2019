@@ -15,9 +15,9 @@ def create_transaction(db: Session, transaction: TransactionBase):
 
     from_acc = db.query(Account).filter(Account.id == transaction.from_account).first()
     to_acc = db.query(Account).filter(Account.id == transaction.to_account).first()
-    
-    from_acc.balance-= transaction.amount
-    to_acc.balance+= transaction.amount
+
+    from_acc.balance -= transaction.amount
+    to_acc.balance += transaction.amount
     db_transaction = Transaction(
         from_user_id=from_acc.user_id,
         to_user_id=to_acc.user_id,
