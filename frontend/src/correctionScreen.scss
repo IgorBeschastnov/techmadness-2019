@@ -8,5 +8,15 @@
     height: 30em;
     width: 45em;
     margin: 2em 0 2em 0;
+
+    .title-card {
+      margin-top: 1em;
+    }
+
+    .input-card {
+      .input-label {
+        font-weight: bold;
+      }
+    }
   }
 }

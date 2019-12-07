@@ -1,20 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Line as LineGraph } from "react-chartjs-2";
 import { Line } from "./shared/line";
+import { Icon } from "./shared/icon";
 
 import "./correctionScreen.scss";
 
 const cards = [
-  { title: "Title 1" },
-  { title: "Title 2" },
-  { title: "Title 3" },
-  { title: "Title 4" }
+  { title: "Стратегия 1", field: "Вес" },
+  { title: "Стратегия 2", field: "Вес" },
+  { title: "Стратегия 3", field: "Вес" },
+  { title: "Стратегия 4", field: "Вес" }
 ];
 
 const state = {
   dataLine: {
-    
     labels: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль"],
     datasets: [
       {
@@ -37,12 +37,19 @@ const state = {
 };
 
 export const CorrectionScreen: React.FC = ({}) => {
+  const [model, setModel] = useState({});
+  useEffect(() => {}, []);
+
   return (
     <Line className="correctionScreen">
       {cards.map((x, i) => (
-        <div key={i} className="card strategy-card">
-          Title
-          <hr />
+        <Line
+          vertical
+          key={i}
+          className="card strategy-card"
+          alignItems="center"
+        >
+          <h4 className="title-card">{x.title}</h4>
           <LineGraph
             data={state.dataLine}
             options={{
@@ -65,7 +72,16 @@ export const CorrectionScreen: React.FC = ({}) => {
               }
             }}
           ></LineGraph>
-        </div>
+          <Line className="input-card" justifyContent="around" alignItems="baseline">
+            <label className="input-label">Вес</label>
+            <div className="input-group mb-3 ml-4">
+              <input type="text" className="form-control" />
+              <div className="input-group-append">
+                <button className="btn btn-outline-secondary">Сохранить</button>
+              </div>
+            </div>
+          </Line>
+        </Line>
       ))}
     </Line>
   );

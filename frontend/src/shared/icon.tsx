@@ -13,6 +13,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faEuroSign } from "@fortawesome/free-solid-svg-icons/faEuroSign";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons/faDollarSign";
 import { faRubleSign } from "@fortawesome/free-solid-svg-icons/faRubleSign";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons/faSyncAlt";
 
 //brand
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -35,6 +36,7 @@ library.add(
   faEuroSign,
   faDollarSign,
   faRubleSign,
+  faSyncAlt,
   //brand
   faGoogle,
   faVk,
@@ -52,9 +54,10 @@ export type ImportedIcon =
   | "user"
   | "check-circle"
   | "circle"
-  | 'euro-sign'
-  | 'dollar-sign'
-  | 'ruble-sign';
+  | "euro-sign"
+  | "dollar-sign"
+  | "ruble-sign"
+  | "sync-alt";
 
 export interface Props extends React.HTMLAttributes<any> {
   className?: string;
