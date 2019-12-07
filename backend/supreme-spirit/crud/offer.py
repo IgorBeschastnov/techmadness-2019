@@ -19,3 +19,8 @@ def create_offer(db: Session, offer: OfferBase):
     db.commit()
     db.refresh(db_offer)
     return db_offer
+
+def update_offer(id, db):
+    result = db.query(Offer).filter(Offer.id == id).update({"accepted": True})
+    db.commit()
+    return result

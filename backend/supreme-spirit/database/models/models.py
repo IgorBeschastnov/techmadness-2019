@@ -126,6 +126,7 @@ class Offer(Base):
     id = Column('offer_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+    accepted = Column(Boolean, default=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     user = relationship(User, backref='users')
 
