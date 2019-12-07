@@ -31,9 +31,6 @@ class User(Base):
     login = Column(String(50), nullable=False, unique=True)
     address = Column(String(50), nullable=True)
 
-    def __repr__(self):
-        return f'<User {self.id} : {self.name}'
-
 
 class Account(Base):
     __tablename__ = 'accounts'
