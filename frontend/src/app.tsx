@@ -51,9 +51,6 @@ const offers = [
 
 export const App: React.FC = () => {
   const [step, setStep] = useState(0);
-
-
-
   const renderListPanelWait = () => {
     return (
       <Line justifyContent="center" className="number">
@@ -199,8 +196,8 @@ export const App: React.FC = () => {
             </Line>
             <div className="block-filter">
               <Checkbox
-                value={typeActivity1}
-                onChange={v => setTypeActivity1(v)}
+                value={withCurrencyAccount}
+                onChange={v => setWithCurrencyAccount(v)}
                 text="есть валютные счета"
               ></Checkbox>
             </div>
