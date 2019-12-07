@@ -38,10 +38,8 @@ def users_list_with_parametres(
     if age_to:
         query = query.filter(User.age <= age_to)
     if num_of_emp_from is not None:
-        print("HERE\n\n\n\n")
         query = query.filter(User.num_of_employees >= num_of_emp_from)
     if num_of_emp_to is not None:
-        print("HERE2\n\n\n\n")
         query = query.filter(User.num_of_employees <= num_of_emp_to)
     if type:
         query = query.filter(User.type == type)
