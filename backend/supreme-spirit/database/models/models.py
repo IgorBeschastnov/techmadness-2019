@@ -40,7 +40,7 @@ class Account(Base):
     # System fields
     id = Column('account_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-    
+
     name = Column(String(20), default='')
     user_id = Column(Integer, ForeignKey(User.id), nullable=True)
     user = relationship(User, backref='accounts')
@@ -78,6 +78,17 @@ class OfferTemplate(Base):
     type = Column(Enum(OfferType))
     text = Column(String(250))
     data = Column(JSONB)
+
+class Offer(Base):
+    __tablename__ = 'offers'
+    id = Column('offer_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    user = relationship(User, backref='users')
+
+    offer_template_id = Column(Integer, ForeignKey(OfferTemplate.id), nullable=False)
+    offer_template = relationship(OfferTemplate, backref='offer_templates')
 
 
 class OfferFilter(Base):
