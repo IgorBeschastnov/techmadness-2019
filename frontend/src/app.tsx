@@ -18,8 +18,8 @@ export interface Company {
 }
 
 export interface FilterModel {
-  ["employeesFrom"]: number;
-  ["employeesTo"]: number;
+  ["employeesFrom"]: number | null;
+  ["employeesTo"]: number | null;
   ["activityType"]: string;
   ["companyType"]: string;
   ["companyAgeFrom"]: number;
@@ -51,10 +51,18 @@ export const App: React.FC = () => {
   }, []);
 
   const postFilters = useCallback((data: FilterModel) => {
+    let from = data.employeesFrom;
+    let to = data.employeesTo;
+    if (from == 0 && to == 0) {
+      from = null;
+      to = null;
+    }
     axios
       .post(`${"http://spacehub.su/offerfilters"}`, {
         filter: {
           ...data,
+          employeesFrom: from,
+          employeesTo: to,
           companyType: parseInt(data.companyType),
           activityType: parseInt(data.activityType)
         }
@@ -135,6 +143,39 @@ export const App: React.FC = () => {
     );
   };
 
+  const renderOfferPanelWait = () => {
+    return (
+      <Line
+        vertical
+        justifyContent="center"
+        className="number"
+        alignItems="center"
+      >
+        <span className="value">3</span>
+        <p className="desc">Определить список предложений</p>
+      </Line>
+    );
+  };
+
+  const renderOfferPanel = () => {
+    return (
+      <div className="content">
+        <div className="label-font">Предложения</div>
+        <Line vertical>
+          <div>{renderOfferTemplates()}</div>
+          <Line alignItems="end" justifyContent="center">
+            <Button
+              className="custom-button"
+              onClick={() => boundOfferTemplates()}
+              buttonType="danger"
+              label={"Отправить предложения"}
+            ></Button>
+          </Line>
+        </Line>
+      </div>
+    );
+  };
+
   return (
     <Line vertical>
       <Header onChange={(value: number) => setCurrentPage(value)}></Header>
@@ -149,35 +190,11 @@ export const App: React.FC = () => {
             {step > 0 ? renderListPanel() : renderListPanelWait()}
           </div>
           <div className="offer-panel">
-            {step < 2 && (
-              <Line
-                vertical
-                justifyContent="center"
-                className="number"
-                alignItems="center"
-              >
-                <span className="value">3</span>
-                <p className="desc">Определить список предложений</p>
-              </Line>
-            )}
-            {step === 2 && (
-              <div className="content">
-                <div className="label-font">Предложения</div>
-                <Line vertical>
-                  <div>{renderOfferTemplates()}</div>
-                  <Line alignItems="end" justifyContent="center">
-                    <Button
-                      className="custom-button"
-                      onClick={() => boundOfferTemplates()}
-                      buttonType="danger"
-                      label={"Отправить предложения"}
-                    ></Button>
-                  </Line>
-                </Line>
-              </div>
-            )}
-            </div>
-            </Line>)}
+            {step < 2 && renderOfferPanelWait()}
+            {step === 2 && renderOfferPanel()}
+          </div>
+        </Line>
+      )}
       {currentPage == 1 && <CorrectionScreen></CorrectionScreen>}
     </Line>
   );
