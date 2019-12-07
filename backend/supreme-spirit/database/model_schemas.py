@@ -118,19 +118,20 @@ class OfferFilterModel(OfferFilterBase):
 
 
 class BoundOfferTemplateBase(BaseModel):
-    filter: Dict
     offer_filter_id: int
     offer_template_id: int
 
 
 class BoundOfferTemplateCreate(BoundOfferTemplateBase):
-    offer_filter: OfferFilterModel
-    offer_template: OfferTemplateModel
+    pass
 
 
 class BoundOfferTemplateModel(BoundOfferTemplateBase):
     id: int
     created_at: datetime.datetime
+
+    offer_filter: OfferFilterModel
+    offer_template: OfferTemplateModel
 
     class Config:
         orm_mode = True

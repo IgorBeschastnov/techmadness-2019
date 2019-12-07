@@ -104,7 +104,8 @@ class BoundOfferTemplate(Base):
     id = Column('bound_offer_templates_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    offer_filter_id = Column(ForeignKey(OfferFilter.id))
+    offer_filter_id = Column(Integer, ForeignKey(OfferFilter.id), nullable=True)
     offer_filter = relationship(OfferFilter, backref='bounds')
-    offer_template_id = Column(ForeignKey(OfferTemplate.id))
+
+    offer_template_id = Column(Integer, ForeignKey(OfferTemplate.id), nullable=True)
     offer_template = relationship(OfferTemplate, backref='bounds')
