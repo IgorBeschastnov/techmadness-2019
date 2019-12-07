@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.avaskov.techmadness.R;
 import com.avaskov.techmadness.domain.executor.ThreadExecutor;
 import com.avaskov.techmadness.domain.repository.UserProfileRepository;
 import com.avaskov.techmadness.presentation.controllers.LoginController;
 import com.avaskov.techmadness.threading.MainThreadImpl;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +24,9 @@ public class LoginActivity extends Activity {
 
     @BindView(R.id.user_login_ed)
     EditText loginEditText;
+
+    @BindView(R.id.spin_kit)
+    ProgressBar progressBar;
 
     private LoginController controller;
 
@@ -33,6 +40,8 @@ public class LoginActivity extends Activity {
                 MainThreadImpl.getInstance(),
                 this,
                 new UserProfileRepository());
+
+        progressBar.setVisibility(View.GONE);
     }
 
     public void showMain() {
@@ -42,6 +51,7 @@ public class LoginActivity extends Activity {
 
     @OnClick(R.id.login_btn)
     public void onLoginButtonPressed() {
+        progressBar.setVisibility(View.VISIBLE);
         controller.loginPressed(loginEditText.getText().toString());
     }
 }

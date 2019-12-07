@@ -25,6 +25,11 @@ public class LoginController {
     public void loginPressed(String login) {
         executor.execute(() -> {
             User user = userProfileRepository.obtainUserData(login);
+            try{
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+
+            }
             mainThread.post(() -> view.showMain());
         });
     }
