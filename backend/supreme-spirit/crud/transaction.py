@@ -1,3 +1,4 @@
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from database import Account, Transaction, TransactionBase, TransactionCreate
@@ -5,6 +6,22 @@ from database import Account, Transaction, TransactionBase, TransactionCreate
 
 def get_transactions(db):
     return db.query(Transaction).all()
+
+
+def get_out_transactions_by_user_id(id, db):
+    return db.query(Transaction).filter(Transaction.from_user_id == id).all()
+
+
+def get_in_transactions_by_user_id(id, db):
+    return db.query(Transaction).filter(Transaction.to_user_id == id).all()
+
+
+def get_transactions_by_user_id(id, db):
+    return (
+        db.query(Transaction)
+        .filter(or_(Transaction.to_user_id == id, Transaction.from_user_id == id))
+        .all()
+    )
 
 
 def get_transaction_by_id(id_, db):
