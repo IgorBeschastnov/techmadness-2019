@@ -14,10 +14,6 @@ from database.models.models import UserType, UserActivity
 from .. import app
 
 
-#@app.get('/users', response_model=List[UserModel])
-#def users_list(db: Session = Depends(get_db)):
-#    return get_users(db)
-
 @app.get('/users', response_model=List[UserModel])
 def users_list_with_parametres(
     type: UserType = None,

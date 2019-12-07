@@ -31,7 +31,6 @@ def generate_users():
             type=random.choice(list(UserType)),
             activity=random.choice(list(UserActivity)),
             num_of_employees=random.randint(10, 40),
-            
         )
         db.add(db_user)
     db.commit()
