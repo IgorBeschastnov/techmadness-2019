@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import "./app.scss";
@@ -8,12 +8,27 @@ import { Header } from "./header/header";
 import { InputField } from "./shared/inputField";
 import { Checkbox } from "./shared/checkbox";
 import { Button } from "./shared/button";
+import { ListPanel } from "./listPanel";
 
 export const App: React.FC = () => {
+  const [step, setStep] = useState(0);
+
+  const renderListPanelWait = () => {
+    return (
+      <Line justifyContent="center" className="number">
+        2
+      </Line>
+    );
+  };
+
+  const renderListPanel = () => {
+    return <ListPanel onChange={value => setStep(value)}></ListPanel>;
+  };
+
   return (
     <Line vertical>
       <Header />
-      <Line className='main-screen' justifyContent="start">
+      <Line className="main-screen" justifyContent="start">
         <div className="filter-panel">
           <Line vertical>
             <div style={{ paddingTop: "1rem" }}>Фильтры</div>
@@ -50,12 +65,17 @@ export const App: React.FC = () => {
                 marginTop: "1rem"
               }}
             >
-              <Button buttonType="danger" label={"Подобрать компании"}></Button>
+              <Button
+                buttonType="danger"
+                label={"Подобрать компании"}
+                onClick={() => setStep(1)}
+                disabled={step != 0}
+              ></Button>
             </div>
           </Line>
         </div>
-        <div className='list-panel'>
-          <Line  justifyContent='center' className='number'>2</Line>
+        <div className="list-panel">
+          {step != 0 ? renderListPanel() : renderListPanelWait()}
         </div>
       </Line>
     </Line>
