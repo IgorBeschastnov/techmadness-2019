@@ -1,7 +1,9 @@
-from typing import Dict
-from pydantic import BaseModel
-from database.models.models import AccountType, OfferType
 import datetime
+from typing import Dict
+
+from pydantic import BaseModel
+
+from database.models.models import AccountType, OfferType
 
 
 class UserBase(BaseModel):
@@ -27,6 +29,7 @@ class AccountBase(BaseModel):
     user: int
     type: AccountType
     interest: float
+
 
 class AccountCreate(AccountBase):
     pass
@@ -95,9 +98,10 @@ class OfferCreate(OfferBase):
 class OfferModel(OfferBase):
     id: int
     created_at: datetime.datetime
-    
+
     user: UserModel
     offer_template: OfferTemplateModel
+
     class Config:
         orm_mode = True
 

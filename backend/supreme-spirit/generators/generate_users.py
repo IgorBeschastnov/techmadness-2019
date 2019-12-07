@@ -18,8 +18,11 @@ address_pull = (
 def generate_users():
     db = Session()
     for _ in range(20):
-        db_user = User(login=random.choice(names) + ' ' + random.choice(second_names),
-                       address=' '.join(random.choices(description_pull, k=5)) + ', '.join(random.choices(string.digits)))
+        db_user = User(
+            login=random.choice(names) + ' ' + random.choice(second_names),
+            address=' '.join(random.choices(description_pull, k=5))
+            + ', '.join(random.choices(string.digits)),
+        )
         db.add(db_user)
         db.commit()
         db.refresh(db_user)

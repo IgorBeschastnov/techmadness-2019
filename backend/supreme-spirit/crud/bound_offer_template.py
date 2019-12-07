@@ -1,5 +1,6 @@
-from database import BoundOfferTemplate, BoundOfferTemplateBase
 from sqlalchemy.orm import Session
+
+from database import BoundOfferTemplate, BoundOfferTemplateBase
 
 
 def get_bound_offer_templates(db, template, filter_):
@@ -14,7 +15,7 @@ def get_bound_offer_templates(db, template, filter_):
 def create_bound_offer_template(db: Session, bound_offer_template: BoundOfferTemplateBase):
     df_bound_offer_template = BoundOfferTemplate(
         offer_filter_id=bound_offer_template.offer_filter_id,
-        offer_template_id=bound_offer_template.offer_filter_id
+        offer_template_id=bound_offer_template.offer_filter_id,
     )
     db.add(df_bound_offer_template)
     db.commit()

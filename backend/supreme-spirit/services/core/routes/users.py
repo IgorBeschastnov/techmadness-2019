@@ -1,18 +1,20 @@
 from typing import List
 
+from crud import create_user as create_user_
+from crud import get_user, get_users
 from fastapi import Depends
+from services.utils import get_db
 from sqlalchemy.orm import Session
 
-from crud import get_users, get_user
-from crud import create_user as create_user_
 from database import UserBase, UserModel
-from services.utils import get_db
+
 from .. import app
 
 
 @app.get('/users', response_model=List[UserModel])
 def users_list(db: Session = Depends(get_db)):
     return get_users(db)
+
 
 @app.get('/users/{id_}', response_model=UserModel)
 def users_list(id_: int, db: Session = Depends(get_db)):

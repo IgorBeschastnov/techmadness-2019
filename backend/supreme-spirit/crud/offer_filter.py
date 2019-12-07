@@ -1,8 +1,11 @@
-from database import OfferFilter, OfferFilterBase
 from sqlalchemy.orm import Session
+
+from database import OfferFilter, OfferFilterBase
+
 
 def get_offer_filters(db):
     return db.query(OfferFilter).all()
+
 
 def create_offer_filter(db: Session, offer_filter: OfferFilterBase):
     df_offer_filter = OfferFilter(filter=offer_filter.filter)

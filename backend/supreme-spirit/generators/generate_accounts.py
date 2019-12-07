@@ -1,8 +1,9 @@
 import random
 import string
 
-from database import Session, Account
 from crud.user import get_users
+
+from database import Account, Session
 
 names_pull = (
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt '

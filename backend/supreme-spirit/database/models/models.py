@@ -1,14 +1,25 @@
 import datetime
 from enum import IntEnum
 
-from sqlalchemy import Boolean, Column, Integer, String, orm, Enum, BigInteger, Float, DateTime, \
-    ForeignKey
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    Column,
+    DateTime,
+    Enum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    orm,
+)
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 
 from database import Base
 from database.models.fields import ModelField
-#from database.models.schemas import UserAccounts
+
+# from database.models.schemas import UserAccounts
 
 
 class AccountType(IntEnum):
@@ -59,7 +70,9 @@ class Transaction(Base):
     to_user = relationship(User, foreign_keys=[to_user_id], backref='to_transactions')
 
     from_account_id = Column(Integer, ForeignKey(Account.id), nullable=True)
-    from_account = relationship(Account, foreign_keys=[from_account_id], backref='from_transactions')
+    from_account = relationship(
+        Account, foreign_keys=[from_account_id], backref='from_transactions'
+    )
 
     to_account_id = Column(Integer, ForeignKey(Account.id), nullable=True)
     to_account = relationship(Account, foreign_keys=[to_account_id], backref='to_transactions')
@@ -75,6 +88,7 @@ class OfferTemplate(Base):
     type = Column(Enum(OfferType))
     text = Column(String(250))
     data = Column(JSONB)
+
 
 class Offer(Base):
     __tablename__ = 'offers'

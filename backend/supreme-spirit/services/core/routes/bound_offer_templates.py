@@ -1,12 +1,13 @@
 from typing import List
 
+from crud import create_bound_offer_template as create_bound_offer_template_
+from crud import get_bound_offer_templates
 from fastapi import Depends, Query
+from services.utils import get_db
 from sqlalchemy.orm import Session
 
-from crud import get_bound_offer_templates
-from crud import create_bound_offer_template as create_bound_offer_template_
-from database import BoundOfferTemplateModel, BoundOfferTemplateBase
-from services.utils import get_db
+from database import BoundOfferTemplateBase, BoundOfferTemplateModel
+
 from .. import app
 
 
@@ -21,12 +22,9 @@ def bound_offer_templates_list(
 
 @app.post('/boundoffertemplates')
 def create_bound_offer_template(
-    bound_offer_template: BoundOfferTemplateBase,
-    db: Session = Depends(get_db)
+    bound_offer_template: BoundOfferTemplateBase, db: Session = Depends(get_db)
 ):
     df_bound_offer_template = create_bound_offer_template_(
-        db=db,
-        bound_offer_template=bound_offer_template
+        db=db, bound_offer_template=bound_offer_template
     )
     return df_bound_offer_template
-
