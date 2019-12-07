@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -46,6 +47,12 @@ public class LoginActivity extends Activity {
     public void showMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void showError() {
+        progressBar.setVisibility(View.GONE);
+
+        Toast.makeText(this, "Неверный логин", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.login_btn)

@@ -50,6 +50,7 @@ public class MainAccountAdapter extends RecyclerView.Adapter<MainAccountAdapter.
     }
 
     public void setItems(Collection<Account> accounts) {
+        clearItems();
         offerList.addAll(accounts);
         notifyDataSetChanged();
     }
@@ -92,7 +93,7 @@ public class MainAccountAdapter extends RecyclerView.Adapter<MainAccountAdapter.
                     break;
                 case DEPOSIT:
                     title.setText("Сберегательный счет");
-                    interesing.setText(String.format(Locale.getDefault(), "%4s %%", account.getInterest()));
+                    interesing.setText(String.format(Locale.getDefault(), "%.2f %%", account.getInterest()));
                     break;
                 case PAYMENT:
                     title.setText("Счет");

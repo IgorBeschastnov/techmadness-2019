@@ -104,11 +104,11 @@ public class RequestService {
                 }
                 in.close();
                 System.out.println(response.toString());
+                return !response.toString().contains("\"ok\":false");
             } else {
                 System.out.println("POST NOT WORKED");
                 return false;
             }
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;

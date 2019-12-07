@@ -48,6 +48,7 @@ public class MainOfferAdapter extends RecyclerView.Adapter<MainOfferAdapter.Book
     }
 
     public void setItems(Collection<Offer> tweets) {
+        clearItems();
         offerList.addAll(tweets);
         notifyDataSetChanged();
     }

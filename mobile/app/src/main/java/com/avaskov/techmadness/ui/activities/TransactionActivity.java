@@ -82,9 +82,9 @@ public class TransactionActivity extends Activity {
     @OnClick(R.id.transaction_btn)
     public void transactionPressed() {
         try {
-            if (!fromNumberTextView.getText().toString().isEmpty() ||
-                    !toNumberTextView.getText().toString().isEmpty() ||
-            Integer.parseInt(sumOfTransaction.getText().toString()) > Integer.parseInt(fromBalanceTextView.getText().toString())) {
+            if (!fromNumberTextView.getText().toString().isEmpty() &&
+                    !toNumberTextView.getText().toString().isEmpty() &&
+                    Integer.parseInt(sumOfTransaction.getText().toString()) < Integer.parseInt(fromBalanceTextView.getText().toString())) {
                 controller.sendOfferPressed(fromNumberTextView.getText().toString(),
                         toNumberTextView.getText().toString(),
                         sumOfTransaction.getText().toString());

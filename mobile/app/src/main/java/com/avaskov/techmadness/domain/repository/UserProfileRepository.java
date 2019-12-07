@@ -32,13 +32,13 @@ public class UserProfileRepository {
 //        user.getAccounts().add(new Account(1333222344,"account_3", 15116.38f, 0.12, AccountType.PAYMENT));
 //        user.getAccounts().add(new Account(1444222344,"account_4", 11166.88f, 0.16, AccountType.CREDIT));
         this.offers = new ArrayList<>();
-        offers.add(new Offer(1, 1, OfferType.CREDIT, "credit_1", new HashMap<>(), 1, ""));
-        offers.add(new Offer(2, 2, OfferType.CREDIT, "credit_2", new HashMap<>(), 1, ""));
-        offers.add(new Offer(3, 3, OfferType.DEPOSIT, "deposit_1", new HashMap<>(), 1, ""));
-        offers.add(new Offer(4, 4, OfferType.CREDIT, "credit_3", new HashMap<>(), 1, ""));
-        offers.add(new Offer(5, 5, OfferType.CREDIT, "credit_4", new HashMap<>(), 1, ""));
-        offers.add(new Offer(6, 6, OfferType.DEPOSIT, "deposit_2", new HashMap<>(), 1, ""));
-        offers.add(new Offer(7, 7, OfferType.IMPORTANT_DATE, "birthday_2", new HashMap<>(), 1, ""));
+        offers.add(new Offer(1, 1, OfferType.CREDIT, "credit_1", 1, ""));
+        offers.add(new Offer(2, 2, OfferType.CREDIT, "credit_2", 1, ""));
+        offers.add(new Offer(3, 3, OfferType.DEPOSIT, "deposit_1", 1, ""));
+        offers.add(new Offer(4, 4, OfferType.CREDIT, "credit_3", 1, ""));
+        offers.add(new Offer(5, 5, OfferType.CREDIT, "credit_4", 1, ""));
+        offers.add(new Offer(6, 6, OfferType.DEPOSIT, "deposit_2", 1, ""));
+        offers.add(new Offer(7, 7, OfferType.IMPORTANT_DATE, "birthday_2", 1, ""));
     }
 
     public User obtainUserData(String login) {
@@ -61,7 +61,6 @@ public class UserProfileRepository {
     }
 
     public void sendOfferAccepted(Offer offer) {
-        Gson gson = new Gson();
-        RequestService.postRequest(gson.toJson(offer, Offer.class), "offers");
+        RequestService.postRequest("", "offers/accept/" + offer.getId());
     }
 }

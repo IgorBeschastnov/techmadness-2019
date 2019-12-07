@@ -1,7 +1,6 @@
 package com.avaskov.techmadness.presentation.controllers;
 
 import com.avaskov.techmadness.domain.executor.Executor;
-import com.avaskov.techmadness.domain.models.Offer;
 import com.avaskov.techmadness.domain.models.Transaction;
 import com.avaskov.techmadness.domain.repository.UserProfileRepository;
 import com.avaskov.techmadness.threading.MainThread;

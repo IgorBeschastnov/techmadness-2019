@@ -54,6 +54,9 @@ public class MainController {
     }
 
     public void offerAccepted(Offer offer) {
-
+        executor.execute(() -> {
+            userProfileRepository.sendOfferAccepted(offer);
+            obtainOffers();
+        });
     }
 }

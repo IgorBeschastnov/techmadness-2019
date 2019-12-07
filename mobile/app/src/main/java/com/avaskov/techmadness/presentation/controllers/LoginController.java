@@ -25,12 +25,11 @@ public class LoginController {
     public void loginPressed(String login) {
         executor.execute(() -> {
             User user = userProfileRepository.obtainUserData(login);
-            try{
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-
+            if (user != null) {
+                mainThread.post(() -> view.showMain());
+            } else {
+                mainThread.post(() -> view.showError());
             }
-            mainThread.post(() -> view.showMain());
         });
     }
 }

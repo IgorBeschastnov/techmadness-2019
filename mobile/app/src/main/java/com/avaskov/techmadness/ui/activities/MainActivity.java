@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,9 @@ public class MainActivity extends Activity {
     @BindView(R.id.birthday_offer_tv)
     TextView birthdayDescription;
 
+    @BindView(R.id.spin_main)
+    ProgressBar progressBar;
+
     private Offer dateOffer;
     private MainOfferAdapter offersAdapter;
     private MainAccountAdapter mainAccountAdapter;
@@ -67,10 +71,18 @@ public class MainActivity extends Activity {
         mainAccountAdapter = new MainAccountAdapter(this::showTransaction);
         accountsRecyclerView.setAdapter(mainAccountAdapter);
 
-        controller.obtainOffers();
-
         birthdayLayout.setGravity(View.GONE);
         birthdayLayout.setOnClickListener((view) -> showImportantDate(dateOffer));
+
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        progressBar.setVisibility(View.VISIBLE);
+        controller.obtainOffers();
     }
 
     public void showDate(Offer dateOffer) {
@@ -85,6 +97,7 @@ public class MainActivity extends Activity {
 
     public void showAccounts(List<Account> accounts) {
         mainAccountAdapter.setItems(accounts);
+        progressBar.setVisibility(View.GONE);
     }
 
     public void showOffer(Offer offer) {
@@ -102,7 +115,8 @@ public class MainActivity extends Activity {
     }
 
     public void showImportantDate(Offer offer) {
-
+        Intent intent = new Intent(this, DialogActivity.class);
+        startActivity(intent);
     }
 
     public void showTransaction(Account account) {

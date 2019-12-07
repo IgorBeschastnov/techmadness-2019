@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,7 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.avaskov.techmadness.R;
+import com.avaskov.techmadness.domain.executor.ThreadExecutor;
 import com.avaskov.techmadness.domain.models.Offer;
+import com.avaskov.techmadness.domain.repository.UserProfileRepository;
+import com.avaskov.techmadness.presentation.controllers.ResultTransactionController;
+import com.avaskov.techmadness.threading.MainThreadImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +43,12 @@ public class ResultTransactionActivity extends Activity {
     @BindView(R.id.autopay_offer_rl)
     RelativeLayout autopayOfferLayout;
 
+    @BindView(R.id.spin_result)
+    ProgressBar progressBar;
+
+    private ResultTransactionController controller;
+    private Offer offer;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +71,32 @@ public class ResultTransactionActivity extends Activity {
         sumTextView.setText(intent.getStringExtra("sum"));
 
         autopayOfferLayout.setVisibility(View.GONE);
-        //controller.obtainOffer(intent.getIntExtra("from", 0));
+        controller = new ResultTransactionController(this,
+                ThreadExecutor.getInstance(),
+                MainThreadImpl.getInstance(),
+                UserProfileRepository.getEntity());
+
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void offerWasAccepted() {
+        progressBar.setVisibility(View.GONE);
     }
 
     public void showOffer(Offer offer) {
+        autopayOfferLayout.setVisibility(View.VISIBLE);
+        this.offer = offer;
+    }
+
+    private void showOfferDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage("Хотите подключить: " + offer.getText() + "?");
+        builder.setMessage("Хотите подключить автоплатеж?");
 
-     //   builder.setPositiveButton("Согласен", (dialog, id) -> controller.offerAccepted(offer));
+        builder.setPositiveButton("Хочу!", (dialog, id) -> {
+            progressBar.setVisibility(View.VISIBLE);
+            controller.offerAccepted(offer);
+        });
 
         builder.setNegativeButton("Скрыть", (dialog, id) -> {
         });
@@ -77,13 +105,23 @@ public class ResultTransactionActivity extends Activity {
         dialog.show();
     }
 
+    @OnClick(R.id.autopay_offer_rl)
+    public void offerPressed() {
+        showOfferDialog();
+    }
+
     @OnClick(R.id.result_transaction_close_btn)
     public void closeButtonPressed() {
-        finish();
+        close();
     }
 
     @OnClick(R.id.done_btn)
     public void doneButtonPressed() {
-        finish();
+        close();
+    }
+
+    private void close() {
+        progressBar.setVisibility(View.VISIBLE);
+        controller.closePressed();
     }
 }
