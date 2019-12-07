@@ -5,6 +5,7 @@ module Operations where
 import qualified Data.Text as Text
 import qualified Control.Concurrent as Control
 import qualified Data.ByteString.Lazy.Internal as Data
+import           Data.Maybe
 import           Data.Aeson
 import           Database.HDBC
 import           GHC.Generics
@@ -27,12 +28,6 @@ instance FromJSON OfferFilter
 decodePerson :: Data.ByteString -> Maybe OfferFilter
 decodePerson = decode
 
-
-showSql val = Text.pack $ fromSql val
-showBoundOfferTemplate template_id filter_id =  Text.append first $ Text.append (Text.pack " ") second
-    where first = showSql template_id
-          second = showSql filter_id
-
 getBoundOfferTemplates = executeQuery "select offer_template_id, offer_filter_id from bound_offer_templates" []
 getOfferTemplate template_id = executeQuery "select type, text, data from offer_templates where offer_template_id = ?" [SqlInteger template_id]
 getOfferFilter filter_id = executeQuery "select filter from offer_filters where offer_filter_id = ?" [SqlInteger filter_id]
@@ -47,16 +42,42 @@ insertQuery user_ids template_id = "insert into offers (offer_template_id, user_
           concat str1 str2 = str1 ++ ", " ++ str2
           rowsString = foldr concat (rowString $ head user_ids) [rowString user_id | user_id <- tail user_ids]
 
-createFilterQuery filter = show compType ++ " " ++ show emplTo
-    where compType = companyType filter
-          emplTo = employeesTo filter
-          actType = activityType filter
-          compAgeTo = companyAgeTo filter
-          emplFrom = employeesFrom filter
-          compAgeFrom = companyAgeFrom filter
-          currency = currencyAccount filter
+createCriteria :: String -> String -> Maybe Integer -> Maybe String
+createCriteria fieldName operator value = case value of
+    Nothing -> Nothing
+    Just val -> Just (fieldName ++ " " ++ operator ++ " " ++ show val)
 
-getUsers filter = executeQuery (createFilterQuery filter) []
+concatCriteria :: String -> Maybe String -> String
+concatCriteria criteria1 criteria2 = case criteria2 of
+    Nothing -> criteria1
+    Just val -> if criteria1 == ""
+        then val
+        else criteria1 ++ " and " ++ val
+
+createFilterQuery :: OfferFilter -> String
+createFilterQuery filter = 
+    let criterias = foldl concatCriteria "" [
+         -- Just "1",
+         -- Just "2"
+          createCriteria a b c | (a, b, c) <-
+          [
+            ("num_of_employees", "<", employeesTo filter)
+          , ("num_of_employees", ">", employeesFrom filter)
+          ]
+         ]
+    in
+        if criterias == ""
+            then baseQuery ++ "true"
+            else baseQuery ++ criterias
+        where baseQuery = "select user_id from users where "
+          
+          --actType = activityType filter
+          --compAgeTo = companyAgeTo filter
+          --compAgeFrom = companyAgeFrom filter
+          --currency = currencyAccount filter
+
+getUsers filter = executeQuery query []
+    where query = createFilterQuery filter
 
 processBoundOfferTemplate (template_id:filter_id:_) = do
     filtersArr <- getOfferFilter $ fromSql filter_id 
@@ -78,6 +99,6 @@ ioLoop = do
     -- Process recieved data
     mapM_ processBoundOfferTemplate boundOfferTemplates
     -- sleep
-    Control.threadDelay $ 5 * 1000000
+    Control.threadDelay $ 5 * 1000000 -- 5 seconds
     -- run loop
     ioLoop
