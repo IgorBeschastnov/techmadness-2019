@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { Line as LineGraph } from "react-chartjs-2";
 import { Line } from "./shared/line";
-import { Icon } from "./shared/icon";
 
 import "./correctionScreen.scss";
 
@@ -36,9 +35,10 @@ const state = {
   }
 };
 
-export const CorrectionScreen: React.FC = ({}) => {
-  const [model, setModel] = useState({});
+export const CorrectionScreen: React.FC = () => {
+  const [model, setModel] = useState();
   useEffect(() => {}, []);
+  useCallback(() => {}, []);
 
   return (
     <Line className="correctionScreen">
@@ -72,7 +72,11 @@ export const CorrectionScreen: React.FC = ({}) => {
               }
             }}
           ></LineGraph>
-          <Line className="input-card" justifyContent="around" alignItems="baseline">
+          <Line
+            className="input-card"
+            justifyContent="around"
+            alignItems="baseline"
+          >
             <label className="input-label">Вес</label>
             <div className="input-group mb-3 ml-4">
               <input type="text" className="form-control" />

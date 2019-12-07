@@ -5,7 +5,6 @@ import { Icon } from "./shared/icon";
 
 import "./listPanel.scss";
 
-
 export interface Company {
   id: number;
   login: string;
@@ -27,14 +26,13 @@ export const ListPanel: React.FC<Props> = ({ content, onChange }) => {
           <Icon name="angle-right"></Icon>
         </a>
       </Line>
-      {content && content.map(x => (
-        <Line key={x.id} className="table-row">
-          <span className="row-title">{x.login}</span>
-          <span className="text">
-            {x.address}
-          </span>
-        </Line>
-      ))}
+      {content &&
+        content.map(x => (
+          <Line key={x.id} className="table-row">
+            <span className="row-title">{x.login}</span>
+            <span className="text">{x.address}</span>
+          </Line>
+        ))}
     </Line>
   );
 };

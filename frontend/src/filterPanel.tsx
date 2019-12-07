@@ -69,7 +69,7 @@ export const FilterPanel: React.FC<Props> = ({
         key={data}
         value={filter.companyType}
         id={data}
-        onChange={value => setFilter({ ...filter, ["companyType"]: value })}
+        onChange={value => setFilter({ ...filter, companyType: value })}
         text={text}
       ></RadioButton>
     );
@@ -81,7 +81,7 @@ export const FilterPanel: React.FC<Props> = ({
         key={data}
         value={filter.activityType}
         id={data}
-        onChange={value => setFilter({ ...filter, ["activityType"]: value })}
+        onChange={value => setFilter({ ...filter, activityType: value })}
         text={text}
       ></RadioButton>
     );
@@ -92,29 +92,25 @@ export const FilterPanel: React.FC<Props> = ({
       <Line vertical>
         <Line justifyContent="between" alignItems="center" className="title">
           <div className="label-filter">Фильтры</div>
-          <a className="call-to-action">
-            <span
-              className="link"
-              onClick={() => {
-                const at = activityList.find(
-                  x => x.data == filter["activityType"]
-                );
-                const ct = companyTypeList.find(
-                  x => x.data == filter["companyType"]
-                );
+          <a
+            className="call-to-action"
+            onClick={() => {
+              const at = activityList.find(x => x.data === filter.activityType);
+              const ct = companyTypeList.find(
+                x => x.data === filter.companyType
+              );
 
-                const newFilter = {
-                  ...filter,
-                  activityType: at ? at.value.toString() : "0",
-                  companyType: ct ? ct.value.toString() : "0"
-                };
-                postFilters(newFilter);
-                getCompanyList(newFilter);
-                onChange(1);
-              }}
-            >
-              Подобрать компании
-            </span>
+              const newFilter = {
+                ...filter,
+                activityType: at ? at.value.toString() : "0",
+                companyType: ct ? ct.value.toString() : "0"
+              };
+              postFilters(newFilter);
+              getCompanyList(newFilter);
+              onChange(1);
+            }}
+          >
+            <span className="link">Подобрать компании</span>
             <Icon name="angle-right"></Icon>
           </a>
         </Line>
@@ -125,7 +121,7 @@ export const FilterPanel: React.FC<Props> = ({
             type="number"
             value={filter.employeesFrom.toString()}
             onChange={value =>
-              setFilter({ ...filter, ["employeesFrom"]: parseInt(value) })
+              setFilter({ ...filter, employeesFrom: parseInt(value) })
             }
           ></InputField>
           <div className="indent-left">до</div>
@@ -133,7 +129,7 @@ export const FilterPanel: React.FC<Props> = ({
             type="number"
             value={filter.employeesTo.toString()}
             onChange={value =>
-              setFilter({ ...filter, ["employeesTo"]: parseInt(value) })
+              setFilter({ ...filter, employeesTo: parseInt(value) })
             }
           ></InputField>
         </Line>
@@ -148,7 +144,7 @@ export const FilterPanel: React.FC<Props> = ({
             type="number"
             value={filter.companyAgeFrom.toString()}
             onChange={value =>
-              setFilter({ ...filter, ["companyAgeFrom"]: parseInt(value) })
+              setFilter({ ...filter, companyAgeFrom: parseInt(value) })
             }
           ></InputField>
           <div className="indent-left">до</div>
@@ -156,16 +152,14 @@ export const FilterPanel: React.FC<Props> = ({
             type="number"
             value={filter.companyAgeTo.toString()}
             onChange={value =>
-              setFilter({ ...filter, ["companyAgeTo"]: parseInt(value) })
+              setFilter({ ...filter, companyAgeTo: parseInt(value) })
             }
           ></InputField>
         </Line>
         <div className="block-filter">
           <Checkbox
             value={filter.currencyAccount}
-            onChange={value =>
-              setFilter({ ...filter, ["currencyAccount"]: value })
-            }
+            onChange={value => setFilter({ ...filter, currencyAccount: value })}
             text="есть валютные счета"
           ></Checkbox>
         </div>
