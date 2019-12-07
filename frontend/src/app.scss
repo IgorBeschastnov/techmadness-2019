@@ -21,11 +21,17 @@
     margin-left: 1rem;
     width: 25%;
     border-right: 2px solid #a3a4a7;
-    
-    .label-filter{
+    .title {
         font-weight: bold;
-        margin-top: 2rem
-    }
+        margin: 2em 2em 0 0em;
+        .call-to-action {
+          color: #d22c33 !important;
+          cursor: pointer;
+          .link {
+            margin-right: 0.5em;
+          }
+        }
+      }
     .block-filter{
         margin-top: 2em;
     }

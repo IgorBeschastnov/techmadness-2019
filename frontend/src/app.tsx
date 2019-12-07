@@ -9,6 +9,7 @@ import { InputField } from "./shared/inputField";
 import { Checkbox } from "./shared/checkbox";
 import { Button } from "./shared/button";
 import { ListPanel } from "./listPanel";
+import { Icon } from "./shared/icon";
 
 const offers = [
   {
@@ -48,7 +49,6 @@ const offers = [
   }
 ];
 
-
 export const App: React.FC = () => {
   const [step, setStep] = useState(0);
   const renderListPanelWait = () => {
@@ -74,37 +74,41 @@ export const App: React.FC = () => {
   const [typeActivity5, setTypeActivity5] = useState<boolean>(false);
   const [typeCompany1, setTypeCompany1] = useState<boolean>(false);
   const [typeCompany2, setTypeCompany2] = useState<boolean>(false);
-  const [withCurrencyAccount, setWithCurrencyAccount] = useState<boolean>(false);
+  const [withCurrencyAccount, setWithCurrencyAccount] = useState<boolean>(
+    false
+  );
 
-
-  const setFilters = useCallback(()=>{
-    axios.post('/setFilters',{
-        id: '',
-        filter:{
-          numberEmployeesFrom: numberEmployeesFrom,
-          numberEmployeesTo: numberEmployeesFrom,
-          typeActivity: {typeActivity1,typeActivity2,typeActivity3,typeActivity4,typeActivity5},
-          typeCompany: {typeCompany1,typeCompany2},
-          companyAgeFrom:companyAgeFrom,
-          companyAgeTo:companyAgeTo,
-          withCurrencyAccount:withCurrencyAccount
+  const setFilters = useCallback(() => {
+    axios.post("/setFilters", {
+      id: "",
+      filter: {
+        numberEmployeesFrom: numberEmployeesFrom,
+        numberEmployeesTo: numberEmployeesFrom,
+        typeActivity: {
+          typeActivity1,
+          typeActivity2,
+          typeActivity3,
+          typeActivity4,
+          typeActivity5
+        },
+        typeCompany: { typeCompany1, typeCompany2 },
+        companyAgeFrom: companyAgeFrom,
+        companyAgeTo: companyAgeTo,
+        withCurrencyAccount: withCurrencyAccount
       }
-    })
-  },[]);
+    });
+  }, []);
 
-  const getUsers = useCallback(()=>{
-    axios.get('./users',{})
-  },[])
+  const getUsers = useCallback(() => {
+    axios.get("./users", {});
+  }, []);
 
-  const getOffers = useCallback(()=>{
-    axios.get('./offers',{})
-  },[])
+  const getOffers = useCallback(() => {
+    axios.get("./offers", {});
+  }, []);
 
-  const addOffers = useCallback(()=>{
+  const addOffers = useCallback(() => {}, []);
 
-  },[]);
-
- 
   const renderOffers = () => {
     return offers.map(x => {
       return (
@@ -126,7 +130,13 @@ export const App: React.FC = () => {
       <Line className="main-screen" justifyContent="start">
         <div className="filter-panel">
           <Line vertical>
-            <div className="label-filter">Фильтры</div>
+          <Line justifyContent="between" alignItems="center" className="title">
+              <div className="label-filter">Фильтры</div>
+              <a className="call-to-action" onClick={() => {}}>
+                <span className="link"  onClick={() => setStep(1)}>Подобрать компании</span>
+                <Icon name="angle-right"></Icon>
+              </a>
+            </Line>
             <div className="block-filter">Количество сотрудников:</div>
             <Line className="panel-inputs" alignItems="center">
               <div>От</div>
@@ -206,12 +216,6 @@ export const App: React.FC = () => {
               justifyContent="center"
               alignItems="end"
             >
-              <Button
-                buttonType="danger"
-                label={"Подобрать компании"}
-                onClick={() => setStep(1)}
-                disabled={step != 0}
-              ></Button>
             </Line>
           </Line>
         </div>
@@ -225,8 +229,8 @@ export const App: React.FC = () => {
             </Line>
           )}
           {step === 2 && (
-            <div className='content'>
-              <div className='label-font'>Выбрать предложения</div>
+            <div className="content">
+              <div className="label-font">Выбрать предложения</div>
               <div>{renderOffers()}</div>
               <Line
                 className="custom-button"
