@@ -1,5 +1,5 @@
 import datetime
-from typing import Dict
+from typing import Dict, List
 
 from pydantic import BaseModel
 
@@ -18,14 +18,6 @@ class UserCreate(UserBase):
     pass
 
 
-class UserModel(UserBase):
-    id: int
-    created_at: datetime.datetime
-    age: int
-
-    class Config:
-        orm_mode = True
-
 
 class AccountBase(BaseModel):
     name: str
@@ -34,6 +26,16 @@ class AccountBase(BaseModel):
     user: int
     type: AccountType
     interest: float
+
+    
+class UserModel(UserBase):
+    id: int
+    created_at: datetime.datetime
+    age: int
+    accounts: List[AccountBase]
+
+    class Config:
+        orm_mode = True
 
 
 class AccountCreate(AccountBase):

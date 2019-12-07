@@ -32,6 +32,13 @@ class OfferType(IntEnum):
     CREDIT = 1
     DEPOSIT = 2
     AUTOTRANSACTION = 3
+    IMPORTANT_DAY = 4
+    CAR = 5
+    MORTGAGE = 6
+    INSURANCE = 7
+    INVESTMENTS = 8
+
+    
 
 
 class UserType(IntEnum):
