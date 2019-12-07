@@ -10,40 +10,40 @@ import { Button } from "./shared/button";
 import { ListPanel } from "./listPanel";
 import { FilterPanel } from "./filterPanel";
 
-const offers:OfferTemplate[] = [
+const offers: OfferTemplate[] = [
   {
     id: 1,
     type: 0,
-    data:{},
-    text:'Бизнес Рациональ',
+    data: {},
+    text: "Бизнес Рациональ",
     created_at: new Date()
   },
   {
     id: 2,
     type: 0,
-    data:{},
-    text:'Бизнес Рациональ',
+    data: {},
+    text: "Бизнес Рациональ",
     created_at: new Date()
   },
   {
     id: 3,
     type: 0,
-    data:{},
-    text:'Бизнес Рациональ',
+    data: {},
+    text: "Бизнес Рациональ",
     created_at: new Date()
   },
   {
     id: 4,
     type: 0,
-    data:{},
-    text:'Бизнес Рациональ',
+    data: {},
+    text: "Бизнес Рациональ",
     created_at: new Date()
   },
   {
     id: 5,
     type: 0,
-    data:{},
-    text:'Бизнес Рациональ',
+    data: {},
+    text: "Бизнес Рациональ",
     created_at: new Date()
   }
 ];
@@ -64,12 +64,12 @@ export interface FilterModel {
   ["currencyAccount"]: boolean;
 }
 
-export interface OfferTemplate{
-    id: number,
-    type: number,
-    text: string,
-    data: {},
-    created_at: Date
+export interface OfferTemplate {
+  id: number;
+  type: number;
+  text: string;
+  data: {};
+  created_at: Date;
 }
 
 export const App: React.FC = () => {
@@ -78,7 +78,7 @@ export const App: React.FC = () => {
   const [id, setId] = useState(undefined);
   const [companyList, setCompanyList] = useState<Company[]>([]);
   const [offerTemplates, setOfferTemplates] = useState<OfferTemplate[]>([]);
-  const offerApproveIds:number[]=[];
+  const [offerApproveIds, setOfferApproveIds] = useState<number[]>([]);
 
   const getCompanyList = useCallback((data: FilterModel) => {
     axios
@@ -105,35 +105,34 @@ export const App: React.FC = () => {
       .then(response => setOfferTemplates(response.data));
   }, []);
 
-const onchange = useCallback((ind:number)=>{
-  const index = offerApproveIds.findIndex(y=>y==ind)
-  console.log('on change  ', index)
-  index!=-1 
-  ? offerApproveIds.splice(index,1)
-  : offerApproveIds.push(ind)
-  console.log(offerApproveIds)
-},[])
-  useEffect(()=>{
-    console.log(offerApproveIds)
-  },[offerApproveIds])
+  const onchange = useCallback(
+    (ind: number) => {
+      const index = offerApproveIds.findIndex(y => y == ind);
+      let newModel: number[];
+      newModel = [...offerApproveIds];
+      index != -1 ? newModel.splice(index, 1) : newModel.push(ind);
+      setOfferApproveIds(newModel);
+    },
+    [offerApproveIds]
+  );
 
-
-  const renderOfferTemplates = () =>{
+  const renderOfferTemplates = () => {
     return offers.map(x => {
       return (
-        <div key={x.id} onClick={()=>onchange(x.id)}>
+        <div key={x.id} onClick={() => onchange(x.id)}>
           <Checkbox
-            value={offerApproveIds.includes(x.id)? true: false}
-            onChange={() =>{}}
+            value={offerApproveIds.includes(x.id) ? true : false}
+            onChange={() => {}}
             key={x.id}
             text={x.text}
           ></Checkbox>
-          </div>
+        </div>
       );
     });
-  }
-  useEffect(()=>{renderOfferTemplates()},[renderOfferTemplates])
-
+  };
+  useEffect(() => {
+    renderOfferTemplates();
+  }, [renderOfferTemplates]);
 
   const renderListPanelWait = () => {
     return (
@@ -182,9 +181,8 @@ const onchange = useCallback((ind:number)=>{
               <p className="desc">Определить список предложений</p>
             </Line>
           )}
-          {step === 2  && 
-          // getOfferTemplates() &&
-           (
+          {step === 2 && (
+            // getOfferTemplates() &&
             <div className="content">
               <div className="label-font">Предложения</div>
               <Line justifyContent="center" vertical>
