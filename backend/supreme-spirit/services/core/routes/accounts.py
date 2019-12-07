@@ -12,9 +12,9 @@ from database import AccountBase, AccountModel
 from .. import app
 
 
-@app.get('/accounts/{id_}', response_model=AccountModel)
-def get_account_by_id(id_: int, db: Session = Depends(get_db)):
-    return get_account_by_id_(id_, db)
+@app.get('/accounts/{id}', response_model=AccountModel)
+def get_account_by_id(id: int, db: Session = Depends(get_db)):
+    return get_account_by_id_(id, db)
 
 
 @app.get('/accounts', response_model=List[AccountModel])

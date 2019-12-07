@@ -1,6 +1,7 @@
 from typing import List
 
 from crud import create_offer as create_offer_
+from crud import get_offer_by_id as get_offer_by_id_
 from crud import get_offers
 from fastapi import Depends
 from services.utils import get_db
@@ -14,6 +15,10 @@ from .. import app
 @app.get('/offers', response_model=List[OfferModel])
 def offers_list(db: Session = Depends(get_db)):
     return get_offers(db)
+
+@app.get('/offers/{id}', response_model=OfferModel)
+def get_offer_by_id(id: int, db: Session = Depends(get_db)):
+    return get_offer_by_id_(id, db)
 
 
 @app.post('/offers')
