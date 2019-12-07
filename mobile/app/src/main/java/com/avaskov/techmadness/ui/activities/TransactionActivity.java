@@ -1,16 +1,19 @@
 package com.avaskov.techmadness.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.avaskov.techmadness.R;
+import com.avaskov.techmadness.domain.executor.ThreadExecutor;
+import com.avaskov.techmadness.domain.repository.UserProfileRepository;
+import com.avaskov.techmadness.presentation.controllers.TransactionController;
+import com.avaskov.techmadness.threading.MainThreadImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +36,9 @@ public class TransactionActivity extends Activity {
     @BindView(R.id.sum_of_transaction_et)
     EditText sumOfTransaction;
 
+    private TransactionController controller;
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,15 +60,44 @@ public class TransactionActivity extends Activity {
                 break;
         }
 
-        fromBalanceTextView.setText(String.valueOf(getIntent().getFloatExtra("balance", 0)));
+        fromBalanceTextView.setText(String.valueOf(getIntent().getIntExtra("balance", 0)));
         fromNumberTextView.setText(String.valueOf(intent.getIntExtra("number", 0)));
+
+        controller = new TransactionController(this,
+                ThreadExecutor.getInstance(),
+                MainThreadImpl.getInstance(),
+                UserProfileRepository.getEntity());
+
+        toNumberTextView.setText("12");
+    }
+
+    public void showError() {
+        showResult(false);
+    }
+
+    public void showSuccess() {
+        showResult(true);
     }
 
     @OnClick(R.id.transaction_btn)
     public void transactionPressed() {
+        try {
+            if (!fromNumberTextView.getText().toString().isEmpty() ||
+                    !toNumberTextView.getText().toString().isEmpty() ||
+            Integer.parseInt(sumOfTransaction.getText().toString()) > Integer.parseInt(fromBalanceTextView.getText().toString())) {
+                controller.sendOfferPressed(fromNumberTextView.getText().toString(),
+                        toNumberTextView.getText().toString(),
+                        sumOfTransaction.getText().toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showResult(boolean isSuccess) {
         Intent intent = new Intent(this, ResultTransactionActivity.class);
 
-        intent.putExtra("success", true);
+        intent.putExtra("success", isSuccess);
         intent.putExtra("from", fromNumberTextView.getText().toString());
         intent.putExtra("to", toNumberTextView.getText().toString());
         intent.putExtra("sum", sumOfTransaction.getText().toString());

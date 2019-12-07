@@ -14,6 +14,7 @@ import com.avaskov.techmadness.domain.models.Offer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,11 +88,11 @@ public class MainAccountAdapter extends RecyclerView.Adapter<MainAccountAdapter.
             switch (account.getType()) {
                 case CREDIT:
                     title.setText("Кредитный счет");
-                    interesing.setText(String.format("%s %%", account.getInterest()));
+                    interesing.setText(String.format(Locale.getDefault(), "%.2f %%", account.getInterest()));
                     break;
                 case DEPOSIT:
                     title.setText("Сберегательный счет");
-                    interesing.setText(String.format("%s %%", account.getInterest()));
+                    interesing.setText(String.format(Locale.getDefault(), "%4s %%", account.getInterest()));
                     break;
                 case PAYMENT:
                     title.setText("Счет");

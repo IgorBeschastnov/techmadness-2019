@@ -3,11 +3,11 @@ package com.avaskov.techmadness.domain.models;
 public class Account {
     private int id;
     private String name;
-    private float balance;
+    private int balance;
     private double interest;
     private AccountType type;
 
-    public Account(int id, String name, float balance, double interest, AccountType type) {
+    public Account(int id, String name, int balance, double interest, AccountType type) {
         this.id = id;
         this.name = name;
         this.balance = balance;
@@ -19,7 +19,7 @@ public class Account {
         return name;
     }
 
-    public float getBalance() {
+    public int getBalance() {
         return balance;
     }
 

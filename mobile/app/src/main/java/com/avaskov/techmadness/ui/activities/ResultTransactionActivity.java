@@ -48,10 +48,10 @@ public class ResultTransactionActivity extends Activity {
         Intent intent = getIntent();
 
         if (intent.getBooleanExtra("success", false)) {
-            indicatorImageView.setImageResource(R.drawable.ic_ok_transaction);
+            indicatorImageView.setBackgroundResource(R.drawable.ic_ok_transaction);
             indicatorTextView.setText("Успешно");
         } else {
-            indicatorImageView.setImageResource(R.drawable.ic_close);
+            indicatorImageView.setBackgroundResource(R.drawable.ic_close);
             indicatorTextView.setText("Отмена");
         }
 

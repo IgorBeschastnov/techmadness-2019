@@ -29,7 +29,7 @@ public class MainController {
             List<Offer> offers = userProfileRepository.getOffers();
             Offer importantDate = null;
             for (Offer offer : offers) {
-                if (offer.getType().equals(OfferType.IMPORTANTDATE)) {
+                if (offer.getType().equals(OfferType.IMPORTANT_DATE)) {
                     importantDate = offer;
                     break;
                 }
