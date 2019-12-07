@@ -106,6 +106,23 @@ public class MainActivity extends Activity {
     }
 
     public void showTransaction(Account account) {
-        //Intent intent = new Intent()
+        Intent intent = new Intent(this, TransactionActivity.class);
+
+        switch (account.getType()) {
+            case CREDIT:
+                intent.putExtra("type", 0);
+                break;
+            case DEPOSIT:
+                intent.putExtra("type", 1);
+                break;
+            case PAYMENT:
+                intent.putExtra("type", 2);
+                break;
+        }
+
+        intent.putExtra("balance", account.getBalance());
+        intent.putExtra("number", account.getId());
+
+        startActivity(intent);
     }
 }

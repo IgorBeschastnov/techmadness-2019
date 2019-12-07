@@ -6,7 +6,7 @@
     android:background="@color/white">
 
     <ImageButton
-        android:id="@+id/transaction_close_btn"
+        android:id="@+id/result_transaction_close_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -18,7 +18,7 @@
         android:id="@+id/transaction_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignTop="@id/transaction_close_btn"
+        android:layout_alignTop="@id/result_transaction_close_btn"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="ПЕРЕВОДЫ"
@@ -31,7 +31,7 @@
         android:id="@+id/transaction_title_between_tv"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@id/transaction_close_btn"
+        android:layout_below="@id/result_transaction_close_btn"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
@@ -41,7 +41,7 @@
         android:textSize="18sp"
         tools:ignore="HardcodedText" />
 
-    <view
+    <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -188,13 +188,14 @@
     </RelativeLayout>
 
     <ImageButton
+        android:id="@+id/done_btn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/result_transaction_done_button_img"
+        android:layout_below="@id/autopay_offer_rl"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_below="@id/autopay_offer_rl"
+        android:background="@drawable/result_transaction_done_button_img"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

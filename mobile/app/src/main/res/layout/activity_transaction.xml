@@ -41,7 +41,7 @@
         android:textSize="18sp"
         tools:ignore="HardcodedText" />
 
-    <view
+    <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
