@@ -1,7 +1,7 @@
 import random
 import string
 
-from database import Session, User
+from database import Session, User, UserActivity, UserType
 
 names = ['Igor', 'Vasiliy', 'Ekaterina', 'Alex', 'Alina', 'Anastasia', 'Petr', 'Ivan', 'Anton']
 second_names = ['Beschastnov', 'Kovalev', 'Lenov', 'Vaskov', 'Trubov', 'Petrov', 'Sidorov']
@@ -28,6 +28,10 @@ def generate_users():
             login=login,
             address=' '.join(random.choices(address_pull, k=5))
             + ', '.join(random.choices(string.digits)),
+            type=random.choice(list(UserType)),
+            activity=random.choice(list(UserActivity)),
+            num_of_employees=random.randint(10, 40),
+            
         )
         db.add(db_user)
     db.commit()
