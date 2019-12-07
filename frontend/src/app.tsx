@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import axios from "axios";
 
 import "./app.scss";
@@ -10,44 +10,6 @@ import { Button } from "./shared/button";
 import { ListPanel } from "./listPanel";
 import { FilterPanel } from "./filterPanel";
 import { CorrectionScreen } from "./correctionScreen";
-
-const offers: OfferTemplate[] = [
-  {
-    id: 1,
-    type: 0,
-    data: {},
-    text: "Бизнес Рациональ",
-    created_at: new Date()
-  },
-  {
-    id: 2,
-    type: 0,
-    data: {},
-    text: "Бизнес Рациональ",
-    created_at: new Date()
-  },
-  {
-    id: 3,
-    type: 0,
-    data: {},
-    text: "Бизнес Рациональ",
-    created_at: new Date()
-  },
-  {
-    id: 4,
-    type: 0,
-    data: {},
-    text: "Бизнес Рациональ",
-    created_at: new Date()
-  },
-  {
-    id: 5,
-    type: 0,
-    data: {},
-    text: "Бизнес Рациональ",
-    created_at: new Date()
-  }
-];
 
 export interface Company {
   id: number;
@@ -77,7 +39,7 @@ export const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [step, setStep] = useState(0);
   const [error, setError] = useState(undefined);
-  const [id, setId] = useState(undefined);
+  const [id, setId] = useState("");
   const [companyList, setCompanyList] = useState<Company[]>([]);
   const [offerTemplates, setOfferTemplates] = useState<OfferTemplate[]>([]);
   const [offerApproveIds, setOfferApproveIds] = useState<number[]>([]);
@@ -101,9 +63,23 @@ export const App: React.FC = () => {
       .catch(error => setError(error));
   }, []);
 
+  const boundOfferTemplates = async () => {
+    const requests = offerApproveIds.map(x =>
+      axios
+        .post(`${"http://spacehub.su/boundoffertemplates"}`, {
+          offer_filter_id: parseInt(id),
+          offer_template_id: x
+        })
+        .then(res => res.data)
+        .catch(error => setError(error))
+    );
+    Promise.all(requests);
+    setOfferApproveIds([]);
+  };
+
   const getOfferTemplates = useCallback(() => {
     axios
-      .get(`${"http://spacehub.su//offertemplates"}`)
+      .get(`${"http://spacehub.su/offertemplates"}`)
       .then(response => setOfferTemplates(response.data));
   }, []);
 
@@ -119,7 +95,7 @@ export const App: React.FC = () => {
   );
 
   const renderOfferTemplates = () => {
-    return offers.map(x => {
+    return offerTemplates.map(x => {
       return (
         <div key={x.id} onClick={() => onchange(x.id)}>
           <Checkbox
@@ -132,9 +108,6 @@ export const App: React.FC = () => {
       );
     });
   };
-  useEffect(() => {
-    renderOfferTemplates();
-  }, [renderOfferTemplates]);
 
   const renderListPanelWait = () => {
     return (
@@ -154,14 +127,17 @@ export const App: React.FC = () => {
     return (
       <ListPanel
         content={companyList}
-        onChange={value => setStep(value)}
+        onChange={value => {
+          setStep(value);
+          getOfferTemplates();
+        }}
       ></ListPanel>
     );
   };
 
   return (
     <Line vertical>
-      <Header onChange={(value: number) => setCurrentPage(value)} />
+      <Header onChange={(value: number) => setCurrentPage(value)}></Header>
       {currentPage == 0 && (
         <Line className="main-screen" justifyContent="start">
           <FilterPanel
@@ -185,23 +161,24 @@ export const App: React.FC = () => {
               </Line>
             )}
             {step === 2 && (
-              // getOfferTemplates() &&
               <div className="content">
                 <div className="label-font">Предложения</div>
-                <Line justifyContent="center" vertical>
+                <Line vertical>
                   <div>{renderOfferTemplates()}</div>
-                  <Button
-                    onClick={() => {}}
-                    buttonType="danger"
-                    label={"Отправить предложения"}
-                  ></Button>
+                  <Line alignItems="end" justifyContent="center">
+                    <Button
+                      className="custom-button"
+                      onClick={() => boundOfferTemplates()}
+                      buttonType="danger"
+                      label={"Отправить предложения"}
+                    ></Button>
+                  </Line>
                 </Line>
               </div>
             )}
-          </div>
-        </Line>
-      )}
-      {currentPage == 1 && <CorrectionScreen />}
+            </div>
+            </Line>)}
+      {currentPage == 1 && <CorrectionScreen></CorrectionScreen>}
     </Line>
   );
 };

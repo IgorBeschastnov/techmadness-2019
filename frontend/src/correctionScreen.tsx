@@ -15,8 +15,8 @@ const cards = [
 export const CorrectionScreen: React.FC = ({}) => {
   return (
     <Line className="correctionScreen">
-      {cards.map(x => (
-        <div className="card strategy-card">
+      {cards.map((x,i) => (
+        <div key={i} className="card strategy-card">
           Title
           <hr />
         </div>

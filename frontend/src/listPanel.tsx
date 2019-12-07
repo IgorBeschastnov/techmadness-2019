@@ -5,11 +5,6 @@ import { Icon } from "./shared/icon";
 
 import "./listPanel.scss";
 
-enum Money {
-  DOLLAR = "dollar",
-  RUBLE = "rub",
-  EURO = "euro"
-}
 
 export interface Company {
   id: number;
@@ -32,7 +27,7 @@ export const ListPanel: React.FC<Props> = ({ content, onChange }) => {
           <Icon name="angle-right"></Icon>
         </a>
       </Line>
-      {content.map(x => (
+      {content && content.map(x => (
         <Line key={x.id} className="table-row">
           <span className="row-title">{x.login}</span>
           <span className="text">
