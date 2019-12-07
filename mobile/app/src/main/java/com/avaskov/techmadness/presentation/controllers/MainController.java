@@ -52,4 +52,8 @@ public class MainController {
             mainThread.post(() -> view.showAccounts(user.getAccounts()));
         });
     }
+
+    public void offerAccepted(Offer offer) {
+
+    }
 }

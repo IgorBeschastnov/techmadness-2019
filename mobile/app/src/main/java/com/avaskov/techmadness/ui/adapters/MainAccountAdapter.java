@@ -20,6 +20,11 @@ import butterknife.ButterKnife;
 
 public class MainAccountAdapter extends RecyclerView.Adapter<MainAccountAdapter.BookmarkViewHolder> {
     private List<Account> offerList = new ArrayList<>();
+    private AccountAdapterClickListener mListener;
+
+    public MainAccountAdapter(AccountAdapterClickListener mListener) {
+        this.mListener = mListener;
+    }
 
     @Override
     public BookmarkViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,6 +36,11 @@ public class MainAccountAdapter extends RecyclerView.Adapter<MainAccountAdapter.
     @Override
     public void onBindViewHolder(BookmarkViewHolder holder, int position) {
         holder.bind(offerList.get(position));
+        holder.setOnClickListener(aView -> {
+            if (mListener != null) {
+                mListener.onAccountSelected(offerList.get(position));
+            }
+        });
     }
 
     @Override
@@ -47,6 +57,11 @@ public class MainAccountAdapter extends RecyclerView.Adapter<MainAccountAdapter.
         offerList.clear();
         notifyDataSetChanged();
     }
+
+    public interface AccountAdapterClickListener {
+        void onAccountSelected(Account account);
+    }
+
 
     class BookmarkViewHolder extends RecyclerView.ViewHolder {
 
@@ -86,6 +101,10 @@ public class MainAccountAdapter extends RecyclerView.Adapter<MainAccountAdapter.
 
             balance.setText(String.format("%s руб.", account.getBalance()));
             number.setText(String.valueOf(account.getId()));
+        }
+
+        void setOnClickListener(View.OnClickListener aListener) {
+            itemView.setOnClickListener(aListener);
         }
     }
 }

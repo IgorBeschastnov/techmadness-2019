@@ -19,6 +19,11 @@ import butterknife.ButterKnife;
 
 public class MainOfferAdapter extends RecyclerView.Adapter<MainOfferAdapter.BookmarkViewHolder> {
     private List<Offer> offerList = new ArrayList<>();
+    private CreditDebetAdapterClickListener mListener;
+
+    public MainOfferAdapter(CreditDebetAdapterClickListener mListener) {
+        this.mListener = mListener;
+    }
 
     @Override
     public BookmarkViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,6 +35,11 @@ public class MainOfferAdapter extends RecyclerView.Adapter<MainOfferAdapter.Book
     @Override
     public void onBindViewHolder(BookmarkViewHolder holder, int position) {
         holder.bind(offerList.get(position));
+        holder.setOnClickListener(aView -> {
+            if (mListener != null) {
+                mListener.onOfferSelected(offerList.get(position));
+            }
+        });
     }
 
     @Override
@@ -47,6 +57,10 @@ public class MainOfferAdapter extends RecyclerView.Adapter<MainOfferAdapter.Book
         notifyDataSetChanged();
     }
 
+    public interface CreditDebetAdapterClickListener {
+        void onOfferSelected(Offer offer);
+    }
+
     class BookmarkViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.offer_title_tv)
@@ -60,6 +74,10 @@ public class MainOfferAdapter extends RecyclerView.Adapter<MainOfferAdapter.Book
 
         public void bind(Offer offer) {
             categoryInfo.setText(offer.getText());
+        }
+
+        void setOnClickListener(View.OnClickListener aListener) {
+            itemView.setOnClickListener(aListener);
         }
     }
 }
