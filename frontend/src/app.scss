@@ -5,15 +5,15 @@
 
 .main-screen {
     background: #f3f4f6;
-    height: 90vh;
-    .custom-button{
+    min-height: 100vh;
+    .custom-button {
         margin-top: 2rem
     }
-    .number{
+    .number {
         font-size: 15rem;
         color:  #a3a4a7;
     }
-    .label-font{
+    .label-font {
         font-weight: bold;
         margin-top: 1rem
     }
