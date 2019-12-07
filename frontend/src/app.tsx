@@ -9,6 +9,7 @@ import { Checkbox } from "./shared/checkbox";
 import { Button } from "./shared/button";
 import { ListPanel } from "./listPanel";
 import { FilterPanel } from "./filterPanel";
+import { CorrectionScreen } from "./correctionScreen";
 
 const offers: OfferTemplate[] = [
   {
@@ -73,6 +74,7 @@ export interface OfferTemplate {
 }
 
 export const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(0);
   const [step, setStep] = useState(0);
   const [error, setError] = useState(undefined);
   const [id, setId] = useState(undefined);
@@ -159,44 +161,47 @@ export const App: React.FC = () => {
 
   return (
     <Line vertical>
-      <Header />
-      <Line className="main-screen" justifyContent="start">
-        <FilterPanel
-          getCompanyList={(data: FilterModel) => getCompanyList(data)}
-          onChange={() => (error ? console.log(error) : setStep(1))}
-          postFilters={postFilters}
-        ></FilterPanel>
-        <div className="list-panel">
-          {step > 0 ? renderListPanel() : renderListPanelWait()}
-        </div>
-        <div className="offer-panel">
-          {step < 2 && (
-            <Line
-              vertical
-              justifyContent="center"
-              className="number"
-              alignItems="center"
-            >
-              <span className="value">3</span>
-              <p className="desc">Определить список предложений</p>
-            </Line>
-          )}
-          {step === 2 && (
-            // getOfferTemplates() &&
-            <div className="content">
-              <div className="label-font">Предложения</div>
-              <Line justifyContent="center" vertical>
-                <div>{renderOfferTemplates()}</div>
-                <Button
-                  onClick={() => {}}
-                  buttonType="danger"
-                  label={"Отправить предложения"}
-                ></Button>
+      <Header onChange={(value: number) => setCurrentPage(value)} />
+      {currentPage == 0 && (
+        <Line className="main-screen" justifyContent="start">
+          <FilterPanel
+            getCompanyList={(data: FilterModel) => getCompanyList(data)}
+            onChange={() => (error ? console.log(error) : setStep(1))}
+            postFilters={postFilters}
+          ></FilterPanel>
+          <div className="list-panel">
+            {step > 0 ? renderListPanel() : renderListPanelWait()}
+          </div>
+          <div className="offer-panel">
+            {step < 2 && (
+              <Line
+                vertical
+                justifyContent="center"
+                className="number"
+                alignItems="center"
+              >
+                <span className="value">3</span>
+                <p className="desc">Определить список предложений</p>
               </Line>
-            </div>
-          )}
-        </div>
-      </Line>
+            )}
+            {step === 2 && (
+              // getOfferTemplates() &&
+              <div className="content">
+                <div className="label-font">Предложения</div>
+                <Line justifyContent="center" vertical>
+                  <div>{renderOfferTemplates()}</div>
+                  <Button
+                    onClick={() => {}}
+                    buttonType="danger"
+                    label={"Отправить предложения"}
+                  ></Button>
+                </Line>
+              </div>
+            )}
+          </div>
+        </Line>
+      )}
+      {currentPage == 1 && <CorrectionScreen />}
     </Line>
   );
 };

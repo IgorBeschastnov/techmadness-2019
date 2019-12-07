@@ -1,0 +1,12 @@
+.correctionScreen {
+  background: #f3f4f6;
+  min-height: 100vh;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  .strategy-card {
+    height: 30em;
+    width: 45em;
+    margin: 2em 0 2em 0;
+  }
+}
