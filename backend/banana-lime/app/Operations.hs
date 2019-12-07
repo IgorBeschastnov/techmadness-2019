@@ -36,8 +36,8 @@ executeInsertQuery user_ids template_id
     | null user_ids = putStrLn "No users fit the criteria"
     | otherwise = do
         putStrLn $ "Executing: " ++ preparedQuery
-        executeQuery preparedQuery []
-        putStrLn "Executed"
+        rows <- runQuery preparedQuery []
+        putStrLn $ "Executed. Affected rows: " ++ show rows
         where preparedQuery = insertQuery user_ids template_id
 
 insertQuery user_ids template_id = "insert into offers (offer_template_id, user_id) values " ++ rowsString
@@ -79,12 +79,10 @@ createFilterQuery filter =
           --compAgeFrom = companyAgeFrom filter
           --currency = currencyAccount filter
 
-getUsers filter = executeQuery query []
-    where query = createFilterQuery filter
-
 deleteBoundOffer bound_id = do
     putStrLn $ "Deleting BoundOfferTemplate " ++ show bound_id
-    executeQuery "delete from bound_offer_templates where bound_offer_templates_id = ?" [SqlInteger bound_id]
+    rows <- runQuery "delete from bound_offer_templates where bound_offer_templates.bound_offer_templates_id = ?" [SqlInteger bound_id]
+    putStrLn $ "Deleted. Affected rows: " ++ show rows
 
 processBoundOfferTemplate :: [SqlValue] -> IO()
 processBoundOfferTemplate (bound_id:template_id:filter_id:_) = do
@@ -95,7 +93,9 @@ processBoundOfferTemplate (bound_id:template_id:filter_id:_) = do
     case filter of
         Nothing -> putStrLn "Could not parse offer filter"
         Just f -> do
-            users_sql <- getUsers f
+            let usersQuery = createFilterQuery f
+            putStrLn $ "User query: " ++ usersQuery
+            users_sql <- executeQuery usersQuery []
             let users = [fromSql $ head user :: Integer | user <- users_sql]
             executeInsertQuery users (fromSql template_id :: Integer)
             deleteBoundOffer bound
@@ -104,7 +104,7 @@ processBoundOfferTemplate (bound_id:template_id:filter_id:_) = do
 
 ioLoop = do
     -- log
-    putStrLn "IOLOOP"
+    putStrLn "\nIOLOOP\n"
     -- Get bound templates from db
     boundOfferTemplates <- getBoundOfferTemplates
     putStrLn $ "Found bound offer templates: " ++ show (length boundOfferTemplates)
