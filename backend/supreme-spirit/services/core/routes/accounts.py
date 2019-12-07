@@ -10,8 +10,8 @@ from database import AccountModel, AccountBase
 from services.utils import get_db
 from .. import app
 
-@app.get('/accounts{id_}', response_model=List[AccountModel])
-def get_account_by_id(db: Session = Depends(get_db)):
+@app.get('/accounts{id_}', response_model=AccountModel)
+def get_account_by_id(id_: int, db: Session = Depends(get_db)):
     return get_account_by_id_(id_, db)
 
 @app.get('/accounts', response_model=List[AccountModel])

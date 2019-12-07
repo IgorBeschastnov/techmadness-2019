@@ -15,7 +15,7 @@ def users_list(db: Session = Depends(get_db)):
     return get_users(db)
 
 @app.get('/users{id_}', response_model=UserModel)
-def users_list(db: Session = Depends(get_db)):
+def users_list(id_: int, db: Session = Depends(get_db)):
     return get_user(id_, db)
 
 
