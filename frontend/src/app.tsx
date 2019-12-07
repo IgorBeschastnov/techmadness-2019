@@ -10,42 +10,41 @@ import { Button } from "./shared/button";
 import { ListPanel } from "./listPanel";
 import { FilterPanel } from "./filterPanel";
 
-const offers = [
+const offers:OfferTemplate[] = [
   {
     id: 1,
     type: 0,
-    data:
-      "Классический депозит с повышенной процентной ставкой и особыми условиями досрочного отзыва.",
-    text: "Бизнес Рациональ",
-    interest: 5.15
+    data:{},
+    text:'Бизнес Рациональ',
+    created_at: new Date()
   },
   {
     id: 2,
-    type: 1,
-    data: "",
-    text:
-      "Инвестиционный кредит. Долгосрочное кредитование на приобретение основных средств"
+    type: 0,
+    data:{},
+    text:'Бизнес Рациональ',
+    created_at: new Date()
   },
   {
     id: 3,
     type: 0,
-    data: "",
-    text:
-      "Бизнес Стандарт. Классический депозит с высокой доходностью. 0,35% ставка в долларах в год"
+    data:{},
+    text:'Бизнес Рациональ',
+    created_at: new Date()
   },
   {
     id: 4,
     type: 0,
-    data: "",
-    text:
-      "Бизнес Стандарт. Классический депозит с высокой доходностью. 0,35% ставка в долларах в год"
+    data:{},
+    text:'Бизнес Рациональ',
+    created_at: new Date()
   },
   {
     id: 5,
     type: 0,
-    data: "",
-    text:
-      "Бизнес Стандарт. Классический депозит с высокой доходностью. 0,35% ставка в долларах в год"
+    data:{},
+    text:'Бизнес Рациональ',
+    created_at: new Date()
   }
 ];
 
@@ -65,11 +64,21 @@ export interface FilterModel {
   ["currencyAccount"]: boolean;
 }
 
+export interface OfferTemplate{
+    id: number,
+    type: number,
+    text: string,
+    data: {},
+    created_at: Date
+}
+
 export const App: React.FC = () => {
   const [step, setStep] = useState(0);
   const [error, setError] = useState(undefined);
   const [id, setId] = useState(undefined);
   const [companyList, setCompanyList] = useState<Company[]>([]);
+  const [offerTemplates, setOfferTemplates] = useState<OfferTemplate[]>([]);
+  const offerApproveIds:number[]=[];
 
   const getCompanyList = useCallback((data: FilterModel) => {
     axios
@@ -89,6 +98,42 @@ export const App: React.FC = () => {
       .then(response => setId(response.data.id))
       .catch(error => setError(error));
   }, []);
+
+  const getOfferTemplates = useCallback(() => {
+    axios
+      .get(`${"http://spacehub.su//offertemplates"}`)
+      .then(response => setOfferTemplates(response.data));
+  }, []);
+
+const onchange = useCallback((ind:number)=>{
+  const index = offerApproveIds.findIndex(y=>y==ind)
+  console.log('on change  ', index)
+  index!=-1 
+  ? offerApproveIds.splice(index,1)
+  : offerApproveIds.push(ind)
+  console.log(offerApproveIds)
+},[])
+  useEffect(()=>{
+    console.log(offerApproveIds)
+  },[offerApproveIds])
+
+
+  const renderOfferTemplates = () =>{
+    return offers.map(x => {
+      return (
+        <div key={x.id} onClick={()=>onchange(x.id)}>
+          <Checkbox
+            value={offerApproveIds.includes(x.id)? true: false}
+            onChange={() =>{}}
+            key={x.id}
+            text={x.text}
+          ></Checkbox>
+          </div>
+      );
+    });
+  }
+  useEffect(()=>{renderOfferTemplates()},[renderOfferTemplates])
+
 
   const renderListPanelWait = () => {
     return (
@@ -111,21 +156,6 @@ export const App: React.FC = () => {
         onChange={value => setStep(value)}
       ></ListPanel>
     );
-  };
-
-  const renderOffers = () => {
-    return offers.map(x => {
-      return (
-        <div>
-          <Checkbox
-            value={false}
-            onChange={() => {}}
-            key={x.id}
-            text={x.text}
-          ></Checkbox>
-        </div>
-      );
-    });
   };
 
   return (
@@ -152,11 +182,13 @@ export const App: React.FC = () => {
               <p className="desc">Определить список предложений</p>
             </Line>
           )}
-          {step === 2 && (
+          {step === 2  && 
+          // getOfferTemplates() &&
+           (
             <div className="content">
               <div className="label-font">Предложения</div>
               <Line justifyContent="center" vertical>
-                <div>{renderOffers()}</div>
+                <div>{renderOfferTemplates()}</div>
                 <Button
                   onClick={() => {}}
                   buttonType="danger"
