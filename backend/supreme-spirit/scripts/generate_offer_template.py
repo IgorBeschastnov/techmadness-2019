@@ -4,7 +4,7 @@ from database import Session, OfferTemplate
 from database.models.models import OfferType
 
 
-if __name__ == "__main__":
+def generate_templates():
     db = Session()
 
     credit_1 = OfferTemplate(
@@ -71,3 +71,8 @@ if __name__ == "__main__":
     db.add(deposit_3)
 
     db.commit()
+
+
+if __name__ == "__main__":
+    generate_templates()
+    
