@@ -2,7 +2,7 @@ from typing import List
 
 from crud import create_offer as create_offer_
 from crud import get_offer_by_id as get_offer_by_id_
-from crud import get_offers, get_offers_by_user_id
+from crud import get_offers, get_offers_by_user_id, update_offer
 from fastapi import Depends
 from services.utils import get_db
 from sqlalchemy.orm import Session

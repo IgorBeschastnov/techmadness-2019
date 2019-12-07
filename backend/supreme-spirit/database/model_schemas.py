@@ -104,6 +104,7 @@ class OfferTemplateModel(OfferTemplateBase):
 class OfferBase(BaseModel):
     user_id: int
     offer_template_id: int
+    accepted: bool
 
 
 class OfferCreate(OfferBase):
