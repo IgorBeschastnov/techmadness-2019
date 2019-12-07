@@ -28,14 +28,17 @@ instance FromJSON OfferFilter
 decodePerson :: Data.ByteString -> Maybe OfferFilter
 decodePerson = decode
 
-getBoundOfferTemplates = executeQuery "select offer_template_id, offer_filter_id from bound_offer_templates" []
+getBoundOfferTemplates = executeQuery "select bound_offer_templates_id, offer_template_id, offer_filter_id from bound_offer_templates" []
 getOfferTemplate template_id = executeQuery "select type, text, data from offer_templates where offer_template_id = ?" [SqlInteger template_id]
 getOfferFilter filter_id = executeQuery "select filter from offer_filters where offer_filter_id = ?" [SqlInteger filter_id]
 
-executeInsertQuery user_ids template_id = do
-    putStr preparedQuery
-    executeQuery preparedQuery []
-    where preparedQuery = insertQuery user_ids template_id
+executeInsertQuery user_ids template_id
+    | null user_ids = putStrLn "No users fit the criteria"
+    | otherwise = do
+        putStrLn $ "Executing: " ++ preparedQuery
+        rows <- runQuery preparedQuery []
+        putStrLn $ "Executed. Affected rows: " ++ show rows
+        where preparedQuery = insertQuery user_ids template_id
 
 insertQuery user_ids template_id = "insert into offers (offer_template_id, user_id) values " ++ rowsString
     where rowString user_id = "(" ++ show template_id ++ ", " ++ show user_id ++ ")"
@@ -76,26 +79,35 @@ createFilterQuery filter =
           --compAgeFrom = companyAgeFrom filter
           --currency = currencyAccount filter
 
-getUsers filter = executeQuery query []
-    where query = createFilterQuery filter
+deleteBoundOffer bound_id = do
+    putStrLn $ "Deleting BoundOfferTemplate " ++ show bound_id
+    rows <- runQuery "delete from bound_offer_templates where bound_offer_templates.bound_offer_templates_id = ?" [SqlInteger bound_id]
+    putStrLn $ "Deleted. Affected rows: " ++ show rows
 
-processBoundOfferTemplate (template_id:filter_id:_) = do
+processBoundOfferTemplate :: [SqlValue] -> IO()
+processBoundOfferTemplate (bound_id:template_id:filter_id:_) = do
+    putStrLn $ "Processing bound offer template " ++ show bound
     filtersArr <- getOfferFilter $ fromSql filter_id 
     let filter_str = fromSql $ head $ head filtersArr
     let filter = decodePerson filter_str
     case filter of
-        Nothing -> putStr "Could not parse offer filter"
+        Nothing -> putStrLn "Could not parse offer filter"
         Just f -> do
-            users_sql <- getUsers f
+            let usersQuery = createFilterQuery f
+            putStrLn $ "User query: " ++ usersQuery
+            users_sql <- executeQuery usersQuery []
             let users = [fromSql $ head user :: Integer | user <- users_sql]
             executeInsertQuery users (fromSql template_id :: Integer)
-            putStr "Created offers"
+            deleteBoundOffer bound
+            putStrLn $ "Processed bound template " ++ show bound
+    where bound = fromSql bound_id :: Integer
 
 ioLoop = do
     -- log
-    putStr "Consumer is running\n"
+    putStrLn "\nIOLOOP\n"
     -- Get bound templates from db
     boundOfferTemplates <- getBoundOfferTemplates
+    putStrLn $ "Found bound offer templates: " ++ show (length boundOfferTemplates)
     -- Process recieved data
     mapM_ processBoundOfferTemplate boundOfferTemplates
     -- sleep
