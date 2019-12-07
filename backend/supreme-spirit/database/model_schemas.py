@@ -27,6 +27,7 @@ class AccountBaseNoUser(BaseModel):
 
 
 class AccountORM(AccountBaseNoUser):
+    id: int
     
     class Config:
         orm_mode = True
