@@ -1,2 +1,3 @@
-from database.models.models import User
+from database.models.models import *
+
 # from database.models.schemas import

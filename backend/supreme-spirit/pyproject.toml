@@ -2,7 +2,7 @@
 name = "techmadness-backend"
 version = "0.1.0"
 description = ""
-authors = ["Igor Beschastnov <beschastnovigor@gmail.com>"]
+authors = ["Igor Beschastnov <beschastnovigor@gmail.com>", "Vasiliy Vasiliy <minskij10@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
