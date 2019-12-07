@@ -18,16 +18,16 @@ class UserCreate(UserBase):
     pass
 
 
-class AccountBase(BaseModel):
+class AccountBaseNoUser(BaseModel):
     name: str
     balance: float
     currency: str
-    user: UserBase
     type: AccountType
     interest: float
 
 
-class AccountORM(AccountBase):
+class AccountORM(AccountBaseNoUser):
+    
     class Config:
         orm_mode = True
 
@@ -40,6 +40,10 @@ class UserModel(UserBase):
 
     class Config:
         orm_mode = True
+
+
+class AccountBase(AccountBaseNoUser):
+    user: UserModel
 
 
 class AccountCreate(AccountBase):
