@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import axios from "axios";
 
 import "./app.scss";
@@ -15,9 +15,10 @@ const offers = [
   {
     id: 1,
     type: 0,
-    data: "",
+    data: "Классический депозит с повышенной процентной ставкой и особыми условиями досрочного отзыва.",
     text:
-      "Бизнес Рациональ. Классический депозит с повышенной процентной ставкой и особыми условиями досрочного отзыва. 5,15%"
+      "Бизнес Рациональ",
+    interest: 5.15,
   },
   {
     id: 2,
@@ -50,7 +51,9 @@ const offers = [
 ];
 
 export const App: React.FC = () => {
-  const [step, setStep] = useState(0);
+  type OptionType = { label: string; value: string };
+  const [step, setStep] = useState(2);
+
   const renderListPanelWait = () => {
     return (
       <Line justifyContent="center" className="number">
@@ -62,6 +65,9 @@ export const App: React.FC = () => {
   const renderListPanel = () => {
     return <ListPanel onChange={value => setStep(value)}></ListPanel>;
   };
+  
+
+
 
   const [numberEmployeesFrom, setNumberEmployeesFrom] = useState<string>("");
   const [numberEmployeesTo, setNumberEmployeesTo] = useState<string>("");
@@ -130,14 +136,20 @@ export const App: React.FC = () => {
       <Line className="main-screen" justifyContent="start">
         <div className="filter-panel">
           <Line vertical>
-          <Line justifyContent="between" alignItems="center" className="title">
+            <Line
+              justifyContent="between"
+              alignItems="center"
+              className="title"
+            >
               <div className="label-filter">Фильтры</div>
               <a className="call-to-action" onClick={() => {}}>
-                <span className="link"  onClick={() => setStep(1)}>Подобрать компании</span>
+                <span className="link" onClick={() => setStep(1)}>
+                  Подобрать компании
+                </span>
                 <Icon name="angle-right"></Icon>
               </a>
             </Line>
-            <div className="block-filter">Количество сотрудников:</div>
+            <Line className="block-filter">Количество сотрудников:</Line>
             <Line className="panel-inputs" alignItems="center">
               <div>От</div>
               <InputField
@@ -215,8 +227,7 @@ export const App: React.FC = () => {
               className="label-filter"
               justifyContent="center"
               alignItems="end"
-            >
-            </Line>
+            ></Line>
           </Line>
         </div>
         <div className="list-panel">
@@ -231,18 +242,14 @@ export const App: React.FC = () => {
           {step === 2 && (
             <div className="content">
               <div className="label-font">Выбрать предложения</div>
+              <Line justifyContent='center' vertical>
               <div>{renderOffers()}</div>
-              <Line
-                className="custom-button"
-                justifyContent="center"
-                alignItems="end"
-              >
                 <Button
                   onClick={() => {}}
                   buttonType="danger"
                   label={"Отправить предложения"}
                 ></Button>
-              </Line>
+            </Line>
             </div>
           )}
         </div>

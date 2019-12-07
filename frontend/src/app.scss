@@ -33,7 +33,7 @@
         }
       }
     .block-filter{
-        margin-top: 2em;
+        margin-top: 3em;
     }
     .indent-left{
         padding-left: 1rem;
@@ -61,6 +61,15 @@
       width: 25%;
       .content{
           padding: 1rem;
+      }
+      .css-2b097c-container{
+        width: 100%;
+        .css-yk16xz-control{
+          border-color:  #d22c33;
+        }
+        .css-1pahdxg-control:hover{
+          border-color:  #d22c33 !important;
+        }
       }
   }
 }
