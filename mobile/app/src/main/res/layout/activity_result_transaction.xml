@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageButton
+        android:id="@+id/result_transaction_close_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_close"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/transaction_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/result_transaction_close_btn"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="ПЕРЕВОДЫ"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/transaction_title_between_tv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/result_transaction_close_btn"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:text="Перевод между своими счетами"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/transaction_title_between_tv" />
+
+    <ImageView
+        android:id="@+id/result_transaction_iv"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_below="@id/divider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_ok_transaction"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/result_transaction_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Успешно"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/result_transaction_descr_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_tv"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Зачисление - мгновенно"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/result_transaction_from_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_descr_tv"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:text="Счет списания"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/result_transaction_from_account_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_from_title_tv"
+        android:layout_marginStart="16dp"
+        android:text="99999 999 9 99999999999"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/result_transaction_to_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_from_account_tv"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:text="Счет списания"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/result_transaction_to_account_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_to_title_tv"
+        android:layout_marginStart="16dp"
+        android:text="99999 999 9 99999999999"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/result_transaction_sum_descr_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_to_account_tv"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:text="Сумма перевода"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/result_transaction_sum_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_transaction_sum_descr_tv"
+        android:layout_marginStart="16dp"
+        android:text="100"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <ImageView
+        android:id="@+id/bottom_img"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/result_transaction_sum_tv"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/result_transaction_bottom_img"
+        tools:ignore="ContentDescription" />
+
+    <RelativeLayout
+        android:id="@+id/autopay_offer_rl"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/bottom_img"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/grey">
+
+        <TextView
+            android:id="@+id/autopay_offer_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Подключить автоплатеж"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/autopay_offer_iv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_next_page"
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/done_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/autopay_offer_rl"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/result_transaction_done_button_img"
+        tools:ignore="ContentDescription" />
+
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_result"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/black" />
+</RelativeLayout>

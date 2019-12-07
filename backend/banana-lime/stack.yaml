@@ -1,0 +1,9 @@
+resolver: lts-14.16
+
+packages:
+  - .
+
+extra-deps:
+  - HDBC-2.4.0.3
+  - HDBC-postgresql-2.3.2.7
+  - aeson-1.4.6.0

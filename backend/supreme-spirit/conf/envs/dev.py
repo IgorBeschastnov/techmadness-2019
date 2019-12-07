@@ -1,4 +1,4 @@
-DATABASE_NAME = 'unihack'
+DATABASE_NAME = 'hack'
 DATABASE_USER = 'user'
 DATABASE_PASSWORD = 'password'
 DATABASE_HOST = 'postgres'

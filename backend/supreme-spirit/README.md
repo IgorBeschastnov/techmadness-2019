@@ -12,3 +12,6 @@ Microservices guidelines:
 
 #### TODO:
 - Отдельный pyproject.toml и poetry.lock для каждого микросервиса (пока что они общие)
+
+*yay*
+
