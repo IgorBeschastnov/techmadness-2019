@@ -4,6 +4,11 @@ from database import Transaction, TransactionBase
 
 
 def get_transactions(db):
+    result = db.query(Transaction).all()
+    print('HERE\n\n\n')
+    print(result[0].from_account_id)
+    print(result[0].from_account)
+    print('HERE\n\n\n')
     return db.query(Transaction).all()
 
 

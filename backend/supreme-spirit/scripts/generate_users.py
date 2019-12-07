@@ -3,8 +3,8 @@ import string
 
 from database import Session, User
 
-names = ['Igor', 'Vasiliy', 'Ekaterina', 'Alex', 'Alina', 'Anastasy']
-second_names = ['Beschastnov', 'Kovalev', 'Lenov', 'Vaskov']
+names = ['Igor', 'Vasiliy', 'Ekaterina', 'Alex', 'Alina', 'Anastasia', 'Petr', 'Ivan', 'Anton']
+second_names = ['Beschastnov', 'Kovalev', 'Lenov', 'Vaskov', 'Trubov', 'Petrov', 'Sidorov']
 
 address_pull = (
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt '
@@ -17,15 +17,21 @@ address_pull = (
 
 def generate_users():
     db = Session()
+    logins = []
     for _ in range(20):
+        while True:
+            login = random.choice(names) + ' ' + random.choice(second_names)
+            if login not in logins:
+                logins.append(login)
+                break
         db_user = User(
-            login=random.choice(names) + ' ' + random.choice(second_names),
-            address=' '.join(random.choices(description_pull, k=5))
-            + ', '.join(random.choices(string.digits)),
+            login=login,
+            address=' '.join(random.choices(address_pull, k=5))
+                    + ', '.join(random.choices(string.digits)),
         )
         db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
+    db.commit()
 
 
-generate_users()
+if __name__ == '__main__':
+    generate_users()
