@@ -28,11 +28,8 @@ class User(Base):
     # System fields
     id = Column('user_id', Integer, primary_key=True, index=True)
 
-    login = Column(String(50), nullable=False)
+    login = Column(String(50), nullable=False, unique=True)
     address = Column(String(50), nullable=True)
-
-    def __repr__(self):
-        return f'<User {self.id} : {self.name}'
 
 
 class Account(Base):
@@ -41,6 +38,7 @@ class Account(Base):
     id = Column('account_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+    name = Column(String(20), default='')
     user_id = Column(Integer, ForeignKey(User.id), nullable=True)
     user = relationship(User, backref='accounts')
     type = Column(Enum(AccountType), default=AccountType.PAYMENT)
@@ -78,6 +76,17 @@ class OfferTemplate(Base):
     text = Column(String(250))
     data = Column(JSONB)
 
+class Offer(Base):
+    __tablename__ = 'offers'
+    id = Column('offer_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    user = relationship(User, backref='users')
+
+    offer_template_id = Column(Integer, ForeignKey(OfferTemplate.id), nullable=False)
+    offer_template = relationship(OfferTemplate, backref='offer_templates')
+
 
 class OfferFilter(Base):
     __tablename__ = 'offer_filters'
@@ -92,7 +101,8 @@ class BoundOfferTemplate(Base):
     id = Column('bound_offer_templates_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    offer_filter_id = Column(ForeignKey(OfferFilter.id))
+    offer_filter_id = Column(Integer, ForeignKey(OfferFilter.id), nullable=True)
     offer_filter = relationship(OfferFilter, backref='bounds')
-    offer_template_id = Column(ForeignKey(OfferTemplate.id))
+
+    offer_template_id = Column(Integer, ForeignKey(OfferTemplate.id), nullable=True)
     offer_template = relationship(OfferTemplate, backref='bounds')

@@ -5,7 +5,8 @@ import datetime
 
 
 class UserBase(BaseModel):
-    name: str
+    login: str
+    address: str
 
 
 class UserCreate(UserBase):
@@ -23,8 +24,9 @@ class AccountBase(BaseModel):
     name: str
     balance: float
     currency: str
+    user: int
     type: AccountType
-
+    interest: float
 
 class AccountCreate(AccountBase):
     pass
@@ -81,6 +83,25 @@ class OfferTemplateModel(OfferTemplateBase):
         orm_mode = True
 
 
+class OfferBase(BaseModel):
+    user_id: int
+    offer_template_id: int
+
+
+class OfferCreate(OfferBase):
+    pass
+
+
+class OfferModel(OfferBase):
+    id: int
+    created_at: datetime.datetime
+    
+    user: UserModel
+    offer_template: OfferTemplateModel
+    class Config:
+        orm_mode = True
+
+
 class OfferFilterBase(BaseModel):
     filter: Dict
 
@@ -98,7 +119,6 @@ class OfferFilterModel(OfferFilterBase):
 
 
 class BoundOfferTemplateBase(BaseModel):
-    filter: Dict
     offer_filter_id: int
     offer_template_id: int
 
@@ -108,7 +128,7 @@ class BoundOfferTemplateCreate(BoundOfferTemplateBase):
     offer_template: OfferTemplateModel
 
 
-class BoundOfferTemplateModel(BoundOfferTemplateBase):
+class BoundOfferTemplateModel(BoundOfferTemplateCreate):
     id: int
     created_at: datetime.datetime
 
