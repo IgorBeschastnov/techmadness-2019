@@ -28,7 +28,7 @@ class AccountBaseNoUser(BaseModel):
 
 class AccountORM(AccountBaseNoUser):
     id: int
-    
+
     class Config:
         orm_mode = True
 
@@ -69,7 +69,8 @@ class TransactionBase(BaseModel):
 
 
 class TransactionCreate(TransactionBase):
-    pass
+    from_user: Optional[int]
+    to_user: Optional[int]
 
 
 class TransactionModel(TransactionBase):
