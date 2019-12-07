@@ -1,9 +1,9 @@
 """
 
 
-Revision ID: 76157c94a97d
+Revision ID: 540dda9fd8ea
 Revises: 
-Create Date: 2019-12-07 14:44:05.732381
+Create Date: 2019-12-07 19:33:50.339365
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '76157c94a97d'
+revision = '540dda9fd8ea'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,7 +30,7 @@ def upgrade():
     op.create_table('offer_templates',
     sa.Column('offer_template_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.Column('type', sa.Enum('CREDIT', 'DEPOSIT', 'AUTOTRANSACTION', name='offertype'), nullable=True),
+    sa.Column('type', sa.Enum('CREDIT', 'DEPOSIT', 'AUTOTRANSACTION', 'IMPORTANT_DAY', 'CAR', 'MORTGAGE', 'INSURANCE', 'INVESTMENTS', name='offertype'), nullable=True),
     sa.Column('text', sa.String(length=250), nullable=True),
     sa.Column('data', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.PrimaryKeyConstraint('offer_template_id')
