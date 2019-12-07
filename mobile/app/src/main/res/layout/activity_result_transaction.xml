@@ -36,7 +36,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
-        android:text="Перевод между своими счетами"
+        android:text="Перевод между счетами"
         android:textColor="@color/black"
         android:textSize="18sp"
         tools:ignore="HardcodedText" />
@@ -110,7 +110,7 @@
         android:layout_below="@id/result_transaction_from_account_tv"
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
-        android:text="Счет списания"
+        android:text="Счет зачисления"
         android:textSize="16sp"
         tools:ignore="HardcodedText" />
 
