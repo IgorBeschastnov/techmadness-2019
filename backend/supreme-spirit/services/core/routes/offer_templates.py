@@ -1,6 +1,7 @@
 from typing import List
 
 from crud import create_offer_template as create_offer_template_
+from crud import get_offer_template_by_id as get_offer_template_by_id_
 from crud import get_offer_templates
 from fastapi import Depends, Query
 from services.utils import get_db
@@ -14,6 +15,11 @@ from .. import app
 @app.get('/offertemplates', response_model=List[OfferTemplateModel])
 def offer_templates_list(type_: str = Query(None, alias='type'), db: Session = Depends(get_db)):
     return get_offer_templates(db, type_)
+
+
+@app.get('/offertemplates/{id}', response_model=OfferTemplateModel)
+def get_offer_template_by_id(id: int, db: Session = Depends(get_db)):
+    return get_offer_template_by_id_(id, db)
 
 
 @app.post('/offertemplates')

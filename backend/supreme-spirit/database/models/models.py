@@ -34,13 +34,37 @@ class OfferType(IntEnum):
     AUTOTRANSACTION = 3
 
 
+class UserType(IntEnum):
+    OOO = 1
+    ZAO = 2
+    PAO = 3
+    OAO = 4
+    IP = 5
+
+
+class UserActivity(IntEnum):
+    REAL_ESTATE = 1
+    IT = 2
+    HR = 3
+    PUBLIC_ORGANIZATION = 4
+    FOODSTUFFS = 5
+
+
 class User(Base):
     __tablename__ = 'users'
     # System fields
     id = Column('user_id', Integer, primary_key=True, index=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow,nullable=False)
 
     login = Column(String(50), nullable=False, unique=True)
     address = Column(String(50), nullable=True)
+    type = Column(Enum(UserType), default=UserType.OOO)
+    activity = Column(Enum(UserActivity), default=UserActivity.IT)
+    num_of_employees = Column(Integer, default=12)
+
+    @property
+    def age(self):
+        return (datetime.datetime.utcnow() - self.created_at).days/360
 
 
 class Account(Base):

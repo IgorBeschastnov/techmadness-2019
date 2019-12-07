@@ -10,6 +10,10 @@ def get_offer_templates(db, type_):
     return query.all()
 
 
+def get_offer_template_by_id(id_: int, db):
+    return db.query(OfferTemplate).filter(OfferTemplate.id == id_).first()
+
+
 def create_offer_template(db: Session, offer_template: OfferTemplateBase):
     db_offer_template = OfferTemplate(
         type=offer_template.type, text=offer_template.text, data=offer_template.data

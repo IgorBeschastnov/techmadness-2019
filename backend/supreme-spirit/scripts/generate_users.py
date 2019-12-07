@@ -27,7 +27,7 @@ def generate_users():
         db_user = User(
             login=login,
             address=' '.join(random.choices(address_pull, k=5))
-                    + ', '.join(random.choices(string.digits)),
+            + ', '.join(random.choices(string.digits)),
         )
         db.add(db_user)
     db.commit()

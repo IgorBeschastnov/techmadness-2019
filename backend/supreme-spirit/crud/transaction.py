@@ -7,6 +7,10 @@ def get_transactions(db):
     return db.query(Transaction).all()
 
 
+def get_transaction_by_id(id_, db):
+    return db.query(Transaction).filter(Transaction.id == id_).first()
+
+
 def create_transaction(db: Session, transaction: TransactionBase):
     db_transaction = Transaction(
         from_user_id=transaction.from_user,
