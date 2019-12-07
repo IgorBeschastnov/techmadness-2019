@@ -30,7 +30,7 @@ def generate_accounts_and_transactions():
         )
 
         db_account2 = Account(
-            name=' '.join(random.choices(names_pull, k=2)),
+            name=random.choice(names_pull),
             balance=random.randint(10000, 1000000000),
             currency=random.choice(currencies),
             user_id=to_user,
