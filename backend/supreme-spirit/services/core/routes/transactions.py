@@ -7,7 +7,7 @@ from fastapi import Depends
 from services.utils import get_db
 from sqlalchemy.orm import Session
 
-from database import TransactionBase, TransactionModel, TransactionCreate
+from database import TransactionBase, TransactionCreate, TransactionModel
 
 from .. import app
 
