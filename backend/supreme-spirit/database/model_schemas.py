@@ -18,12 +18,11 @@ class UserCreate(UserBase):
     pass
 
 
-
 class AccountBase(BaseModel):
     name: str
     balance: float
     currency: str
-    user: int
+    user: UserBase
     type: AccountType
     interest: float
 
