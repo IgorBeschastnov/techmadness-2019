@@ -51,26 +51,43 @@ const offers = [
 
 export interface Company {
   id: number;
-  name: string;
-  balance: number;
-  currency: string;
+  login: string;
+  address: string;
+}
+
+export interface FilterModel {
+  ["employeesFrom"]: number;
+  ["employeesTo"]: number;
+  ["activityType"]: string;
+  ["companyType"]: string;
+  ["companyAgeFrom"]: number;
+  ["companyAgeTo"]: number;
+  ["currencyAccount"]: boolean;
 }
 
 export const App: React.FC = () => {
   const [step, setStep] = useState(0);
-
+  const [error, setError] = useState(undefined);
+  const [id, setId] = useState(undefined);
   const [companyList, setCompanyList] = useState<Company[]>([]);
 
-  useEffect(() => {
+  const getCompanyList = useCallback((data: FilterModel) => {
     axios
-      .get(`${"http://spacehub.su/offerfilters"}`)
-      .then(response => console.log(response.data));
+      .get(`${"http://spacehub.su/users"}`, { data })
+      .then(response => setCompanyList(response.data));
   }, []);
 
-  const getCompanyList = useCallback(() => {
+  const postFilters = useCallback((data: FilterModel) => {
     axios
-      .get(`${"http://spacehub.su/accounts"}`)
-      .then(response => setCompanyList(response.data));
+      .post(`${"http://spacehub.su/offerfilters"}`, {
+        filter: {
+          ...data,
+          companyType: parseInt(data.companyType),
+          activityType: parseInt(data.activityType)
+        }
+      })
+      .then(response => setId(response.data.id))
+      .catch(error => setError(error));
   }, []);
 
   const renderListPanelWait = () => {
@@ -116,8 +133,9 @@ export const App: React.FC = () => {
       <Header />
       <Line className="main-screen" justifyContent="start">
         <FilterPanel
-          getCompanyList={getCompanyList}
-          onChange={() => setStep(1)}
+          getCompanyList={(data: FilterModel) => getCompanyList(data)}
+          onChange={() => (error ? console.log(error) : setStep(1))}
+          postFilters={postFilters}
         ></FilterPanel>
         <div className="list-panel">
           {step > 0 ? renderListPanel() : renderListPanelWait()}

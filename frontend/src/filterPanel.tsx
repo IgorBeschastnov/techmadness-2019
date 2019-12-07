@@ -33,8 +33,9 @@ const companyTypeList = [
 ];
 
 export interface Props {
-  getCompanyList: () => void;
+  getCompanyList: (data: FilterModel) => void;
   onChange: (value: number) => void;
+  postFilters: (data: FilterModel) => void;
 }
 
 export interface FilterModel {
@@ -47,7 +48,11 @@ export interface FilterModel {
   ["currencyAccount"]: boolean;
 }
 
-export const FilterPanel: React.FC<Props> = ({ getCompanyList, onChange }) => {
+export const FilterPanel: React.FC<Props> = ({
+  getCompanyList,
+  onChange,
+  postFilters
+}) => {
   const [filter, setFilter] = useState<FilterModel>({
     employeesFrom: 0,
     employeesTo: 0,
@@ -91,7 +96,20 @@ export const FilterPanel: React.FC<Props> = ({ getCompanyList, onChange }) => {
             <span
               className="link"
               onClick={() => {
-                getCompanyList();
+                const at = activityList.find(
+                  x => x.data == filter["activityType"]
+                );
+                const ct = companyTypeList.find(
+                  x => x.data == filter["companyType"]
+                );
+
+                const newFilter = {
+                  ...filter,
+                  activityType: at ? at.value.toString() : "0",
+                  companyType: ct ? ct.value.toString() : "0"
+                };
+                postFilters(newFilter);
+                getCompanyList(newFilter);
                 onChange(1);
               }}
             >

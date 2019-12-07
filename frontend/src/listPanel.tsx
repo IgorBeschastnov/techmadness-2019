@@ -13,9 +13,8 @@ enum Money {
 
 export interface Company {
   id: number;
-  name: string;
-  balance: number;
-  currency: string;
+  login: string;
+  address: string;
 }
 
 export interface Props {
@@ -35,24 +34,12 @@ export const ListPanel: React.FC<Props> = ({ content, onChange }) => {
       </Line>
       {content.map(x => (
         <Line key={x.id} className="table-row">
-          <span className="row-title">{x.name}</span>
+          <span className="row-title">{x.login}</span>
           <span className="text">
-            {x.balance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, ",")}{" "}
-            {getIcon(x.currency)}
+            {x.address}
           </span>
         </Line>
       ))}
     </Line>
   );
-};
-
-const getIcon = (value: string) => {
-  switch (value) {
-    case Money.DOLLAR:
-      return <Icon name="dollar-sign"></Icon>;
-    case Money.EURO:
-      return <Icon name="euro-sign"></Icon>;
-    case Money.RUBLE:
-      return <Icon name="ruble-sign"></Icon>;
-  }
 };
