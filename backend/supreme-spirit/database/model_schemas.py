@@ -1,5 +1,5 @@
 import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
@@ -32,7 +32,7 @@ class UserModel(UserBase):
     id: int
     created_at: datetime.datetime
     age: int
-    accounts: List[AccountBase]
+    accounts: Optional[List[AccountBase]]
 
     class Config:
         orm_mode = True
