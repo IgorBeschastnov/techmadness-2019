@@ -27,12 +27,17 @@ class AccountBase(BaseModel):
     type: AccountType
     interest: float
 
-    
+
+class AccountORM(AccountBase):
+    class Config:
+        orm_mode = True
+
+
 class UserModel(UserBase):
     id: int
     created_at: datetime.datetime
     age: int
-    accounts: Optional[List[AccountBase]]
+    accounts: Optional[List[AccountORM]]
 
     class Config:
         orm_mode = True
