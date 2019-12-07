@@ -4,7 +4,8 @@ from database.models.models import AccountType, OfferType
 import datetime
 
 class UserBase(BaseModel):
-    name: str
+    login: str
+    address: str
 
 
 class UserCreate(UserBase):
@@ -20,9 +21,11 @@ class UserModel(UserBase):
 
 class AccountBase(BaseModel):
     name: str
-    balance : float
-    currency : str
-    type : AccountType
+    balance: float
+    currency: str
+    user: int
+    type: AccountType
+    interest: float
 
 class AccountCreate(AccountBase):
     pass

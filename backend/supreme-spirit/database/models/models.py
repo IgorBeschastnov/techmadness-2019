@@ -28,7 +28,7 @@ class User(Base):
     # System fields
     id = Column('user_id', Integer, primary_key=True, index=True)
 
-    login = Column(String(50), nullable=False)
+    login = Column(String(50), nullable=False, unique=True)
     address = Column(String(50), nullable=True)
 
     def __repr__(self):
@@ -40,7 +40,8 @@ class Account(Base):
     # System fields
     id = Column('account_id', Integer, primary_key=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-
+    
+    name = Column(String(20), default='')
     user_id = Column(Integer, ForeignKey(User.id), nullable=True)
     user = relationship(User, backref='accounts')
     type = Column(Enum(AccountType), default=AccountType.PAYMENT)
