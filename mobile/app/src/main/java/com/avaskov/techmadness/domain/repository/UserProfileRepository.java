@@ -24,11 +24,11 @@ public class UserProfileRepository {
     }
 
     private UserProfileRepository() {
-        this.user = new User("default", "default", new ArrayList<>());
-        user.getAccounts().add(new Account("account_1", 1116.78f, 0.12, AccountType.CREDIT));
-        user.getAccounts().add(new Account("account_2", 1516.76f, 0.02, AccountType.DEPOSIT));
-        user.getAccounts().add(new Account("account_3", 15116.38f, 0.12, AccountType.PAYMENT));
-        user.getAccounts().add(new Account("account_4", 11166.88f, 0.16, AccountType.CREDIT));
+        this.user = new User(1, "default", "default", new ArrayList<>());
+        user.getAccounts().add(new Account(1111222344,"account_1", 1116.78f, 0.12, AccountType.CREDIT));
+        user.getAccounts().add(new Account(1222222344,"account_2", 1516.76f, 0.02, AccountType.DEPOSIT));
+        user.getAccounts().add(new Account(1333222344,"account_3", 15116.38f, 0.12, AccountType.PAYMENT));
+        user.getAccounts().add(new Account(1444222344,"account_4", 11166.88f, 0.16, AccountType.CREDIT));
         this.offers = new ArrayList<>();
         offers.add(new Offer(1, OfferType.CREDIT, "credit_1", new HashMap<>(), 1, ""));
         offers.add(new Offer(2, OfferType.CREDIT, "credit_2", new HashMap<>(), 1, ""));

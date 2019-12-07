@@ -3,6 +3,7 @@ package com.avaskov.techmadness.presentation.controllers;
 import com.avaskov.techmadness.domain.executor.Executor;
 import com.avaskov.techmadness.domain.models.Offer;
 import com.avaskov.techmadness.domain.models.OfferType;
+import com.avaskov.techmadness.domain.models.User;
 import com.avaskov.techmadness.domain.repository.UserProfileRepository;
 import com.avaskov.techmadness.threading.MainThread;
 import com.avaskov.techmadness.ui.activities.MainActivity;
@@ -45,6 +46,10 @@ public class MainController {
                 }
             }
             mainThread.post(() -> view.showCreditDepositOffers(creditDepositOffersList));
+
+            User user = userProfileRepository.getUser();
+
+            mainThread.post(() -> view.showAccounts(user.getAccounts()));
         });
     }
 }

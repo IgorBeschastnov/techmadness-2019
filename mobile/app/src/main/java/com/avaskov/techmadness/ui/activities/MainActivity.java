@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avaskov.techmadness.R;
 import com.avaskov.techmadness.domain.executor.ThreadExecutor;
+import com.avaskov.techmadness.domain.models.Account;
 import com.avaskov.techmadness.domain.models.Offer;
 import com.avaskov.techmadness.domain.repository.UserProfileRepository;
 import com.avaskov.techmadness.presentation.controllers.MainController;
 import com.avaskov.techmadness.threading.MainThreadImpl;
+import com.avaskov.techmadness.ui.adapters.MainAccountAdapter;
 import com.avaskov.techmadness.ui.adapters.MainOfferAdapter;
 
 import java.util.List;
@@ -27,6 +29,9 @@ public class MainActivity extends Activity {
     @BindView(R.id.main_offer_recycler_view)
     RecyclerView recyclerView;
 
+    @BindView(R.id.main_accounts_recycler_view)
+    RecyclerView accountsRecyclerView;
+
     @BindView(R.id.birthday_offer_rl)
     RelativeLayout birthdayLayout;
 
@@ -35,6 +40,7 @@ public class MainActivity extends Activity {
 
     private List<Offer> events;
     private MainOfferAdapter offersAdapter;
+    private MainAccountAdapter mainAccountAdapter;
     private MainController controller;
 
     @Override
@@ -55,6 +61,10 @@ public class MainActivity extends Activity {
         offersAdapter = new MainOfferAdapter();
         recyclerView.setAdapter(offersAdapter);
 
+        accountsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mainAccountAdapter = new MainAccountAdapter();
+        accountsRecyclerView.setAdapter(mainAccountAdapter);
+
         controller.obtainOffers();
 
         birthdayLayout.setGravity(View.GONE);
@@ -67,5 +77,9 @@ public class MainActivity extends Activity {
 
     public void showCreditDepositOffers(List<Offer> offers) {
         offersAdapter.setItems(offers);
+    }
+
+    public void showAccounts(List<Account> accounts) {
+        mainAccountAdapter.setItems(accounts);
     }
 }
