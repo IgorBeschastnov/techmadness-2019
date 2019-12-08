@@ -30,12 +30,12 @@ generation_params = (
     (func1, local_max_1, company_birthday_event),
     (func2, local_max_2, create_autotransaction_offers),
 )
-start_date = datetime.datetime(2015, 1, 1)
+start_date = datetime.datetime(2019, 1, 1)
 
 
 def generate_offer(user, db):
     days = (datetime.datetime.utcnow() - start_date).days
-    for day in range(1, days):
+    for day in range(1, days, 1):
         for func, local_max, constructor in generation_params:
             value = func(day) / local_max
             if (random.randint(0, 100) / 100) <= value:
