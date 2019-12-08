@@ -92,6 +92,9 @@ public class MainActivity extends Activity {
     }
 
     public void showCreditDepositOffers(List<Offer> offers) {
+        if (offers.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+        }
         offersAdapter.setItems(offers);
     }
 
@@ -103,7 +106,7 @@ public class MainActivity extends Activity {
     public void showOffer(Offer offer) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage("Хотите подключить: " + offer.getText() + "?");
+        builder.setMessage(offer.getDescription());
 
         builder.setPositiveButton("Согласен", (dialog, id) -> controller.offerAccepted(offer));
 

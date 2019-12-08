@@ -30,6 +30,7 @@ public class MainController {
     public void obtainOffers() {
         executor.execute(() -> {
             List<Offer> offers = mainRepository.getOffers();
+
             Offer importantDate = null;
             for (Offer offer : offers) {
                 if (offer.getType().equals(OfferType.IMPORTANT_DATE)) {
@@ -44,7 +45,12 @@ public class MainController {
 
             List<Offer> creditDepositOffersList = new ArrayList<>();
             for (Offer offer : offers) {
-                if (offer.getType().equals(OfferType.CREDIT) || offer.getType().equals(OfferType.DEPOSIT)) {
+                if (offer.getType().equals(OfferType.CREDIT) ||
+                        offer.getType().equals(OfferType.DEPOSIT) ||
+                        offer.getType().equals(OfferType.MORTGAGE) ||
+                        offer.getType().equals(OfferType.CAR) ||
+                        offer.getType().equals(OfferType.INSURANCE) ||
+                        offer.getType().equals(OfferType.INVESTMENTS)) {
                     creditDepositOffersList.add(offer);
                 }
             }

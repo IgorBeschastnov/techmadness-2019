@@ -31,6 +31,7 @@ public class ResultTransactionController {
             for (Offer offer : offers) {
                 if (Objects.equals(offer.getData().get("to_account"), to)) {
                     mainThread.post(() -> view.showOffer(offer));
+                    return;
                 }
             }
         });
