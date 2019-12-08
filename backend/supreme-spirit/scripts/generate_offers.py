@@ -23,8 +23,8 @@ def func2(x):
     return abs(math.sqrt(x) * math.cos(x))
 
 
-local_max_1 = 2.4
-local_max_2 = 45
+local_max_1 = 3
+local_max_2 = 17
 generation_params = (
     (func1, local_max_1, company_birthday_event),
     (func2, local_max_2, autotransaction_offer),
