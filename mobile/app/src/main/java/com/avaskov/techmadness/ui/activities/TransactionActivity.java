@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -35,6 +37,9 @@ public class TransactionActivity extends Activity {
 
     @BindView(R.id.sum_of_transaction_et)
     EditText sumOfTransaction;
+
+    @BindView(R.id.transaction_btn)
+    ImageButton sendButton;
 
     private TransactionController controller;
 
@@ -85,12 +90,14 @@ public class TransactionActivity extends Activity {
             if (!fromNumberTextView.getText().toString().isEmpty() &&
                     !toNumberTextView.getText().toString().isEmpty() &&
                     Integer.parseInt(sumOfTransaction.getText().toString()) < Integer.parseInt(fromBalanceTextView.getText().toString())) {
+                sendButton.setEnabled(false);
                 controller.sendOfferPressed(fromNumberTextView.getText().toString(),
                         toNumberTextView.getText().toString(),
                         sumOfTransaction.getText().toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Заполните все поля!", Toast.LENGTH_SHORT).show();
         }
     }
 
