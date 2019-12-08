@@ -37,11 +37,11 @@ def autotransaction_offer(user, value=None, created_at=None, db=None):
         db = Session()
     if value is None:
         value = random.randint(0, 10)
-    auto_transaction = OfferTemplate (
+    auto_transaction = OfferTemplate(
         text='Автоплатеж',
         type=OfferType.AUTOTRANSACTION,
         data={'description': 'Настройте автоплатеж!', 'user_id': user.id, 'weight': value},
-        )
+    )
     db.add(auto_transaction)
     db.commit()
     db.refresh(auto_transaction)
@@ -52,6 +52,7 @@ def autotransaction_offer(user, value=None, created_at=None, db=None):
     db.add(db_offer)
     db.commit()
     db.refresh(db_offer)
+
 
 def company_birthday_event(user, years=None, created_at=None, db=None):
     if years and user.age not in years:
