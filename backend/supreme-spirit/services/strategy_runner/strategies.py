@@ -40,7 +40,7 @@ def autotransaction_offer(user, value=None, created_at=None, db=None):
     auto_transaction = OfferTemplate (
         text='Автоплатеж',
         type=OfferType.AUTOTRANSACTION,
-        data={'description': 'Настройте автоплатеж!', 'user_id': user.user_id, 'weight': value},
+        data={'description': 'Настройте автоплатеж!', 'user_id': user.id, 'weight': value},
         )
     db.add(auto_transaction)
     db.commit()
