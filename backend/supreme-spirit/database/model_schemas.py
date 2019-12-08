@@ -156,3 +156,8 @@ class BoundOfferTemplateModel(BoundOfferTemplateCreate):
 
     class Config:
         orm_mode = True
+
+
+class StrategyParams(BaseModel):
+    window: Optional[int]
+    years: Optional[List[int]]

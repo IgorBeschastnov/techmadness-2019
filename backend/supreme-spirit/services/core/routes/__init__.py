@@ -5,3 +5,4 @@ from .offer_templates import offer_templates_list
 from .offers import offers_list
 from .transactions import transactions_list
 from .users import users_list
+from .strategy_params import get_strategy_params

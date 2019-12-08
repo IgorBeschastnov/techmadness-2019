@@ -50,3 +50,10 @@ services:
       - core
     networks:
       - default
+  redis:
+    image: redis
+    networks:
+      - default
+    ports:
+      - "6379:6379"
+    container_name: hack-redis
