@@ -1,13 +1,13 @@
-import random
 import math
+import random
 from collections import defaultdict
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 from functools import reduce
 
+from crud import get_out_transactions_by_user_id
 from sqlalchemy import desc
 
-from crud import get_out_transactions_by_user_id
-from database import Offer, OfferTemplate, Session, OfferType, User, Transaction
+from database import Offer, OfferTemplate, OfferType, Session, Transaction, User
 
 
 def predict_autotransaction(user: User, window: int):
@@ -82,28 +82,25 @@ def company_birthday_event(user, years=None, created_at=None, db=None):
     create_offer(age_bonus, user, db, created_at)
 
 
-def predict_credit_offers(
-    user,
-    minimal_sequence,
-    value=None,
-    created_at=None,
-    db=None
-):
+def predict_credit_offers(user, minimal_sequence, value=None, created_at=None, db=None):
     if db is None:
         db = Session()
 
-    transactions = db.query(Transaction).filter(
-        ((Transaction.from_user_id == user.id) |
-         (Transaction.to_user_id == user.id)) &
-        ((Transaction.to_user_id != user.id) |
-         (Transaction.from_user_id != user.id))
-    ).order_by(desc(Transaction.created_at)).all()
+    transactions = (
+        db.query(Transaction)
+        .filter(
+            ((Transaction.from_user_id == user.id) | (Transaction.to_user_id == user.id))
+            & ((Transaction.to_user_id != user.id) | (Transaction.from_user_id != user.id))
+        )
+        .order_by(desc(Transaction.created_at))
+        .all()
+    )
     if not transactions:
         return None
 
     month_delta = timedelta(days=30)
     now = datetime.now()
-    
+
     def delta(dt):
         return now - dt
 
@@ -136,7 +133,7 @@ def predict_credit_offers(
 
     if sequential < minimal_sequence:
         return None
-    
+
     avg /= sequential
 
     if sign == -1:

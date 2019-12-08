@@ -1,5 +1,6 @@
 import datetime
 import random
+
 from crud.user import get_users
 
 from database import Account, Session, Transaction
@@ -72,13 +73,11 @@ def generate_accounts_and_transactions():
             from_account_id=first_acc.id,
             to_account_id=second_acc.id,
             amount=random.randint(1, first_acc.balance),
-            created_at=datetime.datetime(2019, random.randint(1,12), random.randint(1, 27))
+            created_at=datetime.datetime(2019, random.randint(1, 12), random.randint(1, 27)),
         )
         db.add(db_transaction)
         db.commit()
         db.refresh(db_transaction)
-
-
 
 
 if __name__ == '__main__':

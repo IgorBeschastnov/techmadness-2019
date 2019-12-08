@@ -2,21 +2,21 @@ import json
 import time
 
 import redis
-
 from crud.user import get_users
-from database import Offer, OfferTemplate, Session
 from strategies import (
     company_birthday_event,
     create_autotransaction_offers,
+    create_finance_offer,
     predict_autotransaction,
     predict_credit_offers,
-    create_finance_offer,
 )
+
+from database import Offer, OfferTemplate, Session
 
 r = redis.Redis(host='redis', port=6379, db=0)
 
 
-def get_or_default(key, default, encoder = lambda x: x, decoder = lambda x: x):
+def get_or_default(key, default, encoder=lambda x: x, decoder=lambda x: x):
     if not r.exists(key):
         value = default
         r.set(key, encoder(value))

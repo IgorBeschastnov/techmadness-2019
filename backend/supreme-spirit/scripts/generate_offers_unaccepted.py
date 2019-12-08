@@ -5,16 +5,11 @@ import random
 import time
 
 import redis
-
 from crud.user import get_users
-from services.strategy_runner.strategies import (
-    company_birthday_event,
-    autotransaction_offer,
-)
+from services.strategy_runner.strategies import autotransaction_offer, company_birthday_event
 from sqlalchemy.orm import Session
 
-from database import Offer, OfferTemplate, Session, OfferType
-
+from database import Offer, OfferTemplate, OfferType, Session
 
 pull = (
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt '
@@ -23,6 +18,7 @@ pull = (
     'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat '
     'non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'.split()
 )
+
 
 def generate_offers_unaccepted():
     db = Session()
@@ -36,7 +32,7 @@ def generate_offers_unaccepted():
             type=random.choice(list(OfferType)),
             data={
                 'description': ' '.join(random.choices(pull, k=10)),
-                'interest': random.randint(0,10),
+                'interest': random.randint(0, 10),
                 'user_id': user.id,
             },
         )
@@ -49,6 +45,7 @@ def generate_offers_unaccepted():
         db.commit()
         db.refresh(db_offer)
         print(user.id, db_offer.id)
+
 
 if __name__ == '__main__':
     generate_offers_unaccepted()

@@ -5,12 +5,8 @@ import random
 import time
 
 import redis
-
 from crud.user import get_users
-from services.strategy_runner.strategies import (
-    company_birthday_event,
-    autotransaction_offer,
-)
+from services.strategy_runner.strategies import autotransaction_offer, company_birthday_event
 from sqlalchemy.orm import Session
 
 from database import Offer, OfferTemplate, Session

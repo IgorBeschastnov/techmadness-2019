@@ -1,11 +1,11 @@
 import json
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import redis
 from fastapi import Depends
+from pydantic import BaseModel
 from services.utils import get_db
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
 
 from database import StrategyParams
 
@@ -35,17 +35,9 @@ def post_strategy_params(params: StrategyParams, db: Session = Depends(get_db)):
 def get_strategy_params(db: Session = Depends(get_db)):
     window = r.get('window')
     years = r.get('years')
-    return StrategyListModel(strategies=[
-        StrategyModel(
-            title='Автоплатеж',
-            params={
-                'windows': window,
-            }
-        ),
-        StrategyModel(
-            title='Предложения на годовщину',
-            params={
-                'years': years,
-            }
-        )
-    ])
+    return StrategyListModel(
+        strategies=[
+            StrategyModel(title='Автоплатеж', params={'windows': window}),
+            StrategyModel(title='Предложения на годовщину', params={'years': years}),
+        ]
+    )
