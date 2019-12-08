@@ -1,38 +1,58 @@
+import math
 import random
 from collections import defaultdict
-from datetime import timedelta
+from datetime import datetime, timedelta
+from functools import reduce
 
-from crud import get_in_transactions_by_user_id
+from crud import get_out_transactions_by_user_id
+from sqlalchemy import desc
 
-from database import Offer, OfferTemplate, Session
-from database.models.models import OfferType
+from database import Offer, OfferTemplate, OfferType, Session, Transaction, User
 
 
-def predict_autotransaction(user_id: int, window: int):
-    transactions = get_in_transactions_by_user_id(user_id, Session())
+def predict_autotransaction(user: User, window: int):
+    transactions = get_out_transactions_by_user_id(user.id, Session())
+    if not transactions:
+        return None, None
+
     predicted_users = defaultdict(list)
-    if transactions:
-        dates = defaultdict(list)
+    dates = defaultdict(list)
 
-        for record in transactions:
-            dates[record.to_user_id].append(record.created_at)
+    for record in transactions:
+        dates[record.to_user_id].append(record.created_at)
 
-        for id, value in dates.items():
-            if len(value) > 1:
-                for i in range(len(value) - 1):
-                    td = timedelta(days=window)
-                    if value[i + 1] < value[i] + td:
-                        predicted_users[id] = len(value)
-    return predicted_users
+    for to_id, value in dates.items():
+        if len(value) <= 1:
+            continue
+        for i in range(len(value) - 1):
+            td = timedelta(days=window)
+            if value[i] - td <= value[i + 1] <= value[i] + td:
+                predicted_users[to_id] = len(value)
 
-
-def create_autotransaction_offers(predicted, db=None):
-    if predicted:
-        for user, value in predicted.items():
-            autotransaction_offer(user, value, db=db)
+    return user, predicted_users
 
 
-def autotransaction_offer(user, value=None, created_at=None, db=None):
+def create_autotransaction_offers(user, predicted, db=None):
+    if not predicted:
+        return
+    for to_id, weight in predicted.items():
+        autotransaction_offer(user, to_id, weight, db=db)
+
+
+def create_offer(offer_template, user, db, created_at=None):
+    db.add(offer_template)
+    db.commit()
+    db.refresh(offer_template)
+    db_offer = Offer(user_id=user.id, offer_template_id=offer_template.id)
+    if created_at is not None:
+        db_offer.created_at = created_at
+        db_offer.accepted = True
+    db.add(db_offer)
+    db.commit()
+    db.refresh(db_offer)
+
+
+def autotransaction_offer(user, to_id, weight=None, created_at=None, db=None):
     if db is None:
         db = Session()
     if value is None:
@@ -40,18 +60,9 @@ def autotransaction_offer(user, value=None, created_at=None, db=None):
     auto_transaction = OfferTemplate(
         text='Автоплатеж',
         type=OfferType.AUTOTRANSACTION,
-        data={'description': 'Настройте автоплатеж!', 'user_id': user.id, 'weight': value},
+        data={'description': 'Настройте автоплатеж!', 'user_id': to_id, 'weight': weight},
     )
-    db.add(auto_transaction)
-    db.commit()
-    db.refresh(auto_transaction)
-    db_offer = Offer(user_id=user.id, offer_template_id=auto_transaction.id)
-    if created_at:
-        db_offer.created_at = created_at
-        db_offer.accepted = True
-    db.add(db_offer)
-    db.commit()
-    db.refresh(db_offer)
+    create_offer(auto_transaction, user, db, created_at)
 
 
 def company_birthday_event(user, years=None, created_at=None, db=None):
@@ -68,13 +79,74 @@ def company_birthday_event(user, years=None, created_at=None, db=None):
             'user_id': user.id,
         },
     )
-    db.add(age_bonus)
-    db.commit()
-    db.refresh(age_bonus)
-    db_offer = Offer(user_id=user.id, offer_template_id=age_bonus.id)
-    if created_at:
-        db_offer.created_at = created_at
-        db_offer.accepted = True
-    db.add(db_offer)
-    db.commit()
-    db.refresh(db_offer)
+    create_offer(age_bonus, user, db, created_at)
+
+
+def predict_credit_offers(user, minimal_sequence, value=None, created_at=None, db=None):
+    if db is None:
+        db = Session()
+
+    transactions = (
+        db.query(Transaction)
+        .filter(
+            ((Transaction.from_user_id == user.id) | (Transaction.to_user_id == user.id))
+            & ((Transaction.to_user_id != user.id) | (Transaction.from_user_id != user.id))
+        )
+        .order_by(desc(Transaction.created_at))
+        .all()
+    )
+    if not transactions:
+        return None
+
+    month_delta = timedelta(days=30)
+    now = datetime.now()
+
+    def delta(dt):
+        return now - dt
+
+    net_list = []
+    for transaction in transactions:
+        appended = False
+        month_net = 0
+        if transaction.from_user_id == user.id:
+            month_net -= transaction.amount
+        else:
+            month_net += transaction.amount
+        if delta(transaction.created_at) > month_delta:
+            net_list.append(month_net)
+            month_net = 0
+            appended = True
+
+    if not appended:
+        net_list.append(month_net)
+
+    sequential = 1
+    avg = net_list[0]
+    sign = math.copysign(1, net_list[0])
+    for net in net_list[1:]:
+        next_sign = math.copysign(1, net)
+        if next_sign != sign:
+            break
+        else:
+            sequential += 1
+            avg += net
+
+    if sequential < minimal_sequence:
+        return None
+
+    avg /= sequential
+
+    if sign == -1:
+        return -1, avg
+    else:
+        return 1, avg
+
+
+def create_finance_offer(user, type_, amount):
+    db = Session()
+    offer_template = OfferTemplate(
+        text='Автоплатеж',
+        type=OfferType.DEPOSIT if type_ > 0 else OfferType.CREDIT,
+        data={'description': 'Выгодное предложение', 'interest': 5 + type_, 'amount': abs(amount)},
+    )
+    create_offer(offer_template, user, db)

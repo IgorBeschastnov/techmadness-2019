@@ -1,3 +1,4 @@
+import datetime
 import random
 
 from crud.user import get_users
@@ -17,6 +18,7 @@ currencies = ['rub', 'euro', 'dollar']
 def generate_accounts_and_transactions():
     db = Session()
     list_of_users = get_users(db)
+
     for _ in range(20):
         from_user = random.choice(list_of_users).id
         to_user = random.choice(list_of_users).id
@@ -55,6 +57,27 @@ def generate_accounts_and_transactions():
         db.add(db_transaction)
 
     db.commit()
+
+    for _ in range(2000):
+        accounts = db.query(Account).all()
+
+        first_acc = random.choice(accounts)
+        second_acc = random.choice(accounts)
+
+        from_user = first_acc.user_id
+        to_user = second_acc.user_id
+
+        db_transaction = Transaction(
+            from_user_id=from_user,
+            to_user_id=to_user,
+            from_account_id=first_acc.id,
+            to_account_id=second_acc.id,
+            amount=random.randint(1, first_acc.balance),
+            created_at=datetime.datetime(2019, random.randint(1, 12), random.randint(1, 27)),
+        )
+        db.add(db_transaction)
+        db.commit()
+        db.refresh(db_transaction)
 
 
 if __name__ == '__main__':
