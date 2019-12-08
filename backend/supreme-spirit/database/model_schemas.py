@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
-from database.models.models import AccountType, OfferType, UserType, UserActivity
+from database.models.models import AccountType, OfferType, UserActivity, UserType
 
 
 class UserBase(BaseModel):

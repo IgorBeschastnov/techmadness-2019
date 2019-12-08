@@ -53,7 +53,7 @@ export const App: React.FC = () => {
   const postFilters = useCallback((data: FilterModel) => {
     let from = data.employeesFrom;
     let to = data.employeesTo;
-    if (from == 0 && to == 0) {
+    if (from === 0 && to === 0) {
       from = null;
       to = null;
     }
@@ -93,10 +93,10 @@ export const App: React.FC = () => {
 
   const onchange = useCallback(
     (ind: number) => {
-      const index = offerApproveIds.findIndex(y => y == ind);
+      const index = offerApproveIds.findIndex(y => y === ind);
       let newModel: number[];
       newModel = [...offerApproveIds];
-      index != -1 ? newModel.splice(index, 1) : newModel.push(ind);
+      index !== -1 ? newModel.splice(index, 1) : newModel.push(ind);
       setOfferApproveIds(newModel);
     },
     [offerApproveIds]
@@ -166,7 +166,10 @@ export const App: React.FC = () => {
           <Line alignItems="end" justifyContent="center">
             <Button
               className="custom-button"
-              onClick={() => boundOfferTemplates()}
+              onClick={() => {
+                boundOfferTemplates();
+                setStep(0);
+              }}
               buttonType="danger"
               label={"Отправить предложения"}
             ></Button>
@@ -178,12 +181,17 @@ export const App: React.FC = () => {
 
   return (
     <Line vertical>
-      <Header onChange={(value: number) => setCurrentPage(value)}></Header>
-      {currentPage == 0 && (
+      <Header
+        onChange={(value: number) => {
+          setStep(0);
+          setCurrentPage(value);
+        }}
+      ></Header>
+      {currentPage === 0 && (
         <Line className="main-screen" justifyContent="start">
           <FilterPanel
             getCompanyList={(data: FilterModel) => getCompanyList(data)}
-            onChange={() => (error ? console.log(error) : setStep(1))}
+            onChange={() => setStep(1)}
             postFilters={postFilters}
           ></FilterPanel>
           <div className="list-panel">
@@ -195,7 +203,7 @@ export const App: React.FC = () => {
           </div>
         </Line>
       )}
-      {currentPage == 1 && <CorrectionScreen></CorrectionScreen>}
+      {currentPage === 1 && <CorrectionScreen></CorrectionScreen>}
     </Line>
   );
 };

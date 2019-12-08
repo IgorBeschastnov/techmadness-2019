@@ -21,7 +21,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   return (
     <Line alignItems="center" className="auth-checkbox">
       <Icon
-        name={id == value ? "check-circle" : "circle"}
+        name={id === value ? "check-circle" : "circle"}
         prefix="far"
         onClick={() => onChange(id)}
       ></Icon>

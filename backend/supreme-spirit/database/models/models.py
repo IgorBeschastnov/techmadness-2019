@@ -38,8 +38,6 @@ class OfferType(IntEnum):
     INSURANCE = 7
     INVESTMENTS = 8
 
-    
-
 
 class UserType(IntEnum):
     OOO = 1
@@ -61,7 +59,7 @@ class User(Base):
     __tablename__ = 'users'
     # System fields
     id = Column('user_id', Integer, primary_key=True, index=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow,nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     login = Column(String(50), nullable=False, unique=True)
     address = Column(String(50), nullable=True)
@@ -71,7 +69,7 @@ class User(Base):
 
     @property
     def age(self):
-        return (datetime.datetime.utcnow() - self.created_at).days/360
+        return (datetime.datetime.utcnow() - self.created_at).days / 360
 
 
 class Account(Base):
