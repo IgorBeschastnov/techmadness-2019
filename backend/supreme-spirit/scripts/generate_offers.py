@@ -43,7 +43,7 @@ def generate_offers():
         value = func(day)
         if (random.randint(0, 100) / 100) < value:
             company_birthday_event(
-                user, years, datetime.datetime(2015, 1, 1) + datetime.timedelta(days=day),db
+                user, years, datetime.datetime(2015, 1, 1) + datetime.timedelta(days=day), db
             )
 
     for day in days:
