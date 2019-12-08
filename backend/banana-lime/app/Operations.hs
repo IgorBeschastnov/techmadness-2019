@@ -104,7 +104,7 @@ processBoundOfferTemplate (bound_id:template_id:filter_id:_) = do
 
 ioLoop = do
     -- log
-    putStrLn "\nIOLOOP\n"
+    putStrLn "*****     Running IOLoop    *****"
     -- Get bound templates from db
     boundOfferTemplates <- getBoundOfferTemplates
     putStrLn $ "Found bound offer templates: " ++ show (length boundOfferTemplates)
