@@ -25,9 +25,10 @@ def predict_autotransaction(user_id: int, window: int):
     return predicted_users
 
 
-def create_autotransaction_offers(predicted, user):
+def create_autotransaction_offers(predicted, user, created_at=None, db=None):
     if predicted:
-        db = Session()
+        if db is None:
+            db = Session()
         for id, value in predicted.items():
             auto_transaction = OfferTemplate(
                 text='Автоплатеж',
@@ -38,6 +39,34 @@ def create_autotransaction_offers(predicted, user):
             db.commit()
             db.refresh(auto_transaction)
             db_offer = Offer(user_id=user.id, offer_template_id=auto_transaction.id)
+            if created_at:
+                db_offer.created_at = created_at
+                db_offer.accepted = True
             db.add(db_offer)
             db.commit()
             db.refresh(db_offer)
+
+
+def company_birthday_event(user, years, created_at=None, db=None):
+    if user.age in years:
+        if db is None:
+            db = Session()
+        age_bonus = OfferTemplate(
+            text='Выслуга лет!',
+            type=OfferType.DEPOSIT,
+            data={
+                'description': 'Вы с нам уже давно! Вам специальное предложение',
+                'interest': 5.5,
+                'user_id': user.id,
+            },
+        )
+        db.add(age_bonus)
+        db.commit()
+        db.refresh(age_bonus)
+        db_offer = Offer(user_id=user.id, offer_template_id=age_bonus.id)
+        if created_at:
+            db_offer.created_at = created_at
+            db_offer.accepted = True
+        db.add(db_offer)
+        db.commit()
+        db.refresh(db_offer)
