@@ -35,7 +35,7 @@ def create_autotransaction_offers(predicted, db=None):
 def autotransaction_offer(user, value=None, created_at=None, db=None):
     if db is None:
         db = Session()
-    if not value:
+    if value is None:
         value = random.randint(0, 10)
     auto_transaction = OfferTemplate (
         text='Автоплатеж',
