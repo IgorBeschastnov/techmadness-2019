@@ -149,7 +149,7 @@ def create_finance_offer(user, type_, amount):
     db = Session()
     offer_template = OfferTemplate(
         text='Автоплатеж',
-        type=OfferType.DEPOSIT if type_ else OfferType.CREDIT,
-        data={'description': 'Настройте автоплатеж!', 'interest': 5 + type_, 'amount': amount},
+        type=OfferType.DEPOSIT if type_ > 0 else OfferType.CREDIT,
+        data={'description': 'Выгодное предложение', 'interest': 5 + type_, 'amount': abs(amount)},
     )
     create_offer(offer_template, user, db)
