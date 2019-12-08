@@ -3,12 +3,23 @@ from sqlalchemy.orm import Session
 from database import Offer, OfferBase
 
 
-def get_offers(db):
-    return db.query(Offer).all()
+def get_offers(show_all, db):
+    if show_all:
+        return db.query(Offer).all()
+    else:
+        return db.query(Offer).filter(Offer.accepted == show_all).all()
 
 
-def get_offers_by_user_id(user_id, db):
-    return db.query(Offer).filter(Offer.user_id == user_id).all()
+def get_offers_by_user_id(user_id, show_all, db):
+    if show_all:
+        return db.query(Offer).filter(Offer.user_id == user_id).all()
+    else:
+        return (
+            db.query(Offer)
+            .filter(Offer.user_id == user_id)
+            .filter(Offer.accepted == show_all)
+            .all()
+        )
 
 
 def get_offer_by_id(id_: int, db):

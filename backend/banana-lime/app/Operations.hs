@@ -66,6 +66,10 @@ createFilterQuery filter =
           [
             ("num_of_employees", "<", employeesTo filter)
           , ("num_of_employees", ">", employeesFrom filter)
+          -- activityType filter
+          -- companyAgeTo filter
+          -- companyAgeFrom filter
+          -- currencyAccount filter
           ]
          ]
     in
@@ -73,11 +77,6 @@ createFilterQuery filter =
             then baseQuery ++ "true"
             else baseQuery ++ criterias
         where baseQuery = "select user_id from users where "
-          
-          --actType = activityType filter
-          --compAgeTo = companyAgeTo filter
-          --compAgeFrom = companyAgeFrom filter
-          --currency = currencyAccount filter
 
 deleteBoundOffer bound_id = do
     putStrLn $ "Deleting BoundOfferTemplate " ++ show bound_id

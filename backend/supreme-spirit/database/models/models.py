@@ -69,7 +69,7 @@ class User(Base):
 
     @property
     def age(self):
-        return (datetime.datetime.utcnow() - self.created_at).days / 360
+        return int((datetime.datetime.utcnow() - self.created_at).days / 365)
 
 
 class Account(Base):
