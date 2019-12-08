@@ -8,8 +8,7 @@ import redis
 from crud.user import get_users
 from services.strategy_runner.strategies import (
     company_birthday_event,
-    create_autotransaction_offers,
-    predict_autotransaction,
+    autotransaction_offer,
 )
 from sqlalchemy.orm import Session
 
@@ -28,7 +27,7 @@ local_max_1 = 3.3
 local_max_2 = 45
 generation_params = (
     (func1, local_max_1, company_birthday_event),
-    (func2, local_max_2, create_autotransaction_offers),
+    (func2, local_max_2, autotransaction_offer),
 )
 start_date = datetime.datetime(2019, 1, 1)
 
