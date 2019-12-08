@@ -16,48 +16,42 @@ from sqlalchemy.orm import Session
 from database import Offer, OfferTemplate, Session
 
 
-def func(day):
-    return math.log(day) * math.sin(day) ** 2
+def func1(x):
+    return math.log(x) * math.sin(x) ** 2
 
 
-def func2(day):
-    return (math.log(day) * math.sin(day) ** 2) - 1
+def func2(x):
+    return abs(math.sqrt(x) * math.cos(x))
+
+
+local_max_1 = 3.3
+local_max_2 = 45
+generation_params = (
+    (func1, local_max_1, company_birthday_event),
+    (func2, local_max_2, create_autotransaction_offers),
+)
+start_date = datetime.datetime(2015, 1, 1)
+
+
+def generate_offer(user, db):
+    days = (datetime.datetime.utcnow() - start_date).days
+    for day in range(1, days):
+        for func, local_max, constructor in generation_params:
+            value = func(day) / local_max
+            if (random.randint(0, 100) / 100) <= value:
+                constructor(
+                    user,
+                    created_at=start_date + datetime.timedelta(days=day),
+                    db=db,
+                )
 
 
 def generate_offers():
-    r = redis.Redis(host='localhost', port=6379, db=0)
     db = Session()
     users = get_users(db)
 
-    window = int(r.get('window'))
-    years = json.loads(r.get('years'))
-
-    if window is None:
-        window = 5
-
     for user in users:
-        company_birthday_event(user, years)
-
-    days = (datetime.datetime.utcnow() - datetime.datetime(2015, 1, 1)).days
-    for day in range(1, days):
-        value = func(day)
-        if (random.randint(0, 100) / 100) < value:
-            company_birthday_event(
-                user, years, datetime.datetime(2015, 1, 1) + datetime.timedelta(days=day),db
-            )
-
-    for day in days:
-        value = func2(day)
-        if (random.randint(0, 100) / 100) < value:
-            create_autotransaction_offers(
-                predict_autotransaction(
-                    user.id,
-                    window,
-                    datetime.datetime(2015, 1, 1) + datetime.timedelta(days=day),
-                    db,
-                ),
-                user,
-            )
+        generate_offer(user, db)
 
 
 if __name__ == '__main__':
