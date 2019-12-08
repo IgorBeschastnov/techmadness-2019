@@ -1,8 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import './line.scss';
-
 interface Props {
     tag?: React.ElementType;
     className?: string;

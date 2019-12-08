@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./checkbox.scss";
+import "./radioButton.scss";
 
 import { Line } from "./line";
 import { Icon } from "./icon";

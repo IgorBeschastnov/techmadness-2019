@@ -71,7 +71,7 @@ export const App: React.FC = () => {
       .catch(error => setError(error));
   }, []);
 
-  const boundOfferTemplates = async () => {
+  const postBoundOfferTemplates = async () => {
     const requests = offerApproveIds.map(x =>
       axios
         .post(`${"http://spacehub.su/boundoffertemplates"}`, {
@@ -83,6 +83,7 @@ export const App: React.FC = () => {
     );
     Promise.all(requests);
     setOfferApproveIds([]);
+    setStep(0);
   };
 
   const getOfferTemplates = useCallback(() => {
@@ -167,8 +168,7 @@ export const App: React.FC = () => {
             <Button
               className="custom-button"
               onClick={() => {
-                boundOfferTemplates();
-                setStep(0);
+                postBoundOfferTemplates()
               }}
               buttonType="danger"
               label={"Отправить предложения"}

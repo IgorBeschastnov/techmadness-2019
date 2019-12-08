@@ -21,10 +21,10 @@ export const ListPanel: React.FC<Props> = ({ content, onChange }) => {
     <Line vertical>
       <Line justifyContent="between" alignItems="center" className="title">
         <div>Компании</div>
-        <a className="call-to-action" onClick={() => onChange(2)}>
+        <div className="call-to-action" onClick={() => onChange(2)}>
           <span className="link">Выбрать предложения</span>
           <Icon name="angle-right"></Icon>
-        </a>
+        </div>
       </Line>
       {content &&
         content.map(x => (

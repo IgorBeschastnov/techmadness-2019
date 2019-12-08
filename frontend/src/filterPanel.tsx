@@ -92,14 +92,13 @@ export const FilterPanel: React.FC<Props> = ({
       <Line vertical>
         <Line justifyContent="between" alignItems="center" className="title">
           <div className="label-filter">Фильтры</div>
-          <a
+          <div
             className="call-to-action"
             onClick={() => {
               const at = activityList.find(x => x.data === filter.activityType);
               const ct = companyTypeList.find(
                 x => x.data === filter.companyType
               );
-
               const newFilter = {
                 ...filter,
                 activityType: at ? at.value.toString() : "0",
@@ -112,7 +111,7 @@ export const FilterPanel: React.FC<Props> = ({
           >
             <span className="link">Подобрать компании</span>
             <Icon name="angle-right"></Icon>
-          </a>
+          </div>
         </Line>
         <div className="block-filter">Количество сотрудников:</div>
         <Line className="panel-inputs" alignItems="center">
