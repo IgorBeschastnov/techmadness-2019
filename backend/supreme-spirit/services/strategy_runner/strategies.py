@@ -1,6 +1,8 @@
 import random
+import math
 from collections import defaultdict
 from datetime import timedelta, datetime
+from functools import reduce
 
 from sqlalchemy import desc
 
@@ -37,12 +39,12 @@ def create_autotransaction_offers(user, predicted, db=None):
         autotransaction_offer(user, to_id, weight, db=db)
 
 
-def create_offer(offer_template, user, db, created_at):
+def create_offer(offer_template, user, db, created_at=None):
     db.add(offer_template)
     db.commit()
     db.refresh(offer_template)
     db_offer = Offer(user_id=user.id, offer_template_id=offer_template.id)
-    if created_at:
+    if created_at is not None:
         db_offer.created_at = created_at
         db_offer.accepted = True
     db.add(db_offer)
@@ -80,7 +82,13 @@ def company_birthday_event(user, years=None, created_at=None, db=None):
     create_offer(age_bonus, user, db, created_at)
 
 
-def predict_credit_offers(user, value=None, created_at=None, db=None):
+def predict_credit_offers(
+    user,
+    minimal_sequence,
+    value=None,
+    created_at=None,
+    db=None
+):
     if db is None:
         db = Session()
 
@@ -115,4 +123,33 @@ def predict_credit_offers(user, value=None, created_at=None, db=None):
     if not appended:
         net_list.append(month_net)
 
-    print(net_list)
+    sequential = 1
+    avg = net_list[0]
+    sign = math.copysign(1, net_list[0])
+    for net in net_list[1:]:
+        next_sign = math.copysign(1, net)
+        if next_sign != sign:
+            break
+        else:
+            sequential += 1
+            avg += net
+
+    if sequential < minimal_sequence:
+        return None
+    
+    avg /= sequential
+
+    if sign == -1:
+        return -1, avg
+    else:
+        return 1, avg
+
+
+def create_finance_offer(user, type_, amount):
+    db = Session()
+    offer_template = OfferTemplate(
+        text='Автоплатеж',
+        type=OfferType.DEPOSIT if type_ else OfferType.CREDIT,
+        data={'description': 'Настройте автоплатеж!', 'interest': 5 + type_, 'amount': amount},
+    )
+    create_offer(offer_template, user, db)
