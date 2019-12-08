@@ -52,7 +52,7 @@ public class LoginActivity extends Activity {
     public void showError() {
         progressBar.setVisibility(View.GONE);
 
-        Toast.makeText(this, "Неверный логин", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Неверный логин! Попробуйте 1, 2, 3, 4, 5, 6", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.login_btn)

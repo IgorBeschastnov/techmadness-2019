@@ -44,6 +44,11 @@ public class UserProfileRepository implements MainRepository, LoginRepository, R
 
     public User obtainUserData(String login) {
         user = RequestService.getRequestForOneEntity("users/" + login, User.class);
+
+        if (user == null) {
+            return null;
+        }
+
         offers = RequestService.getRequest("offers?user_id=" + user.getId(), Offer.class);
         return user;
     }
