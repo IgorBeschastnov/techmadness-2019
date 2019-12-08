@@ -1,4 +1,9 @@
 .correctionScreen {
+  .form-group{
+    width: 6rem;
+    margin-right: 1.5rem;
+    margin-left: 0.5rem;
+  }
   background: #f3f4f6;
   min-height: 100vh;
   flex-wrap: wrap;
@@ -14,8 +19,9 @@
     }
 
     .input-card {
-      .input-label {
-        font-weight: bold;
+      height: 2rem;
+      .button{
+        margin-top: 0.5rem;
       }
     }
   }

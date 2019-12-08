@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 
 import { Line as LineGraph, ChartData } from "react-chartjs-2";
 import { Line } from "./shared/line";
 import axios from "axios";
 
 import "./correctionScreen.scss";
+import { InputField } from "./shared/inputField";
 
 export interface Strategy {
   window: number;
@@ -50,96 +51,217 @@ const cards = [
   { title: "Кредит", field: "Вес" },
   { title: "Депозит", field: "Вес" },
   { title: "Автоперевод", field: "Вес" },
-  { title: "Лизинг", field: "Вес" }
+  { title: "Важные события", field: "Вес" }
 ];
 
+export interface Props {
+  offers: Offer[];
+}
+const graph: ChartData<Chart.ChartData>[] = [];
+export const CorrectionScreen: React.FC<Props> = ({ offers }) => {
+  const [model, setModel] = useState<{
+    creditFrom: number;
+    creditTo: number;
+    depositFrom: number;
+    depositTo: number;
+    trans: number;
+    date: number;
+  }>();
+  useEffect(() => {
+    setModel({
+      creditFrom: 0,
+      creditTo: 0,
+      depositFrom: 0,
+      depositTo: 0,
+      trans: 0,
+      date: 0
+    });
+  }, []);
 
-export interface lineGraph {
-  dataLine: {
-    labels: number[],
-    datasets: [
-      {
-        lineTension: 0.3,
-        backgroundColor: "#2e2e38",
-        borderColor: "#2e2e38",
-        pointBorderColor: "#d22d32",
-        pointBackgroundColor: "rgb(255,255,255)",
-        pointBorderWidth: 9,
-        pointHoverRadius: 6,
-        pointHoverBackgroundColor: "#f3f4f6",
-        pointHoverBorderColor: "#2e2e38",
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        data: number[],
-        fill: false
-      }
-    ]
-  }
-};
-
-export const CorrectionScreen: React.FC = () => {
-  // const [model, setModel] = useState();
-  useEffect(() => {}, []);
-  useCallback(() => {}, []);
-  const [strategy, setStrategy] = useState<Strategy>({
-    window: 0,
-    years: [1, 5, 6]
-  });
-  const [offers, setOffers] = useState<Offer[]>([]);
-  const postTest = useCallback(() => {
+  const postStrategy = useCallback((value: any) => {
     axios
       .post(`${"http://spacehub.su/strategy/params"}`, {
-        strategy
+        window: parseInt(value.window),
+        years: [value.creditFrom, value.creditTo]
       })
       .then(response => response.data);
   }, []);
 
-  const getOffers = useCallback(() => {
-    axios
-      .get(`${"http://spacehub.su/offers"}`)
-      .then(response => setOffers(response.data));
+  const getValues = useCallback((type: number) => {
+    const months = offers
+      .filter(
+        x =>
+          x.offer_template.type == type &&
+          new Date(x.created_at).getFullYear() == 2019
+      )
+      .map(x => new Date(x.created_at).getMonth());
+
+    var map: { [key: number]: number };
+    map = {
+      0: 0,
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+      7: 0,
+      8: 0,
+      9: 0,
+      10: 0,
+      11: 0
+    };
+    months.forEach(y => {
+      map[y] = map[y] + 1;
+    });
+    return Object.keys(map).map(x => map[parseInt(x)]);
   }, []);
 
-  const graph:ChartData<Chart.ChartData>[] =[];
-  useEffect(() => {
-    getOffers();
-    const types:number[]=[1,2,3,5];
-    console.log(offers)
-    const months = types.map(type => 
-        offers.filter(x=>x.accepted && x.offer_template.type==type &&new Date(x.created_at).getFullYear()==2015).map(x=> new Date(x.created_at).getMonth())
-      );
-    console.log(months)
-    // const mounth =  offers.filter(x=>x.accepted && x.offer_template.type==2 &&new Date(x.created_at).getFullYear()===2015 ).map(x=> new Date(x.created_at).getMonth());
-    // var result:number[] = [];
-    // months.forEach(function(a){
-    //   result[a] = result[a] + 1 || 1;
-    // });
-    // var labels=new Array(result.length);
-    // graph.push({
-    //   labels:labels,
-    //     datasets: [
-    //       {
-    //         lineTension: 0.3,
-    //         backgroundColor: "#2e2e38",
-    //         borderColor: "#2e2e38",
-    //         pointBorderColor: "#d22d32",
-    //         pointBackgroundColor: "rgb(255,255,255)",
-    //         pointBorderWidth: 9,
-    //         pointHoverRadius: 6,
-    //         pointHoverBackgroundColor: "#f3f4f6",
-    //         pointHoverBorderColor: "#2e2e38",
-    //         pointHoverBorderWidth: 2,
-    //         pointRadius: 1,
-    //         data: result,
-    //         fill: false
-    //       }
-    //     ]
-    // });
-  }, [getOffers]);
+  useMemo(() => {
+    const types: number[] = [1, 2, 3, 4];
+    types.forEach(x => {
+      if (offers.length > 0) {
+        graph.push({
+          labels: [
+            "Январь",
+            "Февраль",
+            "Март",
+            "Апрель",
+            "Май",
+            "Июнь",
+            "Июль",
+            "Август",
+            "Сентябрь",
+            "Октябрь",
+            "Ноябрь",
+            "Декабрь"
+          ],
+          datasets: [
+            {
+              lineTension: 0.3,
+              backgroundColor: "#2e2e38",
+              borderColor: "#2e2e38",
+              pointBorderColor: "#d22d32",
+              pointBackgroundColor: "rgb(255,255,255)",
+              pointBorderWidth: 9,
+              pointHoverRadius: 6,
+              pointHoverBackgroundColor: "#f3f4f6",
+              pointHoverBorderColor: "#2e2e38",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              data: getValues(x),
+              fill: false
+            }
+          ]
+        });
+      }
+    });
+  }, [getValues, offers]);
 
-  console.log(offers.filter(x=>x.accepted && x.offer_template.type==3 &&new Date(x.created_at).getFullYear()===2015 ));
-
- 
+  const inputGroup = (type: number) => {
+    return type == 1 || type == 0 ? (
+      <Line className="input-card" alignItems="center">
+        <div>От</div>
+        <InputField
+          type="number"
+          value={
+            model
+              ? type == 1
+                ? model.creditFrom.toString()
+                : model.depositFrom.toString()
+              : ""
+          }
+          onChange={value => {
+            if (model) {
+              type == 1
+                ? setModel({
+                    creditFrom: parseInt(value),
+                    creditTo: model.creditTo,
+                    depositFrom: model.depositFrom,
+                    depositTo: model.depositTo,
+                    trans: model.trans,
+                    date: model.date
+                  })
+                : setModel({
+                    creditFrom: model.creditFrom,
+                    creditTo: model.creditTo,
+                    depositFrom: parseInt(value),
+                    depositTo: model.depositTo,
+                    trans: model.trans,
+                    date: model.date
+                  });
+            }
+          }}
+        ></InputField>
+        <div>до</div>
+        <InputField
+          type="number"
+          value={
+            model
+              ? type == 1
+                ? model.creditTo.toString()
+                : model.depositTo.toString()
+              : ""
+          }
+          onChange={value => {
+            if (model) {
+              type == 1
+                ? setModel({
+                    creditFrom: model.creditFrom,
+                    creditTo: parseInt(value),
+                    depositFrom: model.depositFrom,
+                    depositTo: model.depositTo,
+                    trans: model.trans,
+                    date: model.date
+                  })
+                : setModel({
+                    creditFrom: model.creditFrom,
+                    creditTo: model.creditTo,
+                    depositFrom: model.depositFrom,
+                    depositTo: parseInt(value),
+                    trans: model.trans,
+                    date: model.date
+                  });
+            }
+          }}
+        ></InputField>
+      </Line>
+    ) : (
+      <Line className="input-card" alignItems="center">
+        <InputField
+          type="number"
+          value={
+            model
+              ? type == 2
+                ? model.trans.toString()
+                : model.date.toString()
+              : ""
+          }
+          onChange={value => {
+            if (model) {
+              type == 2
+                ? setModel({
+                    creditFrom: model.creditFrom,
+                    creditTo: model.creditTo,
+                    depositFrom: model.depositFrom,
+                    depositTo: model.depositTo,
+                    trans: parseInt(value),
+                    date: model.date
+                  })
+                : setModel({
+                    creditFrom: model.creditFrom,
+                    creditTo: model.creditTo,
+                    depositFrom: model.depositFrom,
+                    depositTo: model.depositTo,
+                    trans: model.trans,
+                    date: parseInt(value)
+                  });
+            }
+          }}
+        ></InputField>
+      </Line>
+    );
+  };
 
   return (
     <Line className="correctionScreen">
@@ -154,7 +276,7 @@ export const CorrectionScreen: React.FC = () => {
           <LineGraph
             data={graph[i]}
             options={{
-              layout: { padding: { right: 25, left: 15, bottom: 30 } },
+              layout: { padding: { right: 25, left: 15, bottom: 10 } },
               responsive: true,
               legend: { display: false },
               scales: {
@@ -171,13 +293,15 @@ export const CorrectionScreen: React.FC = () => {
             justifyContent="around"
             alignItems="baseline"
           >
-            <label className="input-label">Вес</label>
-            <div className="input-group mb-3 ml-4">
-              <input type="text" className="form-control" />
-              <div className="input-group-append">
-                <button className="btn btn-outline-secondary">Сохранить</button>
-              </div>
-            </div>
+            <Line alignItems="center">
+              {inputGroup(i)}
+              <button
+                className="button btn btn-outline-secondary"
+                onClick={() => postStrategy(model)}
+              >
+                Сохранить
+              </button>
+            </Line>
           </Line>
         </Line>
       ))}

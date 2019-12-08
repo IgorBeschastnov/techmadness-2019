@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 
 import "./app.scss";
@@ -15,6 +15,41 @@ export interface Company {
   id: number;
   login: string;
   address: string;
+}
+
+export interface Offer {
+  user_id: number;
+  offer_template_id: number;
+  accepted: boolean;
+  id: number;
+  created_at: Date;
+  user: {
+    login: string;
+    address: string;
+    type: number;
+    activity: number;
+    num_of_employees: number;
+    id: number;
+    created_at: Date;
+    age: number;
+    accounts: [
+      {
+        name: string;
+        balance: number;
+        currency: string;
+        type: number;
+        interest: number;
+        id: number;
+      }
+    ];
+  };
+  offer_template: {
+    type: number;
+    text: string;
+    data: {};
+    id: number;
+    created_at: Date;
+  };
 }
 
 export interface FilterModel {
@@ -43,12 +78,22 @@ export const App: React.FC = () => {
   const [companyList, setCompanyList] = useState<Company[]>([]);
   const [offerTemplates, setOfferTemplates] = useState<OfferTemplate[]>([]);
   const [offerApproveIds, setOfferApproveIds] = useState<number[]>([]);
+  const [offers, setOffers] = useState<Offer[]>([]);
 
   const getCompanyList = useCallback((data: FilterModel) => {
     axios
       .get(`${"http://spacehub.su/users"}`, { data })
       .then(response => setCompanyList(response.data));
   }, []);
+
+  const getOffers = useCallback(() => {
+    axios
+      .get(`${"http://spacehub.su/offers"}`, { params: { show_all: true } })
+      .then(response => setOffers(response.data));
+  }, []);
+  useEffect(() => {
+    getOffers();
+  }, [getOffers]);
 
   const postFilters = useCallback((data: FilterModel) => {
     let from = data.employeesFrom;
@@ -104,18 +149,20 @@ export const App: React.FC = () => {
   );
 
   const renderOfferTemplates = () => {
-    return offerTemplates.map(x => {
-      return (
-        <div key={x.id} onClick={() => onchange(x.id)}>
-          <Checkbox
-            value={offerApproveIds.includes(x.id) ? true : false}
-            onChange={() => {}}
-            key={x.id}
-            text={x.text}
-          ></Checkbox>
-        </div>
-      );
-    });
+    return offerTemplates
+      .filter(x => x.id > 1138 && x.id < 11388)
+      .map(x => {
+        return (
+          <div key={x.id} onClick={() => onchange(x.id)}>
+            <Checkbox
+              value={offerApproveIds.includes(x.id) ? true : false}
+              onChange={() => {}}
+              key={x.id}
+              text={x.text}
+            ></Checkbox>
+          </div>
+        );
+      });
   };
 
   const renderListPanelWait = () => {
@@ -168,7 +215,7 @@ export const App: React.FC = () => {
             <Button
               className="custom-button"
               onClick={() => {
-                postBoundOfferTemplates()
+                postBoundOfferTemplates();
               }}
               buttonType="danger"
               label={"Отправить предложения"}
@@ -189,6 +236,7 @@ export const App: React.FC = () => {
       ></Header>
       {currentPage === 0 && (
         <Line className="main-screen" justifyContent="start">
+          <div>{error ? error : ""}</div>
           <FilterPanel
             getCompanyList={(data: FilterModel) => getCompanyList(data)}
             onChange={() => setStep(1)}
@@ -203,7 +251,9 @@ export const App: React.FC = () => {
           </div>
         </Line>
       )}
-      {currentPage === 1 && <CorrectionScreen></CorrectionScreen>}
+      {currentPage === 1 && (
+        <CorrectionScreen offers={offers}></CorrectionScreen>
+      )}
     </Line>
   );
 };
