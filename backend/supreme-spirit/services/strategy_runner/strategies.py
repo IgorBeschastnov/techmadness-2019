@@ -41,3 +41,24 @@ def create_autotransaction_offers(predicted, user):
             db.add(db_offer)
             db.commit()
             db.refresh(db_offer)
+
+
+def company_birthday_event(user, years):
+    if user.age in years:
+        db = Session()
+        age_bonus = OfferTemplate(
+            text='Выслуга лет!',
+            type=OfferType.DEPOSIT,
+            data={
+                'description': 'Вы с нам уже давно! Вам специальное предложение',
+                'interest': 5.5,
+                'user_id': user.id
+            },
+        )
+        db.add(age_bonus)
+        db.commit()
+        db.refresh(age_bonus)
+        db_offer = Offer(user_id=user.id, offer_template_id=age_bonus.id)
+        db.add(db_offer)
+        db.commit()
+        db.refresh(db_offer)
