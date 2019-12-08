@@ -24,7 +24,7 @@ class StrategyListModel(BaseModel):
 
 
 @app.post('/strategy/params')
-def get_strategy_params(params: StrategyParams, db: Session = Depends(get_db)):
+def post_strategy_params(params: StrategyParams, db: Session = Depends(get_db)):
     if params.window is not None:
         r.set('window', params.window)
     if params.years is not None:
