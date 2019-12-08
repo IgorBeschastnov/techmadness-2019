@@ -6,6 +6,17 @@ networks:
   default:
 
 services:
+  #overlord:
+  #  container_name: hack-overlord
+  #  build:
+  #    context: banana-lime
+  #    dockerfile: Dockerfile
+  #  volumes:
+  #    - ./banana-lime:/opt/app
+  #  networks:
+  #    - default
+  #  depends_on:
+  #    - postgres
   core:
     container_name: hack-core
     environment:

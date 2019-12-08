@@ -3,7 +3,7 @@ module AppEnv where
 import           Database.HDBC
 import qualified Database.HDBC.PostgreSQL as Postgres
 
-dbHost = "localhost"
+dbHost = "postgres"
 dbPort = "5432"
 dbUser = "user"
 dbPassword = "password"
