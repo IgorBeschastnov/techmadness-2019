@@ -13,10 +13,10 @@ from .. import app
 
 
 @app.get('/offers', response_model=List[OfferModel])
-def offers_list(user_id: int = None, db: Session = Depends(get_db)):
+def offers_list(show_all: bool = False, user_id: int = None, db: Session = Depends(get_db)):
     if user_id is not None:
-        return get_offers_by_user_id(user_id, db)
-    return get_offers(db)
+        return get_offers_by_user_id(user_id, show_all, db)
+    return get_offers(show_all, db)
 
 
 @app.get('/offers/{id}', response_model=OfferModel)
