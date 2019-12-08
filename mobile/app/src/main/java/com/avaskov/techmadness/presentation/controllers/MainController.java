@@ -4,7 +4,7 @@ import com.avaskov.techmadness.domain.executor.Executor;
 import com.avaskov.techmadness.domain.models.Offer;
 import com.avaskov.techmadness.domain.models.OfferType;
 import com.avaskov.techmadness.domain.models.User;
-import com.avaskov.techmadness.domain.repository.UserProfileRepository;
+import com.avaskov.techmadness.domain.repository.interfaces.MainRepository;
 import com.avaskov.techmadness.threading.MainThread;
 import com.avaskov.techmadness.ui.activities.MainActivity;
 
@@ -15,18 +15,22 @@ public class MainController {
     private MainActivity view;
     private Executor executor;
     private MainThread mainThread;
-    private UserProfileRepository userProfileRepository;
+    private MainRepository mainRepository;
 
-    public MainController(MainActivity view, Executor executor, MainThread mainThread, UserProfileRepository userProfileRepository) {
+    public MainController(MainActivity view,
+                          Executor executor,
+                          MainThread mainThread,
+                          MainRepository mainRepository) {
         this.view = view;
         this.executor = executor;
         this.mainThread = mainThread;
-        this.userProfileRepository = userProfileRepository;
+        this.mainRepository = mainRepository;
     }
 
     public void obtainOffers() {
         executor.execute(() -> {
-            List<Offer> offers = userProfileRepository.getOffers();
+            List<Offer> offers = mainRepository.getOffers();
+
             Offer importantDate = null;
             for (Offer offer : offers) {
                 if (offer.getType().equals(OfferType.IMPORTANT_DATE)) {
@@ -41,13 +45,18 @@ public class MainController {
 
             List<Offer> creditDepositOffersList = new ArrayList<>();
             for (Offer offer : offers) {
-                if (offer.getType().equals(OfferType.CREDIT) || offer.getType().equals(OfferType.DEPOSIT)) {
+                if (offer.getType().equals(OfferType.CREDIT) ||
+                        offer.getType().equals(OfferType.DEPOSIT) ||
+                        offer.getType().equals(OfferType.MORTGAGE) ||
+                        offer.getType().equals(OfferType.CAR) ||
+                        offer.getType().equals(OfferType.INSURANCE) ||
+                        offer.getType().equals(OfferType.INVESTMENTS)) {
                     creditDepositOffersList.add(offer);
                 }
             }
             mainThread.post(() -> view.showCreditDepositOffers(creditDepositOffersList));
 
-            User user = userProfileRepository.getUser();
+            User user = mainRepository.getUser();
 
             mainThread.post(() -> view.showAccounts(user.getAccounts()));
         });
@@ -55,7 +64,7 @@ public class MainController {
 
     public void offerAccepted(Offer offer) {
         executor.execute(() -> {
-            userProfileRepository.sendOfferAccepted(offer);
+            mainRepository.sendOfferAccepted(offer);
             obtainOffers();
         });
     }

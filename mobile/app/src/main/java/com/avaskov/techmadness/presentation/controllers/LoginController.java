@@ -2,7 +2,7 @@ package com.avaskov.techmadness.presentation.controllers;
 
 import com.avaskov.techmadness.domain.executor.Executor;
 import com.avaskov.techmadness.domain.models.User;
-import com.avaskov.techmadness.domain.repository.UserProfileRepository;
+import com.avaskov.techmadness.domain.repository.interfaces.LoginRepository;
 import com.avaskov.techmadness.threading.MainThread;
 import com.avaskov.techmadness.ui.activities.LoginActivity;
 
@@ -10,21 +10,21 @@ public class LoginController {
     private Executor executor;
     private MainThread mainThread;
     private LoginActivity view;
-    private UserProfileRepository userProfileRepository;
+    private LoginRepository loginRepository;
 
     public LoginController(Executor executor,
                            MainThread mainThread,
                            LoginActivity view,
-                           UserProfileRepository userProfileRepository) {
+                           LoginRepository loginRepository) {
         this.executor = executor;
         this.mainThread = mainThread;
         this.view = view;
-        this.userProfileRepository = userProfileRepository;
+        this.loginRepository = loginRepository;
     }
 
     public void loginPressed(String login) {
         executor.execute(() -> {
-            User user = userProfileRepository.obtainUserData(login);
+            User user = loginRepository.obtainUserData(login);
             if (user != null) {
                 mainThread.post(() -> view.showMain());
             } else {
